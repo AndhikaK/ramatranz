@@ -27,7 +27,7 @@ import {
   Poppins_700Bold_Italic,
 } from "@expo-google-fonts/poppins";
 import {
-  DarkTheme,
+  // DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
@@ -41,7 +41,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "test/index",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
