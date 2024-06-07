@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 
+import { AppThemeProvider } from "@/context/theme-context";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
@@ -91,11 +92,13 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
+      <AppThemeProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </AppThemeProvider>
     </ThemeProvider>
   );
 }
