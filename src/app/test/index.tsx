@@ -1,5 +1,6 @@
-import { Typography } from "@/components/typography/Typography";
 import { View } from "react-native";
+
+import { Typography } from "@/components";
 
 export default function TypographySample() {
     return (

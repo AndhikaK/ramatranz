@@ -1,16 +1,20 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
 
-import { useColorScheme } from "@/components/useColorScheme";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import {
+  OpenSans_300Light,
+  OpenSans_300Light_Italic,
+  OpenSans_400Regular,
+  OpenSans_400Regular_Italic,
+  OpenSans_500Medium,
+  OpenSans_500Medium_Italic,
+  OpenSans_700Bold,
+  OpenSans_700Bold_Italic,
+} from "@expo-google-fonts/open-sans";
 import {
   Poppins_300Light,
   Poppins_300Light_Italic,
@@ -22,17 +26,12 @@ import {
   Poppins_700Bold_Italic,
 } from "@expo-google-fonts/poppins";
 import {
-  OpenSans_300Light,
-  OpenSans_300Light_Italic,
-  OpenSans_400Regular,
-  OpenSans_400Regular_Italic,
-  OpenSans_500Medium,
-  OpenSans_500Medium_Italic,
-  OpenSans_700Bold,
-  OpenSans_700Bold_Italic,
-} from "@expo-google-fonts/open-sans";
-import { View } from "react-native";
-import { Typography } from "@/components/typography/Typography";
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+
+import "react-native-reanimated";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -96,10 +95,7 @@ function RootLayoutNav() {
         screenOptions={{
           headerShown: false,
         }}
-      >
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
+      />
     </ThemeProvider>
   );
 }

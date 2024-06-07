@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
-import { Typography } from '@/components/typography/Typography';
 import { useRouter } from 'expo-router';
+
+import { Typography } from '@/components';
 
 export default function TabOneScreen() {
   const router = useRouter()
