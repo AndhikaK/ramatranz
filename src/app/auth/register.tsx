@@ -1,10 +1,12 @@
 import { ScrollView, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Button, TextInput, Typography, View } from "@/components";
+import { Button, TextInput, TextLink, Typography, View } from "@/components";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
@@ -42,6 +44,16 @@ export default function RegisterScreen() {
               placeholder="Konfirmasi Kata Sandi"
               secureTextEntry
             />
+            <View style={style.alreadyHasAccountWrapper}>
+              <Typography fontFamily="OpenSans-Regular" fontSize={12}>
+                Sudah punya akun?
+              </Typography>
+
+              <TextLink
+                label=" Masuk"
+                onPress={() => router.replace("/auth/login")}
+              />
+            </View>
           </View>
           <Button>Daftar</Button>
         </View>
@@ -70,5 +82,10 @@ const style = StyleSheet.create({
   formContainer: {
     gap: 16,
     marginBottom: 40,
+  },
+  alreadyHasAccountWrapper: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
 });

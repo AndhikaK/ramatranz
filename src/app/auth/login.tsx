@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Button, TextInput, Typography, View } from "@/components";
+import { Button, TextInput, TextLink, Typography, View } from "@/components";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <View backgroundColor="main" style={style.container}>
@@ -20,6 +22,12 @@ export default function LoginScreen() {
             label="Kata Sandi"
             placeholder="Kata Sandi"
             secureTextEntry
+          />
+        </View>
+        <View style={style.forgotPasswordWrapper}>
+          <TextLink
+            label="Lupa Kata Sandi?"
+            onPress={() => router.push("/auth/forgot-password")}
           />
         </View>
 
@@ -42,7 +50,11 @@ const style = StyleSheet.create({
   },
   formContainer: {
     marginTop: 30,
-    marginBottom: 80,
     gap: 36,
+  },
+  forgotPasswordWrapper: {
+    marginBottom: 80,
+    marginTop: 16,
+    alignItems: "flex-end",
   },
 });
