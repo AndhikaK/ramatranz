@@ -12,7 +12,7 @@ export type TypographyProps = {
 export function Typography(props: TypographyProps) {
   const {
     children,
-    fontFamily = "Poppins-Bold",
+    fontFamily = "OpenSans-Regular",
     color = "textprimary",
     style,
     ...rest
