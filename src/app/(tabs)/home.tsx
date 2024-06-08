@@ -1,11 +1,16 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 
 import { Typography, View } from "@/components";
 
-export default function TabTwoScreen() {
+export default function HomeTabScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Typography>Requiem</Typography>
+      <TouchableOpacity onPress={() => router.push("/test")}>
+        <Typography>Goto that one</Typography>
+      </TouchableOpacity>
     </View>
   );
 }

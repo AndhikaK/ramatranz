@@ -9,9 +9,9 @@ export default function InitialScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      router.replace("/auth/initial");
+      router.replace("/(tabs)/home");
     }, 3000);
-  }, []);
+  }, [router]);
 
   return (
     <View style={style.container}>

@@ -1,59 +1,155 @@
-import React from 'react';
-import { Pressable } from 'react-native';
-import { Link, Tabs } from 'expo-router';
+import React from "react";
+import { StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Tabs } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Colors from '@/constants/Colors';
-import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import { Typography, View } from "@/components";
+import {
+  IconClipboard,
+  IconHome,
+  IconPromo,
+  IconUser,
+} from "@/components/icons";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        headerShown: false,
+      }}
+      tabBar={({ state, descriptors, navigation }) => {
+        return (
+          <View style={[style.container, { paddingBottom: insets.bottom }]}>
+            {state.routes.map((route, index) => {
+              const { options } = descriptors[route.key];
+              const label =
+                options.tabBarLabel !== undefined
+                  ? options.tabBarLabel
+                  : options.title !== undefined
+                    ? options.title
+                    : route.name;
+
+              const isFocused = state.index === index;
+
+              const onPress = () => {
+                const event = navigation.emit({
+                  type: "tabPress",
+                  target: route.key,
+                  canPreventDefault: true,
+                });
+
+                if (!isFocused && !event.defaultPrevented) {
+                  navigation.navigate(route.name, route.params);
+                }
+              };
+
+              const onLongPress = () => {
+                navigation.emit({
+                  type: "tabLongPress",
+                  target: route.key,
+                });
+              };
+
+              return (
+                <TouchableWithoutFeedback
+                  key={route.key}
+                  onPress={onPress}
+                  onLongPress={onLongPress}
+                >
+                  <View style={style.tabBarWrapper}>
+                    <View style={style.navIconWrapper}>
+                      {options?.tabBarIcon?.({
+                        focused: isFocused,
+                        color: "",
+                        size: 0,
+                      })}
+                    </View>
+                    <Typography
+                      fontFamily="Poppins-Bold"
+                      color={isFocused ? "main" : "textsecondary"}
+                      fontSize={10}
+                    >
+                      {label as string}
+                    </Typography>
+                  </View>
+                </TouchableWithoutFeedback>
+              );
+            })}
+          </View>
+        );
+      }}
+    >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: "Home",
+          tabBarIcon: ({ focused }) => (
+            <IconHome
+              color={focused ? "main" : "textsecondary"}
+              width={24}
+              height={24}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="article"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Artikel",
+          tabBarIcon: ({ focused }) => (
+            <IconPromo
+              color={focused ? "main" : "textsecondary"}
+              width={24}
+              height={24}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="order"
+        options={{
+          title: "Pesanan",
+          tabBarIcon: ({ focused }) => (
+            <IconClipboard
+              color={focused ? "main" : "textsecondary"}
+              width={24}
+              height={24}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Akun",
+          tabBarIcon: ({ focused }) => (
+            <IconUser
+              color={focused ? "main" : "textsecondary"}
+              width={24}
+              height={24}
+            />
+          ),
         }}
       />
     </Tabs>
   );
 }
+
+const style = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+  },
+  tabBarWrapper: {
+    flex: 1,
+    height: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  navIconWrapper: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    height: 24,
+  },
+});
