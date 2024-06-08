@@ -61,6 +61,7 @@ function RootLayoutNav() {
         <Stack
           screenOptions={{
             headerShown: false,
+            animation: "ios",
           }}
         />
       </AppThemeProvider>

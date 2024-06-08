@@ -4,7 +4,7 @@ import { AppColorUnion } from "@/constants/Colors";
 import { useAppTheme } from "@/context/theme-context";
 
 export type ViewProps = {
-  backgroundColor?: AppColorUnion;
+  backgroundColor?: AppColorUnion | "transparent";
 } & RNViewProps;
 export function View(props: ViewProps) {
   const { children, backgroundColor = "paper", style, ...rest } = props;
@@ -13,7 +13,13 @@ export function View(props: ViewProps) {
 
   return (
     <RNView
-      style={[{ backgroundColor: Colors[backgroundColor] }, style]}
+      style={[
+        {
+          backgroundColor:
+            Colors[backgroundColor as AppColorUnion] || "transparent",
+        },
+        style,
+      ]}
       {...rest}
     >
       {children}

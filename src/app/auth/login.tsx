@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Button, Typography, View } from "@/components";
+import { Button, TextInput, Typography, View } from "@/components";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
@@ -11,7 +11,14 @@ export default function LoginScreen() {
       <View style={[style.content, { paddingBottom: insets.bottom + 37 }]}>
         <Typography fontFamily="Poppins-Bold">Silahkan Masuk!</Typography>
 
-        <View style={style.formContainer}></View>
+        <View style={style.formContainer}>
+          <TextInput label="Email" placeholder="Contoh@gmail.com" />
+          <TextInput
+            label="Kata Sandi"
+            placeholder="Kata Sandi"
+            secureTextEntry
+          />
+        </View>
 
         <Button>Masuk</Button>
       </View>
@@ -33,5 +40,6 @@ const style = StyleSheet.create({
   formContainer: {
     marginTop: 30,
     marginBottom: 80,
+    gap: 36,
   },
 });
