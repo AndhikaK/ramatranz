@@ -3,33 +3,10 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 
+import { appFonts } from "@/components";
 import { AppThemeProvider } from "@/context/theme-context";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  OpenSans_300Light,
-  OpenSans_300Light_Italic,
-  OpenSans_400Regular,
-  OpenSans_400Regular_Italic,
-  OpenSans_500Medium,
-  OpenSans_500Medium_Italic,
-  OpenSans_600SemiBold,
-  OpenSans_600SemiBold_Italic,
-  OpenSans_700Bold,
-  OpenSans_700Bold_Italic,
-} from "@expo-google-fonts/open-sans";
-import {
-  Poppins_300Light,
-  Poppins_300Light_Italic,
-  Poppins_400Regular,
-  Poppins_400Regular_Italic,
-  Poppins_500Medium,
-  Poppins_500Medium_Italic,
-  Poppins_600SemiBold,
-  Poppins_600SemiBold_Italic,
-  Poppins_700Bold,
-  Poppins_700Bold_Italic,
-} from "@expo-google-fonts/poppins";
 import {
   // DarkTheme,
   DefaultTheme,
@@ -53,26 +30,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    "OpenSans-Light": OpenSans_300Light,
-    "OpenSans-LightItalic": OpenSans_300Light_Italic,
-    "OpenSans-Regular": OpenSans_400Regular,
-    "OpenSans-RegularItalic": OpenSans_400Regular_Italic,
-    "OpenSans-Medium": OpenSans_500Medium,
-    "OpenSans-MediumItalic": OpenSans_500Medium_Italic,
-    "OpenSans-Semibold": OpenSans_600SemiBold,
-    "OpenSans-SemiboldItalic": OpenSans_600SemiBold_Italic,
-    "OpenSans-Bold": OpenSans_700Bold,
-    "OpenSans-BoldItalic": OpenSans_700Bold_Italic,
-    "Poppins-Light": Poppins_300Light,
-    "Poppins-LightItalic": Poppins_300Light_Italic,
-    "Poppins-Regular": Poppins_400Regular,
-    "Poppins-RegularItalic": Poppins_400Regular_Italic,
-    "Poppins-Medium": Poppins_500Medium,
-    "Poppins-MediumItalic": Poppins_500Medium_Italic,
-    "Poppins-SemiBold": Poppins_600SemiBold,
-    "Poppins-SemiBoldItalic": Poppins_600SemiBold_Italic,
-    "Poppins-Bold": Poppins_700Bold,
-    "Poppins-BoldItalic": Poppins_700Bold_Italic,
+    ...appFonts,
     ...FontAwesome.font,
   });
 
