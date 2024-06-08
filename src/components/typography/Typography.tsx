@@ -59,8 +59,9 @@ export const appFonts = {
 export function Typography(props: TypographyProps) {
   const {
     children,
-    fontFamily = "OpenSans-Regular",
     color = "textprimary",
+    fontFamily = "OpenSans-Regular",
+    fontSize = 14,
     style,
     ...rest
   } = props;
@@ -69,7 +70,10 @@ export function Typography(props: TypographyProps) {
 
   return (
     <Text
-      style={[{ fontFamily, color: Colors[color as AppColorUnion] }, style]}
+      style={[
+        { fontFamily, color: Colors[color as AppColorUnion], fontSize },
+        style,
+      ]}
       {...rest}
     >
       {children}

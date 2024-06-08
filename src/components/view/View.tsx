@@ -7,7 +7,7 @@ export type ViewProps = {
   backgroundColor?: AppColorUnion | "transparent";
 } & RNViewProps;
 export function View(props: ViewProps) {
-  const { children, backgroundColor = "paper", style, ...rest } = props;
+  const { children, backgroundColor = "transparent", style, ...rest } = props;
 
   const { Colors } = useAppTheme();
 

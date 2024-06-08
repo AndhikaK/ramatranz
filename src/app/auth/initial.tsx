@@ -22,7 +22,12 @@ export default function InitialScreen() {
       />
 
       <View style={style.content}>
-        <Button variant="secondary">Daftar</Button>
+        <Button
+          variant="secondary"
+          onPress={() => router.push("/auth/register")}
+        >
+          Daftar
+        </Button>
         <Button onPress={() => router.push("/auth/login")}>Masuk</Button>
       </View>
     </View>

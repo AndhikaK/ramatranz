@@ -8,7 +8,10 @@ export default function LoginScreen() {
 
   return (
     <View backgroundColor="main" style={style.container}>
-      <View style={[style.content, { paddingBottom: insets.bottom + 37 }]}>
+      <View
+        backgroundColor="paper"
+        style={[style.content, { paddingBottom: insets.bottom + 37 }]}
+      >
         <Typography fontFamily="Poppins-Bold">Silahkan Masuk!</Typography>
 
         <View style={style.formContainer}>
