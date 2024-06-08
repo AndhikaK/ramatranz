@@ -28,15 +28,27 @@ export function Button(props: ButtonProps) {
             },
           ]}
         >
-          {typeof children === "string" ? (
-            <Typography
-              fontFamily="OpenSans-Semibold"
-              color={variant === "primary" ? "paper" : "main"}
-            >
-              {children}
-            </Typography>
-          ) : (
-            children
+          <View style={style.childrenWrapper}>
+            {typeof children === "string" ? (
+              <Typography
+                fontFamily="OpenSans-Semibold"
+                color={variant === "primary" ? "paper" : "main"}
+              >
+                {children}
+              </Typography>
+            ) : (
+              children
+            )}
+          </View>
+          {pressable.pressed && (
+            <View
+              style={[
+                style.mask,
+                {
+                  backgroundColor: `${Colors.main}${variant === "primary" ? "80" : "0D"}`,
+                },
+              ]}
+            />
           )}
         </View>
       )}
@@ -50,7 +62,15 @@ const style = StyleSheet.create({
     minHeight: 48,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 16,
     borderWidth: 1,
+    overflow: "hidden",
+  },
+  childrenWrapper: {
+    paddingHorizontal: 16,
+  },
+  mask: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
   },
 });
