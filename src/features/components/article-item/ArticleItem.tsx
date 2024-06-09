@@ -7,9 +7,7 @@ import {
 } from "react-native";
 
 import { useAppTheme } from "@/context/theme-context";
-
-import { Typography } from "../typography/Typography";
-import { View } from "../view/View";
+import { Typography, View } from "@/components";
 
 export type ArticleItemProps = {
   imgSource: ImageSourcePropType;

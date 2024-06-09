@@ -3,6 +3,7 @@ export * from "./IconBasket";
 export * from "./IconBuilding";
 export * from "./IconCar";
 export * from "./IconCarSide";
+export * from "./IconChevronLeft";
 export * from "./IconClipboard";
 export * from "./IconHome";
 export * from "./IconPackage";

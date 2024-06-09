@@ -2,16 +2,15 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
-  ArticleItem,
   RoundedButton,
   SearchBox,
+  SectionWrapper,
   Typography,
   View,
 } from "@/components";
@@ -24,6 +23,7 @@ import {
   IconPackage,
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { ArticleItem } from "@/features/components";
 
 export default function HomeTabScreen() {
   const router = useRouter();
@@ -83,11 +83,9 @@ export default function HomeTabScreen() {
         </View>
       </View>
 
-      <View style={styles.articleWrapper}>
-        <View style={styles.sectionTitleWrapper}>
-          <Typography fontFamily="Poppins-Bold" fontSize={16}>
-            Artikel
-          </Typography>
+      <SectionWrapper
+        title="Artikel"
+        action={
           <TouchableWithoutFeedback
             onPress={() => router.push("/(tabs)/article")}
           >
@@ -100,8 +98,8 @@ export default function HomeTabScreen() {
               <IconArrowRight height={20} width={20} color="main" />
             </View>
           </TouchableWithoutFeedback>
-        </View>
-
+        }
+      >
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -118,7 +116,7 @@ export default function HomeTabScreen() {
           )}
           contentContainerStyle={{ paddingHorizontal: 20, gap: 16 }}
         />
-      </View>
+      </SectionWrapper>
     </ScrollView>
   );
 }
@@ -142,6 +140,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 20,
     paddingBottom: 0,
+    marginBottom: 43,
   },
   contentGreetingWrapper: {
     padding: 12,
@@ -151,16 +150,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
-  },
-  articleWrapper: {
-    marginTop: 43,
-    gap: 12,
-  },
-  sectionTitleWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
   },
   touchableIconWrapper: {
     height: 24,
