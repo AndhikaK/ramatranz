@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Image, StyleSheet } from "react-native";
+import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button, Tab, Typography, View } from "@/components";
@@ -59,7 +60,9 @@ export default function TravelDetailScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button>Pilih</Button>
+          <Button onPressIn={() => router.push("/travel/seat-selection")}>
+            Pilih
+          </Button>
         </View>
       </View>
     </View>

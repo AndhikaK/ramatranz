@@ -11,6 +11,7 @@ export type TabProps = TouchableWithoutFeedbackProps & {
   tabs: {
     key: string;
     label: string;
+    indicator?: boolean;
   }[];
   activeTab: string;
   onPress: (key: string) => void;
@@ -20,7 +21,7 @@ export function Tab(props: TabProps) {
 
   return (
     <View style={style.container}>
-      {tabs.map(({ key, label, ...rest }) => (
+      {tabs.map(({ key, label, indicator, ...rest }) => (
         <TouchableWithoutFeedback
           key={key}
           onPress={() => onPress(key)}
@@ -38,6 +39,10 @@ export function Tab(props: TabProps) {
             {activeTab === key && (
               <View backgroundColor="main" style={style.indicator} />
             )}
+
+            {indicator && (
+              <View backgroundColor="dangerbase" style={style.indicatorPoint} />
+            )}
           </View>
         </TouchableWithoutFeedback>
       ))}
@@ -48,10 +53,10 @@ export function Tab(props: TabProps) {
 const style = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 10,
+    gap: 16,
   },
   touchableContainer: {
-    minWidth: 80,
+    minWidth: 50,
     height: 32,
     alignItems: "center",
     justifyContent: "center",
@@ -62,5 +67,13 @@ const style = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  indicatorPoint: {
+    width: 6,
+    height: 6,
+    position: "absolute",
+    top: 3,
+    right: -7,
+    borderRadius: 99,
   },
 });
