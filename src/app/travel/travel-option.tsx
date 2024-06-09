@@ -58,6 +58,7 @@ export default function TravelOptionScreen() {
             originCity="Palembang"
             originDepartureDate="24 Feb 2023"
             price={350000}
+            onPressIn={() => router.push("/travel/travel-detail")}
           />
         )}
         style={{ flex: 1 }}
