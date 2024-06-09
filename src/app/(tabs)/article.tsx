@@ -2,7 +2,7 @@ import { FlatList, ScrollView, StyleSheet } from "react-native";
 
 import { Appbar, SectionWrapper, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
-import { ArticleItem } from "@/features/components";
+import { ArticleItem } from "@/features/article/components";
 
 export default function ArticleTabScreen() {
   const { Colors } = useAppTheme();

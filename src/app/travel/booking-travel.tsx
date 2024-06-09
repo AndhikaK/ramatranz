@@ -96,7 +96,9 @@ export default function BookingTravelScreen() {
           trailingIcon={<IconChevronDown width={21} height={21} />}
         />
 
-        <Button>Cari</Button>
+        <Button onPress={() => router.push("/travel/travel-option")}>
+          Cari
+        </Button>
       </View>
     </ScrollView>
   );

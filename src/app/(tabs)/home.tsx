@@ -23,7 +23,7 @@ import {
   IconPackage,
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
-import { ArticleItem } from "@/features/components";
+import { ArticleItem } from "@/features/article/components";
 
 export default function HomeTabScreen() {
   const router = useRouter();

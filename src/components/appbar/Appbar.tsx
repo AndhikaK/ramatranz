@@ -12,6 +12,7 @@ import { View, ViewProps } from "../view/View";
 export type AppbarProps = {
   backgroundColor?: AppColorUnion | "transparent";
   title?: ReactNode;
+  subtitle?: ReactNode;
   backIcon?: ReactNode;
   backIconPress?: () => void;
   hasBorder?: boolean;
@@ -22,6 +23,7 @@ export function Appbar(props: AppbarProps) {
   const {
     backgroundColor = "paper",
     title,
+    subtitle,
     backIcon,
     backIconPress,
     hasBorder = true,
@@ -76,6 +78,21 @@ export function Appbar(props: AppbarProps) {
 
         {!!backIconPress && <View style={style.iconWrapper} />}
       </View>
+      {!!subtitle && (
+        <View style={style.subtitleWrapper}>
+          {typeof subtitle === "string" ? (
+            <Typography
+              fontFamily="OpenSans-Regular"
+              fontSize={14}
+              color="textsecondary"
+            >
+              {subtitle}
+            </Typography>
+          ) : (
+            subtitle
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -90,6 +107,10 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     minHeight: 48,
+  },
+  subtitleWrapper: {
+    alignItems: "center",
+    marginBottom: 16,
   },
   iconWrapper: {
     height: 24,
