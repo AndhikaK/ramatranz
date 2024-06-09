@@ -16,6 +16,7 @@ export type AppbarProps = {
   backIconPress?: () => void;
   hasBorder?: boolean;
   colorSheme?: "dark" | "light";
+  variant?: "bold" | "light";
 } & ViewProps;
 export function Appbar(props: AppbarProps) {
   const {
@@ -25,6 +26,7 @@ export function Appbar(props: AppbarProps) {
     backIconPress,
     hasBorder = true,
     colorSheme = "light",
+    variant = "bold",
   } = props;
 
   const insets = useSafeAreaInsets();
@@ -59,7 +61,9 @@ export function Appbar(props: AppbarProps) {
         <View style={style.titleWrapper}>
           {typeof title === "string" ? (
             <Typography
-              fontFamily="Poppins-Bold"
+              fontFamily={
+                variant === "bold" ? "Poppins-Bold" : "OpenSans-Semibold"
+              }
               fontSize={16}
               color={colorSheme === "dark" ? "paper" : "textprimary"}
             >

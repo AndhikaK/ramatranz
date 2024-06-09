@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import { Typography, View } from "@/components";
+import { Appbar, View } from "@/components";
 
 export default function ProfileTabScreen() {
   return (
-    <View style={style.container}>
-      <Typography>Tab profile</Typography>
+    <View backgroundColor="paper" style={style.container}>
+      <Appbar title="Akun" />
     </View>
   );
 }
@@ -13,7 +13,5 @@ export default function ProfileTabScreen() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

@@ -6,8 +6,8 @@ import {
   StyleSheet,
 } from "react-native";
 
-import { useAppTheme } from "@/context/theme-context";
 import { Typography, View } from "@/components";
+import { useAppTheme } from "@/context/theme-context";
 
 export type ArticleItemProps = {
   imgSource: ImageSourcePropType;
@@ -66,6 +66,7 @@ const style = StyleSheet.create({
     width: 155,
     height: 225,
     borderWidth: 1,
+    borderRadius: 2,
   },
   image: {
     width: "100%",

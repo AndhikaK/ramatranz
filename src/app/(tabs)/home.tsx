@@ -56,6 +56,7 @@ export default function HomeTabScreen() {
             label="Travel"
             icon={<IconCar width={24} height={24} color="paper" />}
             iconColor="main"
+            onPress={() => router.push("/travel/booking-travel")}
           />
           <RoundedButton
             label="Paket"
