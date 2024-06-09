@@ -21,7 +21,10 @@ export default function TabLayout() {
       }}
       tabBar={({ state, descriptors, navigation }) => {
         return (
-          <View style={[style.container, { paddingBottom: insets.bottom }]}>
+          <View
+            backgroundColor="paper"
+            style={[style.container, { paddingBottom: insets.bottom }]}
+          >
             {state.routes.map((route, index) => {
               const { options } = descriptors[route.key];
               const label =
