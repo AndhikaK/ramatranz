@@ -113,7 +113,7 @@ export default function HomeTabScreen() {
               title="Bandung - Jakarta"
               subtitle="Mulai dari"
               price="Rp 350.000"
-              onPressIn={() =>
+              onPress={() =>
                 router.push({
                   pathname: "/article/[id]",
                   params: {

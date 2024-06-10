@@ -5,20 +5,33 @@ import { Appbar, Tab, Typography, View } from "@/components";
 
 export default function OrderTabScreen() {
   const [activeTab, setActiveTab] = useState("history");
+  const [activeFilter, setActiveFilter] = useState("travel");
 
   return (
     <View backgroundColor="paper" style={style.container}>
       <Appbar title="Pesanan" />
 
       <View style={style.contenContainer}>
-        <Tab
-          tabs={[
-            { key: "history", label: "Riwayat" },
-            { key: "in-progress", label: "Dalam proses", indicator: true },
-          ]}
-          activeTab={activeTab}
-          onPress={(key) => setActiveTab(key as string)}
-        />
+        <View style={style.tabContainer}>
+          <Tab
+            tabs={[
+              { key: "history", label: "Riwayat" },
+              { key: "in-progress", label: "Dalam proses", indicator: true },
+            ]}
+            activeTab={activeTab}
+            onPress={(key) => setActiveTab(key as string)}
+          />
+
+          <Tab
+            tabs={[
+              { key: "travel", label: "Travel" },
+              { key: "packet", label: "Paket" },
+            ]}
+            activeTab={activeFilter}
+            onPress={(key) => setActiveFilter(key as string)}
+            variant="button"
+          />
+        </View>
       </View>
     </View>
   );
@@ -31,5 +44,8 @@ const style = StyleSheet.create({
   contenContainer: {
     paddingVertical: 37,
     padding: 24,
+  },
+  tabContainer: {
+    gap: 10,
   },
 });
