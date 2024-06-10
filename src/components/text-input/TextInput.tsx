@@ -15,23 +15,31 @@ export type TextInputProps = {
   trailingIcon?: ReactNode;
 } & RNTextInputProps;
 export function TextInput(props: TextInputProps) {
-  const { label = "", ...rest } = props;
+  const { label = "", editable = true, style, ...rest } = props;
 
   const { Colors } = useAppTheme();
 
   return (
-    <View style={style.container}>
+    <View style={styles.container}>
       <Typography fontFamily="Poppins-Medium" fontSize={14}>
         {label}
       </Typography>
-      <View style={[style.inputWrapper, { borderColor: Colors.outlineborder }]}>
-        <RNTextInput placeholderTextColor={Colors.outlineborder} {...rest} />
+      <View
+        backgroundColor={editable ? "transparent" : "outlineborder"}
+        style={[styles.inputWrapper, { borderColor: Colors.outlineborder }]}
+      >
+        <RNTextInput
+          placeholderTextColor={Colors.outlineborder}
+          editable={editable}
+          style={[{ color: Colors.textprimary }, style]}
+          {...rest}
+        />
       </View>
     </View>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     gap: 5,
   },

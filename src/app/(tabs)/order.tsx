@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 
-import { Appbar, Tab, Typography, View } from "@/components";
+import { Appbar, Tab, View } from "@/components";
 
 export default function OrderTabScreen() {
   const [activeTab, setActiveTab] = useState("history");
@@ -44,6 +44,7 @@ const style = StyleSheet.create({
   contenContainer: {
     paddingVertical: 37,
     padding: 24,
+    gap: 40,
   },
   tabContainer: {
     gap: 10,

@@ -10,6 +10,7 @@ export * from "./IconClipboard";
 export * from "./IconClock";
 export * from "./IconDoorThin";
 export * from "./IconHome";
+export * from "./IconLogout";
 export * from "./IconPackage";
 export * from "./IconPinSharp";
 export * from "./IconPromo";
