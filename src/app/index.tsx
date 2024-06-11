@@ -9,7 +9,7 @@ export default function InitialScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      router.replace("/(tabs)/home");
+      router.replace("/auth/initial");
     }, 3000);
   }, [router]);
 

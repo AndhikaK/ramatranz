@@ -3,10 +3,29 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button, TextInput, TextLink, Typography, View } from "@/components";
+import { useAuthRegister } from "@/features/auth/api/useAuthRegister";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
+  const registerMutation = useAuthRegister();
+
+  const handleRegister = () => {
+    registerMutation.mutate(
+      {
+        email: "test@gmail.com",
+        nama: "Test1",
+        password: "123456",
+        no_telp: "0812322132",
+        master_cabang_id: 1,
+      },
+      {
+        onSuccess: (response) => console.log(response),
+        onError: (error) => console.log(error.response.data),
+      }
+    );
+  };
 
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
@@ -55,7 +74,7 @@ export default function RegisterScreen() {
               />
             </View>
           </View>
-          <Button>Daftar</Button>
+          <Button onPress={handleRegister}>Daftar</Button>
         </View>
       </View>
     </ScrollView>

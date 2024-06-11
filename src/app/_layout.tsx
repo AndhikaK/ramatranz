@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { QueryClientProvider } from "react-query";
 
 import { appFonts } from "@/components";
 import { AppThemeProvider } from "@/context/theme-context";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { queryClient } from "@/libs/tanstack-query";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   // DarkTheme,
@@ -56,15 +58,19 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}>
-      <AppThemeProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            animation: "ios",
-          }}
-        />
-      </AppThemeProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider
+        value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
+      >
+        <AppThemeProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: "ios",
+            }}
+          />
+        </AppThemeProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
