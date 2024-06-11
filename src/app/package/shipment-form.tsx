@@ -1,56 +1,46 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Appbar, Separator, TextInputV2, Typography, View } from "@/components";
 import {
-  Appbar,
-  Button,
-  Separator,
-  TextInputV2,
-  Typography,
-  View,
-} from "@/components";
-import {
-  IconCalendar,
-  IconCarSide,
-  IconChevronDown,
-  IconClock,
+  IconPackageExport,
+  IconPackageImport,
   IconSwap,
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
-import { formatDate } from "@/utils/datetime";
 
-export default function BookingTravelScreen() {
+export default function PackageShipmentFormScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-
   const { Colors } = useAppTheme();
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.paper }}
-    >
+    <View backgroundColor="paper" style={styles.container}>
       <View
         backgroundColor="main"
-        style={[style.headerBack, { height: insets.top + 106 }]}
+        style={[styles.headerBack, { height: insets.top + 106 }]}
       />
 
       <Appbar
-        title="Travel"
+        variant="light"
+        title="Paket"
         backgroundColor="transparent"
         hasBorder={false}
         colorSheme="dark"
         backIconPress={() => router.back()}
-        variant="light"
       />
 
       <View
         backgroundColor="paper"
-        style={[style.orderBox, { borderColor: Colors.outlineborder }]}
+        style={[styles.shipmentBox, { borderColor: Colors.outlineborder }]}
       >
+        <Typography fontFamily="Poppins-Medium" fontSize={16}>
+          Mau kirim paket kemana?
+        </Typography>
+
         <View
-          style={[style.destinationBox, { borderColor: Colors.outlineborder }]}
+          style={[styles.destinationBox, { borderColor: Colors.outlineborder }]}
         >
           <TextInputV2
             value="Lampung"
@@ -59,7 +49,7 @@ export default function BookingTravelScreen() {
                 <Typography fontFamily="OpenSans-Regular" fontSize={10}>
                   Dari
                 </Typography>
-                <IconCarSide width={21} height={21} color="main" />
+                <IconPackageImport width={20} height={20} color="main" />
               </View>
             }
             withBorder={false}
@@ -72,39 +62,25 @@ export default function BookingTravelScreen() {
                 <Typography fontFamily="OpenSans-Regular" fontSize={10}>
                   Ke
                 </Typography>
-                <View style={{ transform: [{ scaleX: -1 }] }}>
-                  <IconCarSide width={21} height={21} color="main" />
-                </View>
+                <IconPackageExport width={20} height={20} color="main" />
               </View>
             }
             withBorder={false}
           />
 
-          <View backgroundColor="main" style={style.destinationIconSwap}>
+          <View backgroundColor="main" style={styles.destinationIconSwap}>
             <IconSwap width={20} height={20} color="paper" />
           </View>
         </View>
-
-        <TextInputV2
-          placeholder={formatDate(new Date())}
-          leadingIcon={<IconCalendar width={21} height={21} color="main" />}
-        />
-
-        <TextInputV2
-          placeholder="00:00"
-          leadingIcon={<IconClock width={21} height={21} color="main" />}
-          trailingIcon={<IconChevronDown width={21} height={21} />}
-        />
-
-        <Button onPressIn={() => router.push("/travel/travel-option")}>
-          Cari
-        </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   headerBack: {
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
@@ -112,7 +88,8 @@ const style = StyleSheet.create({
     top: 0,
     width: "100%",
   },
-  orderBox: {
+
+  shipmentBox: {
     margin: 24,
     marginTop: 16,
     padding: 16,

@@ -62,6 +62,7 @@ export default function HomeTabScreen() {
             label="Paket"
             icon={<IconPackage width={24} height={24} color="paper" />}
             iconColor="secondary"
+            onPress={() => router.push("/package/shipment-form")}
           />
           <RoundedButton
             label="Rental"

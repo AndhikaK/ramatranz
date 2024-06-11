@@ -25,7 +25,7 @@ export default function OrderTabScreen() {
           <Tab
             tabs={[
               { key: "travel", label: "Travel" },
-              { key: "packet", label: "Paket" },
+              { key: "package", label: "Paket" },
             ]}
             activeTab={activeFilter}
             onPress={(key) => setActiveFilter(key as string)}

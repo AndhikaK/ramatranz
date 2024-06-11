@@ -12,6 +12,8 @@ export * from "./IconDoorThin";
 export * from "./IconHome";
 export * from "./IconLogout";
 export * from "./IconPackage";
+export * from "./IconPackageExport";
+export * from "./IconPackageImport";
 export * from "./IconPinSharp";
 export * from "./IconPromo";
 export * from "./IconSwap";
