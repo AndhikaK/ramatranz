@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { QueryClientProvider } from "react-query";
 
 import { appFonts } from "@/components";
 import { AppThemeProvider } from "@/context/theme-context";
@@ -14,6 +13,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import "react-native-reanimated";
 

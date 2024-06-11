@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const postLoginPayloadSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email("Email tidak valid"),
   password: z.string(),
 });
 

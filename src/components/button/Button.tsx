@@ -12,19 +12,25 @@ export type ButtonProps = {
 } & PressableProps;
 
 export function Button(props: ButtonProps) {
-  const { children, variant = "primary", ...rest } = props;
+  const { children, variant = "primary", disabled = false, ...rest } = props;
 
   const { Colors } = useAppTheme();
 
   return (
-    <Pressable {...rest}>
+    <Pressable disabled={disabled} {...rest}>
       {(pressable) => (
         <View
-          backgroundColor={variant === "primary" ? "main" : "paper"}
+          backgroundColor={
+            variant === "primary"
+              ? disabled
+                ? "outlineborder"
+                : "main"
+              : "paper"
+          }
           style={[
             style.container,
             {
-              borderColor: Colors.main,
+              borderColor: disabled ? Colors.outlineborder : Colors.main,
             },
           ]}
         >
@@ -32,7 +38,13 @@ export function Button(props: ButtonProps) {
             {typeof children === "string" ? (
               <Typography
                 fontFamily="OpenSans-Semibold"
-                color={variant === "primary" ? "paper" : "main"}
+                color={
+                  variant === "primary"
+                    ? "paper"
+                    : disabled
+                      ? "outlineborder"
+                      : "main"
+                }
               >
                 {children}
               </Typography>

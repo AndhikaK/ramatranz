@@ -1,6 +1,7 @@
 export * from "./appbar/Appbar";
 export * from "./button/Button";
 export * from "./loader/Loader";
+export * from "./page-wrapper/PageWrapper";
 export * from "./rounded-button/RoundedButton";
 export * from "./search-box/SearchBox";
 export * from "./section-wrapper/SectionWrapper";

@@ -13,9 +13,16 @@ import { View } from "../view/View";
 export type TextInputProps = {
   label: string;
   trailingIcon?: ReactNode;
+  errorMessage?: string;
 } & RNTextInputProps;
 export function TextInput(props: TextInputProps) {
-  const { label = "", editable = true, style, ...rest } = props;
+  const {
+    label = "",
+    editable = true,
+    style,
+    errorMessage = "",
+    ...rest
+  } = props;
 
   const { Colors } = useAppTheme();
 
@@ -29,12 +36,18 @@ export function TextInput(props: TextInputProps) {
         style={[styles.inputWrapper, { borderColor: Colors.outlineborder }]}
       >
         <RNTextInput
-          placeholderTextColor={Colors.outlineborder}
+          placeholderTextColor={Colors.textsecondary}
           editable={editable}
           style={[{ color: Colors.textprimary }, style]}
           {...rest}
         />
       </View>
+
+      {!!errorMessage && (
+        <Typography fontFamily="Poppins-Light" fontSize={10} color="dangerbase">
+          {errorMessage}
+        </Typography>
+      )}
     </View>
   );
 }

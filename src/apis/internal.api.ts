@@ -7,7 +7,7 @@ const apiClient = axios.create({
 });
 
 export const postLogin = async (payload: PostLoginPayload) => {
-  const response = await apiClient({
+  const response = await apiClient<{}>({
     method: "POST",
     url: "/api/auth/login",
     data: payload,

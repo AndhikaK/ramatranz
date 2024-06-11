@@ -1,39 +1,99 @@
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Button, TextInput, TextLink, Typography, View } from "@/components";
+import {
+  PostLoginPayload,
+  postLoginPayloadSchema,
+} from "@/apis/internal.api.type";
+import {
+  Button,
+  PageWrapper,
+  TextInput,
+  TextLink,
+  Typography,
+  View,
+} from "@/components";
+import { useAuthLogin } from "@/features/auth/api/useAuthLogin";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
 
+  const loginMutation = useAuthLogin();
+
+  const { control, handleSubmit, formState } = useForm<PostLoginPayload>({
+    resolver: zodResolver(postLoginPayloadSchema),
+    mode: "all",
+  });
+
+  const handleLoginMutation = handleSubmit((data) => {
+    loginMutation.mutate(data, {
+      onSuccess: (response) => console.log(response),
+      onError: (error) => console.log(error),
+    });
+  });
+
   return (
-    <View backgroundColor="main" style={style.container}>
-      <View
-        backgroundColor="paper"
-        style={[style.content, { paddingBottom: insets.bottom + 37 }]}
+    <PageWrapper backgroundColor="main" isLoading={loginMutation.isLoading}>
+      <ScrollView
+        style={style.container}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <Typography fontFamily="Poppins-Bold">Silahkan Masuk!</Typography>
+        <View
+          backgroundColor="paper"
+          style={[style.content, { paddingBottom: insets.bottom + 37 }]}
+        >
+          <Typography fontFamily="Poppins-Bold">Silahkan Masuk!</Typography>
 
-        <View style={style.formContainer}>
-          <TextInput label="Email" placeholder="Contoh@gmail.com" />
-          <TextInput
-            label="Kata Sandi"
-            placeholder="Kata Sandi"
-            secureTextEntry
-          />
-        </View>
-        <View style={style.forgotPasswordWrapper}>
-          <TextLink
-            label="Lupa Kata Sandi?"
-            onPress={() => router.push("/auth/forgot-password")}
-          />
-        </View>
+          <View style={style.formContainer}>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field, fieldState }) => (
+                <TextInput
+                  label="Email"
+                  placeholder="Contoh@gmail.com"
+                  keyboardType="email-address"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  errorMessage={fieldState.error?.message}
+                />
+              )}
+            />
 
-        <Button>Masuk</Button>
-      </View>
-    </View>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field, fieldState }) => (
+                <TextInput
+                  label="Kata Sandi"
+                  placeholder="Kata Sandi"
+                  keyboardType="email-address"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  secureTextEntry
+                />
+              )}
+            />
+          </View>
+          <View style={style.forgotPasswordWrapper}>
+            <TextLink
+              label="Lupa Kata Sandi?"
+              onPress={() => router.push("/auth/forgot-password")}
+            />
+          </View>
+
+          <Button disabled={!formState.isValid} onPress={handleLoginMutation}>
+            Masuk
+          </Button>
+        </View>
+      </ScrollView>
+    </PageWrapper>
   );
 }
 
