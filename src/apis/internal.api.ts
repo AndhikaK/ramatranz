@@ -1,13 +1,17 @@
 import axios from "axios";
 
-import { PostLoginPayload, PostRegisterPayload } from "./internal.api.type";
+import {
+  PostLoginPayload,
+  PostLoginResponseSuccess,
+  PostRegisterPayload,
+} from "./internal.api.type";
 
 const apiClient = axios.create({
   baseURL: "https://backend-superapps.newus.id",
 });
 
 export const postLogin = async (payload: PostLoginPayload) => {
-  const response = await apiClient<{}>({
+  const response = await apiClient<PostLoginResponseSuccess>({
     method: "POST",
     url: "/api/auth/login",
     data: payload,

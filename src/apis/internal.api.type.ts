@@ -5,6 +5,21 @@ export const postLoginPayloadSchema = z.object({
   password: z.string(),
 });
 export type PostLoginPayload = z.infer<typeof postLoginPayloadSchema>;
+export type PostLoginResponseSuccess = {
+  data: {
+    created_at: string;
+    deleted_at?: string;
+    email: string;
+    id: number;
+    master_cabang_id: number;
+    nama: string;
+    no_telp?: string;
+    role_id: number;
+    token: string;
+    type: "bearer";
+    updated_at: string;
+  };
+};
 export type PostLoginResponseError = {
   message: string;
   status: string;

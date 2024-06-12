@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const loginMutation = useAuthLogin();
 
@@ -32,8 +33,20 @@ export default function LoginScreen() {
 
   const handleLoginMutation = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (response) => console.log(response),
-      onError: (error) => console.log(error.response?.data),
+      onSuccess: (response) => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "(tabs)" }],
+        });
+        Snackbar.show({
+          message: "Login berhasil!",
+        });
+      },
+      onError: () => {
+        Snackbar.show({
+          message: "Login gagal, email atau password tidak sesuai",
+        });
+      },
     });
   });
 
@@ -57,6 +70,7 @@ export default function LoginScreen() {
                 <TextInput
                   label="Email"
                   placeholder="Contoh@gmail.com"
+                  keyboardType="email-address"
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
@@ -89,13 +103,6 @@ export default function LoginScreen() {
 
           <Button disabled={!formState.isValid} onPress={handleLoginMutation}>
             Masuk
-          </Button>
-          <Button
-            onPress={() => {
-              Snackbar.show({ message: "This is testing snackbar" });
-            }}
-          >
-            Test Snackbar
           </Button>
         </View>
       </ScrollView>
