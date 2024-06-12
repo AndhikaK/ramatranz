@@ -10,6 +10,7 @@ import {
 import {
   Button,
   PageWrapper,
+  Snackbar,
   TextInput,
   TextLink,
   Typography,
@@ -88,6 +89,13 @@ export default function LoginScreen() {
 
           <Button disabled={!formState.isValid} onPress={handleLoginMutation}>
             Masuk
+          </Button>
+          <Button
+            onPress={() => {
+              Snackbar.show({ message: "This is testing snackbar" });
+            }}
+          >
+            Test Snackbar
           </Button>
         </View>
       </ScrollView>

@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 
-import { appFonts } from "@/components";
+import { appFonts, SnackbarRoot } from "@/components";
 import { AppThemeProvider } from "@/context/theme-context";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { queryClient } from "@/libs/tanstack-query";
@@ -69,6 +69,8 @@ function RootLayoutNav() {
               animation: "ios",
             }}
           />
+
+          <SnackbarRoot />
         </AppThemeProvider>
       </ThemeProvider>
     </QueryClientProvider>
