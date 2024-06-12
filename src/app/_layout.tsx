@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 import { appFonts } from "@/components";
 import { AppThemeProvider } from "@/context/theme-context";
@@ -63,12 +64,14 @@ function RootLayoutNav() {
         value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
       >
         <AppThemeProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              animation: "ios",
-            }}
-          />
+          <RootSiblingParent>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                animation: "ios",
+              }}
+            />
+          </RootSiblingParent>
         </AppThemeProvider>
       </ThemeProvider>
     </QueryClientProvider>

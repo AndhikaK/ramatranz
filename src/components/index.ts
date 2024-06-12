@@ -10,5 +10,6 @@ export * from "./tab/Tab";
 export * from "./text-input/TextInput";
 export * from "./text-input-v2/TextInputV2";
 export * from "./text-link/TextLink";
+export * from "./toast/Toast";
 export * from "./typography/Typography";
 export * from "./view/View";

@@ -22,6 +22,7 @@ export default function RegisterScreen() {
       role_id: 3,
     },
     resolver: zodResolver(postRegisterPayloadSchema),
+    mode: "all",
   });
 
   const handleRegister = handleSubmit((payload) => {
@@ -66,20 +67,20 @@ export default function RegisterScreen() {
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
-                  errorMessage={fieldState.error?.message}
                 />
               )}
             />
             <Controller
               control={control}
               name="email"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <TextInput
                   label="Email *"
                   placeholder="Contoh@gmail.com"
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
+                  errorMessage={fieldState.error?.message}
                 />
               )}
             />
