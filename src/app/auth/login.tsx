@@ -17,6 +17,8 @@ import {
   View,
 } from "@/components";
 import { useAuthLogin } from "@/features/auth/api/useAuthLogin";
+import { useAuthActions } from "@/features/auth/store/auth-store";
+import { setItem } from "@/libs/async-storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function LoginScreen() {
@@ -24,22 +26,36 @@ export default function LoginScreen() {
   const router = useRouter();
   const navigation = useNavigation<any>();
 
+  // store
+  const { setAccessToken, setProfile } = useAuthActions();
+
   const loginMutation = useAuthLogin();
 
   const { control, handleSubmit, formState } = useForm<PostLoginPayload>({
+    defaultValues: {
+      email: "test@gmail.com",
+      password: "123456",
+    },
     resolver: zodResolver(postLoginPayloadSchema),
     mode: "all",
   });
 
   const handleLoginMutation = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (response) => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "(tabs)" }],
-        });
+      onSuccess: async (response) => {
+        setAccessToken(response.data.token);
+        setProfile(response.data);
+
+        await setItem("accesstoken", response.data.token);
+        await setItem("profile", response.data);
+
         Snackbar.show({
           message: "Login berhasil!",
+        });
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "(authenticated)" }],
         });
       },
       onError: () => {

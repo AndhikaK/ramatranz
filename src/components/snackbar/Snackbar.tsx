@@ -61,7 +61,7 @@ export const Snackbar = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 34,
+    paddingHorizontal: 20,
     paddingTop: 16,
   },
   snackbarWrapper: {

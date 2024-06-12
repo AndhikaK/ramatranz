@@ -1,17 +1,51 @@
 import { useEffect } from "react";
 import { StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
 import { Loader, View } from "@/components";
+import { useGetProfile } from "@/features/auth/api/useGetProfile";
+import { useAuthActions } from "@/features/auth/store/auth-store";
+import { getItem } from "@/libs/async-storage";
 
 export default function InitialScreen() {
   const router = useRouter();
+  const navigation = useNavigation<any>();
+
+  const { setAccessToken } = useAuthActions();
+
+  const profileQuery = useGetProfile();
 
   useEffect(() => {
-    setTimeout(() => {
+    const initAuth = async () => {
+      const storageAccessToken = await getItem("accesstoken");
+
+      if (storageAccessToken) {
+        setAccessToken(storageAccessToken);
+      } else {
+        router.replace("/auth/initial");
+      }
+    };
+
+    initAuth();
+  }, [router, setAccessToken]);
+
+  useEffect(() => {
+    if (profileQuery.data) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "(authenticated)" }],
+      });
+    } else if (profileQuery.error) {
+      setAccessToken(null);
       router.replace("/auth/initial");
-    }, 3000);
-  }, [router]);
+    }
+  }, [
+    profileQuery.data,
+    profileQuery.error,
+    router,
+    navigation,
+    setAccessToken,
+  ]);
 
   return (
     <View style={style.container}>

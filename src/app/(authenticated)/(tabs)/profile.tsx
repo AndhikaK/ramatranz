@@ -5,12 +5,27 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { Appbar, TextInput, Typography, View } from "@/components";
+import { Appbar, Snackbar, TextInput, Typography, View } from "@/components";
 import { IconLogout } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import {
+  useAuthActions,
+  useAuthProfile,
+} from "@/features/auth/store/auth-store";
+import { removeItem } from "@/libs/async-storage";
 
 export default function ProfileTabScreen() {
   const { Colors } = useAppTheme();
+
+  const userProfile = useAuthProfile();
+  const { clearAuthSession } = useAuthActions();
+
+  const handleLogout = async () => {
+    clearAuthSession();
+    await removeItem("accesstoken");
+    await removeItem("profile");
+    Snackbar.show({ message: "Logout berhasil!" });
+  };
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -26,24 +41,23 @@ export default function ProfileTabScreen() {
           />
 
           <Typography fontFamily="Poppins-SemiBold" fontSize={20}>
-            Qurrota Aini
+            {userProfile?.nama}
           </Typography>
         </View>
 
-        <TextInput
-          label="Nama"
-          value="Qurrotaaini@gmail.com"
-          editable={false}
-        />
-        <TextInput
-          label="Nomor Telepon"
-          value="095764156224"
-          editable={false}
-        />
-        <TextInput label="Alamat" numberOfLines={5} />
+        <TextInput label="Email" value={userProfile?.email} editable={false} />
+
+        {!!userProfile?.no_telp && (
+          <TextInput
+            label="Nomor Telepon"
+            value={userProfile?.no_telp}
+            editable={false}
+          />
+        )}
+        <TextInput label="Alamat" numberOfLines={5} value="" />
       </ScrollView>
 
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={handleLogout}>
         <View backgroundColor="outlineborder" style={style.logoutButton}>
           <IconLogout />
 
