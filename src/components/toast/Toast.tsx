@@ -1,11 +1,9 @@
-import RNToast, { ToastOptions } from "react-native-root-toast";
-
 export type ToastProps = {
   message: string;
-  options: ToastOptions;
+  options: {};
 };
-export const Toast = (message: string, options: ToastOptions) => {
-  RNToast.show(message, {
-    ...options,
-  });
+export const Toast = (message: string, options) => {
+  // RNToast.show(message, {
+  // ...options,
+  // });
 };
