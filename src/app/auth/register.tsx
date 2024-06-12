@@ -1,9 +1,15 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import {
+  PostRegisterPayload,
+  postRegisterPayloadSchema,
+} from "@/apis/internal.api.type";
 import { Button, TextInput, TextLink, Typography, View } from "@/components";
 import { useAuthRegister } from "@/features/auth/api/useAuthRegister";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function RegisterScreen() {
   const insets = useSafeAreaInsets();
@@ -11,21 +17,21 @@ export default function RegisterScreen() {
 
   const registerMutation = useAuthRegister();
 
-  const handleRegister = () => {
-    registerMutation.mutate(
-      {
-        email: "test@gmail.com",
-        nama: "Test1",
-        password: "123456",
-        no_telp: "0812322132",
-        master_cabang_id: 1,
-      },
-      {
-        onSuccess: (response) => console.log(response),
-        onError: (error) => console.log(error.response.data),
-      }
-    );
-  };
+  const { control, formState, handleSubmit } = useForm<PostRegisterPayload>({
+    defaultValues: {
+      role_id: 3,
+    },
+    resolver: zodResolver(postRegisterPayloadSchema),
+  });
+
+  const handleRegister = handleSubmit((payload) => {
+    registerMutation.mutate(payload, {
+      onSuccess: (response) => console.log(response),
+      onError: (error) => console.log(error.response?.data),
+    });
+  });
+
+  console.log(formState);
 
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
@@ -50,19 +56,76 @@ export default function RegisterScreen() {
           ]}
         >
           <View style={style.formContainer}>
-            <TextInput label="Nama *" placeholder="Nama" />
-            <TextInput label="Email *" placeholder="Contoh@gmail.com" />
-            <TextInput label="Nomor Telepon *" placeholder="08276287687287" />
-            <TextInput
-              label="Kata Sandi *"
-              placeholder="Kata Sandi"
-              secureTextEntry
+            <Controller
+              control={control}
+              name="nama"
+              render={({ field, fieldState }) => (
+                <TextInput
+                  label="Nama *"
+                  placeholder="Nama"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  errorMessage={fieldState.error?.message}
+                />
+              )}
             />
-            <TextInput
-              label="Konfirmasi Kata Sandi *"
-              placeholder="Konfirmasi Kata Sandi"
-              secureTextEntry
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => (
+                <TextInput
+                  label="Email *"
+                  placeholder="Contoh@gmail.com"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
             />
+            <Controller
+              control={control}
+              name="no_telp"
+              render={({ field }) => (
+                <TextInput
+                  label="Nomor Telepon *"
+                  placeholder="08276287687287"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <TextInput
+                  label="Kata Sandi *"
+                  placeholder="Kata Sandi"
+                  secureTextEntry
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="confirm_password"
+              render={({ field, fieldState }) => (
+                <TextInput
+                  label="Konfirmasi Kata Sandi *"
+                  placeholder="Konfirmasi Kata Sandi"
+                  secureTextEntry
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                  errorMessage={fieldState.error?.message}
+                />
+              )}
+            />
+
             <View style={style.alreadyHasAccountWrapper}>
               <Typography fontFamily="OpenSans-Regular" fontSize={12}>
                 Sudah punya akun?
@@ -74,7 +137,9 @@ export default function RegisterScreen() {
               />
             </View>
           </View>
-          <Button onPress={handleRegister}>Daftar</Button>
+          <Button disabled={!formState.isValid} onPress={handleRegister}>
+            Daftar
+          </Button>
         </View>
       </View>
     </ScrollView>

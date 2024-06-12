@@ -1,7 +1,6 @@
 import * as React from "react";
 import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
 
-import Colors from "@/constants/Colors";
 import { useAppTheme } from "@/context/theme-context";
 
 import { IconProps } from "./icon.type";

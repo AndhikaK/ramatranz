@@ -32,12 +32,12 @@ export default function LoginScreen() {
   const handleLoginMutation = handleSubmit((data) => {
     loginMutation.mutate(data, {
       onSuccess: (response) => console.log(response),
-      onError: (error) => console.log(error),
+      onError: (error) => console.log(error.response?.data),
     });
   });
 
   return (
-    <PageWrapper backgroundColor="main" isLoading={loginMutation.isLoading}>
+    <PageWrapper backgroundColor="main" isLoading={loginMutation.isPending}>
       <ScrollView
         style={style.container}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -56,7 +56,6 @@ export default function LoginScreen() {
                 <TextInput
                   label="Email"
                   placeholder="Contoh@gmail.com"
-                  keyboardType="email-address"
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
@@ -72,7 +71,6 @@ export default function LoginScreen() {
                 <TextInput
                   label="Kata Sandi"
                   placeholder="Kata Sandi"
-                  keyboardType="email-address"
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}

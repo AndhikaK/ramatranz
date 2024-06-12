@@ -13,7 +13,7 @@ export const postLogin = async (payload: PostLoginPayload) => {
     data: payload,
   });
 
-  return response;
+  return response.data;
 };
 
 export const postRegister = async (payload: PostRegisterPayload) => {
@@ -23,5 +23,5 @@ export const postRegister = async (payload: PostRegisterPayload) => {
     data: payload,
   });
 
-  return response;
+  return response.data;
 };
