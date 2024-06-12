@@ -7,7 +7,14 @@ import {
   PostRegisterPayload,
   postRegisterPayloadSchema,
 } from "@/apis/internal.api.type";
-import { Button, TextInput, TextLink, Typography, View } from "@/components";
+import {
+  Button,
+  Snackbar,
+  TextInput,
+  TextLink,
+  Typography,
+  View,
+} from "@/components";
 import { useAuthRegister } from "@/features/auth/api/useAuthRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -27,7 +34,14 @@ export default function RegisterScreen() {
 
   const handleRegister = handleSubmit((payload) => {
     registerMutation.mutate(payload, {
-      onSuccess: (response) => console.log(response),
+      onSuccess: (response) => {
+        console.log(response);
+        Snackbar.show({
+          message: "Register berhasil, silahkan login dengan akun yg terdaftar",
+        });
+
+        router.replace("/auth/login");
+      },
       onError: (error) => console.log(error.response?.data),
     });
   });
