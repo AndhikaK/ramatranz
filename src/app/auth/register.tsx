@@ -9,6 +9,7 @@ import {
 } from "@/apis/internal.api.type";
 import {
   Button,
+  PageWrapper,
   Snackbar,
   TextInput,
   TextLink,
@@ -42,122 +43,133 @@ export default function RegisterScreen() {
 
         router.replace("/auth/login");
       },
-      onError: (error) => console.log(error.response?.data),
+      onError: (error) => {
+        const serverErrorString = error.response?.data?.error;
+        Snackbar.show({
+          message: `Register gagal${typeof serverErrorString === "string" && `, (${serverErrorString})`}`,
+          variant: "danger",
+        });
+      },
     });
   });
 
-  console.log(formState);
-
   return (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-      <View
-        backgroundColor="main"
-        style={[style.container, { paddingTop: insets.top }]}
-      >
-        <View style={style.headerContainer}>
-          <Typography fontFamily="Poppins-Bold" fontSize={24} color="paper">
-            Daftar
-          </Typography>
-          <Typography fontFamily="Poppins-Medium" fontSize={14} color="paper">
-            buat akun baru anda!
-          </Typography>
-        </View>
-
+    <PageWrapper style={{ flex: 1 }} isLoading={registerMutation.isPending}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
         <View
-          backgroundColor="paper"
-          style={[
-            style.contentContainer,
-            { paddingBottom: insets.bottom + 37 },
-          ]}
+          backgroundColor="main"
+          style={[style.container, { paddingTop: insets.top }]}
         >
-          <View style={style.formContainer}>
-            <Controller
-              control={control}
-              name="nama"
-              render={({ field, fieldState }) => (
-                <TextInput
-                  label="Nama *"
-                  placeholder="Nama"
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <TextInput
-                  label="Email *"
-                  placeholder="Contoh@gmail.com"
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                  errorMessage={fieldState.error?.message}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="no_telp"
-              render={({ field }) => (
-                <TextInput
-                  label="Nomor Telepon *"
-                  placeholder="08276287687287"
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <TextInput
-                  label="Kata Sandi *"
-                  placeholder="Kata Sandi"
-                  secureTextEntry
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="confirm_password"
-              render={({ field, fieldState }) => (
-                <TextInput
-                  label="Konfirmasi Kata Sandi *"
-                  placeholder="Konfirmasi Kata Sandi"
-                  secureTextEntry
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                  errorMessage={fieldState.error?.message}
-                />
-              )}
-            />
-
-            <View style={style.alreadyHasAccountWrapper}>
-              <Typography fontFamily="OpenSans-Regular" fontSize={12}>
-                Sudah punya akun?
-              </Typography>
-
-              <TextLink
-                label=" Masuk"
-                onPress={() => router.replace("/auth/login")}
-              />
-            </View>
+          <View style={style.headerContainer}>
+            <Typography fontFamily="Poppins-Bold" fontSize={24} color="paper">
+              Daftar
+            </Typography>
+            <Typography fontFamily="Poppins-Medium" fontSize={14} color="paper">
+              buat akun baru anda!
+            </Typography>
           </View>
-          <Button disabled={!formState.isValid} onPress={handleRegister}>
-            Daftar
-          </Button>
+
+          <View
+            backgroundColor="paper"
+            style={[
+              style.contentContainer,
+              { paddingBottom: insets.bottom + 37 },
+            ]}
+          >
+            <View style={style.formContainer}>
+              <Controller
+                control={control}
+                name="nama"
+                render={({ field, fieldState }) => (
+                  <TextInput
+                    label="Nama *"
+                    placeholder="Nama"
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="email"
+                render={({ field, fieldState }) => (
+                  <TextInput
+                    label="Email *"
+                    placeholder="Contoh@gmail.com"
+                    keyboardType="email-address"
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="no_telp"
+                render={({ field, fieldState }) => (
+                  <TextInput
+                    label="Nomor Telepon *"
+                    placeholder="08276287687287"
+                    keyboardType="number-pad"
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="password"
+                render={({ field, fieldState }) => (
+                  <TextInput
+                    label="Kata Sandi *"
+                    placeholder="Kata Sandi"
+                    secureTextEntry
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="confirm_password"
+                render={({ field, fieldState }) => (
+                  <TextInput
+                    label="Konfirmasi Kata Sandi *"
+                    placeholder="Konfirmasi Kata Sandi"
+                    secureTextEntry
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                    errorMessage={fieldState.error?.message}
+                  />
+                )}
+              />
+
+              <View style={style.alreadyHasAccountWrapper}>
+                <Typography fontFamily="OpenSans-Regular" fontSize={12}>
+                  Sudah punya akun?
+                </Typography>
+
+                <TextLink
+                  label=" Masuk"
+                  onPress={() => router.replace("/auth/login")}
+                />
+              </View>
+            </View>
+            <Button disabled={!formState.isValid} onPress={handleRegister}>
+              Daftar
+            </Button>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </PageWrapper>
   );
 }
 

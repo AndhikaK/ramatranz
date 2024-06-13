@@ -40,3 +40,6 @@ export const postRegisterPayloadSchema = z
   });
 
 export type PostRegisterPayload = z.infer<typeof postRegisterPayloadSchema>;
+export type PostRegisterResponseError = {
+  error: string;
+};

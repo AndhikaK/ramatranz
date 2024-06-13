@@ -6,7 +6,7 @@ import {
 } from "react-native";
 
 import { Appbar, Snackbar, TextInput, Typography, View } from "@/components";
-import { IconLogout } from "@/components/icons";
+import { IconCILogout } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import {
   useAuthActions,
@@ -21,6 +21,8 @@ export default function ProfileTabScreen() {
   const { clearAuthSession } = useAuthActions();
 
   const handleLogout = async () => {
+    // TODO integrate with logout API
+
     clearAuthSession();
     await removeItem("accesstoken");
     await removeItem("profile");
@@ -59,7 +61,7 @@ export default function ProfileTabScreen() {
 
       <TouchableWithoutFeedback onPress={handleLogout}>
         <View backgroundColor="outlineborder" style={style.logoutButton}>
-          <IconLogout />
+          <IconCILogout color="main" />
 
           <Typography fontFamily="Poppins-Medium" fontSize={16}>
             Log Out
@@ -87,8 +89,8 @@ const style = StyleSheet.create({
   logoutButton: {
     height: 48,
     paddingHorizontal: 48,
-    alignItems: "center",
     gap: 16,
     flexDirection: "row",
+    alignItems: "center",
   },
 });

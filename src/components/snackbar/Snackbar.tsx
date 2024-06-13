@@ -10,6 +10,7 @@ import { View } from "../view/View";
 
 export type SnackbarProps = {
   message: string;
+  variant?: "neutral" | "danger";
 };
 export function SnackbarRoot(props: ToastProps) {
   const { config, ...rest } = props;
@@ -19,12 +20,19 @@ export function SnackbarRoot(props: ToastProps) {
       config={{
         ...config,
         custom_toast: ({ props: toastProps }: { props: SnackbarProps }) => {
-          const { message } = toastProps;
+          const { message, variant = "neutral" } = toastProps;
 
           return (
             <View style={styles.container}>
-              <View backgroundColor="paper" style={styles.snackbarWrapper}>
-                <Typography fontFamily="Poppins-Regular" fontSize={12}>
+              <View
+                backgroundColor={variant === "neutral" ? "paper" : "dangerbase"}
+                style={styles.snackbarWrapper}
+              >
+                <Typography
+                  fontFamily="Poppins-Regular"
+                  fontSize={12}
+                  color={variant === "neutral" ? "textprimary" : "paper"}
+                >
                   {message}
                 </Typography>
               </View>
@@ -41,15 +49,15 @@ export function SnackbarRoot(props: ToastProps) {
 
 export const Snackbar = {
   show: (
-    params: Omit<ToastShowParams, "props" | "text1" | "text2" | "type"> & {
-      message: string;
-    }
+    params: Omit<ToastShowParams, "props" | "text1" | "text2" | "type"> &
+      SnackbarProps
   ) => {
-    const { message = "" } = params;
+    const { message = "", variant } = params;
     RNToast.show({
       ...params,
       props: {
         message,
+        variant,
       },
     });
   },

@@ -9,6 +9,7 @@ export const useGetProfile = () => {
 
   return useQuery({
     queryKey: ["useGetProfile"],
+    // TODO replace with actual get Profile API
     queryFn: async () => {
       const storageProfile = await getItem("profile");
 
