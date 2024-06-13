@@ -67,7 +67,7 @@ export default function ArticleTabScreen() {
                     router.push({
                       pathname: "/article/[id]",
                       params: {
-                        id: "Test",
+                        id: item.id,
                       },
                     })
                   }
@@ -102,7 +102,7 @@ export default function ArticleTabScreen() {
                     router.push({
                       pathname: "/article/[id]",
                       params: {
-                        id: "Test",
+                        id: item.id,
                       },
                     })
                   }

@@ -57,3 +57,12 @@ export type GetArticleResponseSuccess = {
     harga: number;
   }[];
 };
+export type GetArticleDetailResponseSuccess = {
+  data: {
+    id: string;
+    judul: string;
+    img_url: string;
+    content: string;
+    harga: number;
+  };
+};

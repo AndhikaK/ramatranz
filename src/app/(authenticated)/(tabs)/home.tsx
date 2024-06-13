@@ -147,7 +147,7 @@ export default function HomeTabScreen() {
                   router.push({
                     pathname: "/article/[id]",
                     params: {
-                      id: "Test",
+                      id: item.id,
                     },
                   })
                 }
