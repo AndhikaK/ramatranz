@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 
+import { GetArticleResponseSuccess } from "@/apis/internal.api.type";
 import { Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
 
@@ -62,6 +63,11 @@ export function ArticleItem(props: ArticleItemProps) {
   );
 }
 
+export const articleListPlaceholderData = [
+  {},
+  {},
+  {},
+] as GetArticleResponseSuccess["data"];
 export function ArticleItemPlaceholder() {
   const { Colors } = useAppTheme();
 

@@ -8,7 +8,6 @@ import {
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { GetArticleResponseSuccess } from "@/apis/internal.api.type";
 import {
   RoundedButton,
   SearchBox,
@@ -30,15 +29,10 @@ import {
   ArticleEmpty,
   ArticleItem,
   ArticleItemPlaceholder,
+  articleListPlaceholderData,
 } from "@/features/article/components";
 import { useAuthProfile } from "@/features/auth/store/auth-store";
 import { formatCurrency } from "@/utils/common";
-
-const placeholderArticleList = [
-  {},
-  {},
-  {},
-] as GetArticleResponseSuccess["data"];
 
 export default function HomeTabScreen() {
   const router = useRouter();
@@ -60,7 +54,7 @@ export default function HomeTabScreen() {
       stickyHeaderIndices={[0]}
       refreshControl={
         <RefreshControl
-          refreshing={articleListQuery.isFetching}
+          refreshing={articleListQuery.isRefetching}
           onRefresh={handleRefresh}
           progressViewOffset={20}
         />
@@ -137,7 +131,7 @@ export default function HomeTabScreen() {
           showsHorizontalScrollIndicator={false}
           data={
             articleListQuery.isFetching
-              ? placeholderArticleList
+              ? articleListPlaceholderData
               : articleListQuery.data?.data || []
           }
           renderItem={({ item }) =>

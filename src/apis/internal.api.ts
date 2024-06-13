@@ -72,6 +72,7 @@ export const getArticles = async (query?: GetArticleQuery) => {
   const response = await apiClientMock<GetArticleResponseSuccess>({
     method: "GET",
     url: "/api/articles",
+    params: query,
   });
 
   return response.data;
