@@ -1,4 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+
+import { handleLogoutSession } from "@/features/auth/services/auth.service";
+import { getAccessToken } from "@/features/auth/store/auth-store";
 
 import {
   PostLoginPayload,
@@ -9,6 +12,39 @@ import {
 const apiClient = axios.create({
   baseURL: "https://backend-superapps.newus.id",
 });
+
+const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
+  const accessToken = getAccessToken();
+
+  config.headers.Authorization = `Bearer ${accessToken}`;
+
+  return config;
+};
+
+const responseInterceptorError = (error: AxiosError) => {
+  const accessToken = getAccessToken();
+  // force logout user if got status 401 Unauthorized
+  if (error.status === 401 && accessToken) {
+    handleLogoutSession();
+  }
+
+  return Promise.reject(error);
+};
+
+apiClient.interceptors.request.use(requestInterceptor);
+apiClient.interceptors.response.use(
+  (response) => response,
+  responseInterceptorError
+);
+
+const apiClientMock = axios.create({
+  baseURL: "https://83fa7e7c-aebc-4193-9178-3a09063e7f9a.mock.pstmn.io",
+});
+apiClientMock.interceptors.request.use(requestInterceptor);
+apiClientMock.interceptors.response.use(
+  (response) => response,
+  responseInterceptorError
+);
 
 export const postLogin = async (payload: PostLoginPayload) => {
   const response = await apiClient<PostLoginResponseSuccess>({

@@ -8,24 +8,18 @@ import {
 import { Appbar, Snackbar, TextInput, Typography, View } from "@/components";
 import { IconCILogout } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
-import {
-  useAuthActions,
-  useAuthProfile,
-} from "@/features/auth/store/auth-store";
-import { removeItem } from "@/libs/async-storage";
+import { handleLogoutSession } from "@/features/auth/services/auth.service";
+import { useAuthProfile } from "@/features/auth/store/auth-store";
 
 export default function ProfileTabScreen() {
   const { Colors } = useAppTheme();
 
   const userProfile = useAuthProfile();
-  const { clearAuthSession } = useAuthActions();
 
   const handleLogout = async () => {
     // TODO integrate with logout API
 
-    clearAuthSession();
-    await removeItem("accesstoken");
-    await removeItem("profile");
+    handleLogoutSession();
     Snackbar.show({ message: "Logout berhasil!" });
   };
 
