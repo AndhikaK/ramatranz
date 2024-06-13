@@ -43,3 +43,17 @@ export type PostRegisterPayload = z.infer<typeof postRegisterPayloadSchema>;
 export type PostRegisterResponseError = {
   error: string;
 };
+
+export const getArticlesQuerySchema = z.object({
+  type: z.enum(["rekomendasi"]).optional(),
+});
+export type GetArticleQuery = z.infer<typeof getArticlesQuerySchema>;
+export type GetArticleResponseSuccess = {
+  data: {
+    id: string;
+    judul: string;
+    img_url: string;
+    content: string;
+    harga: number;
+  }[];
+};

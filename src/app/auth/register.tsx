@@ -36,7 +36,6 @@ export default function RegisterScreen() {
   const handleRegister = handleSubmit((payload) => {
     registerMutation.mutate(payload, {
       onSuccess: (response) => {
-        console.log(response);
         Snackbar.show({
           message: "Register berhasil, silahkan login dengan akun yg terdaftar",
         });

@@ -4,6 +4,8 @@ import { handleLogoutSession } from "@/features/auth/services/auth.service";
 import { getAccessToken } from "@/features/auth/store/auth-store";
 
 import {
+  GetArticleQuery,
+  GetArticleResponseSuccess,
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostRegisterPayload,
@@ -61,6 +63,15 @@ export const postRegister = async (payload: PostRegisterPayload) => {
     method: "POST",
     url: "/api/auth/register",
     data: payload,
+  });
+
+  return response.data;
+};
+
+export const getArticles = async (query?: GetArticleQuery) => {
+  const response = await apiClientMock<GetArticleResponseSuccess>({
+    method: "GET",
+    url: "/api/articles",
   });
 
   return response.data;

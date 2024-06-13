@@ -4,6 +4,7 @@ import {
   Pressable,
   PressableProps,
   StyleSheet,
+  ViewStyle,
 } from "react-native";
 
 import { Typography, View } from "@/components";
@@ -61,6 +62,33 @@ export function ArticleItem(props: ArticleItemProps) {
   );
 }
 
+export function ArticleItemPlaceholder() {
+  const { Colors } = useAppTheme();
+
+  return (
+    <View style={[style.container, { borderColor: Colors.outlineborder }]}>
+      <Image style={[style.image, { backgroundColor: Colors.bgsecondary }]} />
+
+      <View style={style.contentWrapper}>
+        <Placeholder width={"90%"} height={16} />
+        <View style={{ gap: 4 }}>
+          <Placeholder />
+          <Placeholder height={16} width={"70%"} />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function Placeholder({ height = 10, width = "50%" }: ViewStyle) {
+  return (
+    <View
+      backgroundColor="outlineborder"
+      style={[style.placeholder, { height, width }]}
+    />
+  );
+}
+
 const style = StyleSheet.create({
   container: {
     width: 155,
@@ -78,4 +106,5 @@ const style = StyleSheet.create({
     padding: 12,
     justifyContent: "space-between",
   },
+  placeholder: {},
 });
