@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const postLoginPayloadSchema = z.object({
-  email: z.string().email("Email tidak valid"),
-  password: z.string(),
+  email: z.string({ message: "Harus diisi" }).email("Email tidak valid"),
+  password: z.string({ message: "Harus diisi" }),
 });
 export type PostLoginPayload = z.infer<typeof postLoginPayloadSchema>;
 export type PostLoginResponseSuccess = {
@@ -27,11 +27,11 @@ export type PostLoginResponseError = {
 
 export const postRegisterPayloadSchema = z
   .object({
-    email: z.string().email("Email tidak valid"),
-    nama: z.string(),
-    no_telp: z.string(),
-    password: z.string(),
-    confirm_password: z.string(),
+    email: z.string({ message: "Harus diisi" }).email("Email tidak valid"),
+    nama: z.string({ message: "Harus diisi" }),
+    no_telp: z.string({ message: "Harus diisi" }),
+    password: z.string({ message: "Harus diisi" }),
+    confirm_password: z.string({ message: "Harus diisi" }),
     role_id: z.number().optional(),
   })
   .refine((value) => value.password === value.confirm_password, {

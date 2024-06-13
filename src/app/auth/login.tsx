@@ -105,6 +105,7 @@ export default function LoginScreen() {
                   value={field.value}
                   onBlur={field.onBlur}
                   onChangeText={field.onChange}
+                  errorMessage={fieldState.error?.message}
                   secureTextEntry
                 />
               )}

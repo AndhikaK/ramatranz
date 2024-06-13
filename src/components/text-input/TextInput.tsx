@@ -1,12 +1,14 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import {
   StyleSheet,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import { useAppTheme } from "@/context/theme-context";
 
+import { IconCIHide } from "../icons";
 import { Typography } from "../typography/Typography";
 import { View } from "../view/View";
 
@@ -21,8 +23,11 @@ export function TextInput(props: TextInputProps) {
     editable = true,
     style,
     errorMessage = "",
+    secureTextEntry = false,
     ...rest
   } = props;
+
+  const [hidePassword, setHidePassword] = useState(secureTextEntry);
 
   const { Colors } = useAppTheme();
 
@@ -35,12 +40,25 @@ export function TextInput(props: TextInputProps) {
         backgroundColor={editable ? "transparent" : "outlineborder"}
         style={[styles.inputWrapper, { borderColor: Colors.outlineborder }]}
       >
-        <RNTextInput
-          placeholderTextColor={Colors.textsecondary}
-          editable={editable}
-          style={[{ color: Colors.textprimary }, style]}
-          {...rest}
-        />
+        <View style={{ flex: 1 }}>
+          <RNTextInput
+            placeholderTextColor={Colors.textsecondary}
+            editable={editable}
+            style={[{ color: Colors.textprimary }, style]}
+            secureTextEntry={secureTextEntry && hidePassword}
+            {...rest}
+          />
+        </View>
+
+        {secureTextEntry && (
+          <TouchableWithoutFeedback
+            onPress={() => setHidePassword(!hidePassword)}
+          >
+            <View>
+              <IconCIHide color="textsecondary" />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </View>
 
       {!!errorMessage && (
@@ -62,5 +80,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 26,
     gap: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
