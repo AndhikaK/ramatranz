@@ -11,6 +11,8 @@ import {
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostRegisterPayload,
+  TraveDoorToDoorResponseSuccess,
+  TravelDoorToDoorParams,
   TravelScheduleQuery,
   TravelScheduleResponseSuccess,
 } from "./internal.api.type";
@@ -95,7 +97,11 @@ export const getTravelSchedule = async (params: TravelScheduleQuery) => {
   const response = await apiClientMock<TravelScheduleResponseSuccess>({
     method: "GET",
     url: "/api/jadwal/jadwal",
-    params: params,
+    params: {
+      ...params,
+      // transform Date, into yyyy-mm-dd
+      date: new Date(params.date).toISOString().slice(0, 10),
+    },
   });
 
   return response.data;
@@ -105,6 +111,16 @@ export const getTravelBranch = async () => {
   const response = await apiClientMock<GetTravelBranchResponseSuccess>({
     method: "GET",
     url: "/api/cabang/master_cabang",
+  });
+
+  return response.data;
+};
+
+export const getDoorToDoorPoint = async (params: TravelDoorToDoorParams) => {
+  const response = await apiClientMock<TraveDoorToDoorResponseSuccess>({
+    method: "GET",
+    url: "/api/door-to-door",
+    params,
   });
 
   return response.data;

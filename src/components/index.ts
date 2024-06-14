@@ -3,6 +3,7 @@ export * from "./button/Button";
 export * from "./date-input-v2/DateInputV2";
 export * from "./loader/Loader";
 export * from "./page-wrapper/PageWrapper";
+export * from "./radio-item/RadioItem";
 export * from "./rounded-button/RoundedButton";
 export * from "./search-box/SearchBox";
 export * from "./section-wrapper/SectionWrapper";

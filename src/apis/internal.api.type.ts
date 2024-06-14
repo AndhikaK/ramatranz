@@ -100,3 +100,13 @@ export type TravelScheduleResponseSuccess = {
   message: string;
   success: boolean;
 };
+export type TravelDoorToDoorParams = {
+  point: string;
+};
+export type TraveDoorToDoorResponseSuccess = {
+  data: {
+    nama: string;
+  }[];
+  message: string;
+  success: boolean;
+};

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Appbar, Loader, Typography, View } from "@/components";
+import { Appbar, Loader, Snackbar, Typography, View } from "@/components";
 import {
   IconDoorThin,
   IconIcArrowRight,
@@ -17,7 +17,11 @@ import {
 import { useAppTheme } from "@/context/theme-context";
 import { useGetTravelSchedule } from "@/features/travel/api/useGetSchedule";
 import { TravelTicketItem } from "@/features/travel/components";
-import { useTravelbookingPayload } from "@/features/travel/store/travel-store";
+import {
+  useTravelActions,
+  useTravelbookingPayload,
+  useTravelDoorToDoorPayload,
+} from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 
 export default function TravelOptionScreen() {
@@ -25,12 +29,33 @@ export default function TravelOptionScreen() {
   const insets = useSafeAreaInsets();
 
   const travelBookingPayload = useTravelbookingPayload();
+  const doorToDoorPayload = useTravelDoorToDoorPayload();
+  const { setDoorToDoorPayload } = useTravelActions();
 
   const travelScheduleQuery = useGetTravelSchedule({
     from: travelBookingPayload?.from || "",
     to: travelBookingPayload?.to || "",
     date: travelBookingPayload?.date as Date,
   });
+
+  const handleSelectSchedule = () => {
+    if (!doorToDoorPayload?.from || !doorToDoorPayload.to) {
+      Snackbar.show({
+        message:
+          "Pilih alamat pada Door to Door/Point to Point terlebih dahulu",
+      });
+      return;
+    }
+    router.push("/travel/travel-detail");
+  };
+
+  // reset doorToDoorPayload to make sure it fresh data
+  useEffect(() => {
+    setDoorToDoorPayload({
+      from: undefined,
+      to: undefined,
+    });
+  }, [setDoorToDoorPayload]);
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -71,10 +96,28 @@ export default function TravelOptionScreen() {
           <TouchableWithIcon
             icon={<IconDoorThin width={20} height={20} color="main" />}
             label="Door to Door"
+            disabled={
+              !travelScheduleQuery.data ||
+              travelScheduleQuery.data?.data.length <= 0
+            }
+            onPress={() =>
+              router.push({
+                pathname: "/travel/form-door-to-door/[pageType]",
+                params: {
+                  pageType: "from",
+                },
+              })
+            }
           />
           <TouchableWithIcon
             icon={<IconPinSharp width={20} height={20} color="main" />}
             label="Point to Point"
+            // disable point to point, since it need TBD
+            disabled={
+              !travelScheduleQuery.data ||
+              travelScheduleQuery.data?.data.length <= 0 ||
+              true
+            }
           />
         </View>
       </View>
@@ -92,7 +135,7 @@ export default function TravelOptionScreen() {
             originCity={item.destinationCity}
             originDepartureDate={new Date(item.originDepartureDate)}
             price={item.price}
-            onPress={() => router.push("/travel/travel-detail")}
+            onPress={handleSelectSchedule}
           />
         )}
         ListEmptyComponent={() => (
@@ -123,12 +166,18 @@ type TouchableIconWithIconProps = {
   icon: ReactNode;
   label: string;
 } & TouchableNativeFeedbackProps;
-function TouchableWithIcon({ icon, label }: TouchableIconWithIconProps) {
+function TouchableWithIcon({
+  icon,
+  label,
+  disabled,
+  ...rest
+}: TouchableIconWithIconProps) {
   const { Colors } = useAppTheme();
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback disabled={disabled} {...rest}>
       <View
+        backgroundColor={disabled ? "outlineborder" : "paper"}
         style={[
           style.touchableContainer,
           { borderColor: Colors.outlineborder },
@@ -138,7 +187,7 @@ function TouchableWithIcon({ icon, label }: TouchableIconWithIconProps) {
         <Typography
           fontFamily="OpenSans-Light"
           fontSize={12}
-          color="textsecondary"
+          color="textprimary"
         >
           {label}
         </Typography>
