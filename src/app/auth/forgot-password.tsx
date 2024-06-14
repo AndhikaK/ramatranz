@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button, TextInput, View } from "@/components";
@@ -8,6 +9,7 @@ export default function ForgotPasswordScreen() {
 
   return (
     <View backgroundColor="main" style={style.container}>
+      <StatusBar style="light" />
       <View
         backgroundColor="paper"
         style={[

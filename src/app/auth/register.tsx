@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -54,6 +55,8 @@ export default function RegisterScreen() {
 
   return (
     <PageWrapper style={{ flex: 1 }} isLoading={registerMutation.isPending}>
+      <StatusBar style="light" />
+
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
         <View
           backgroundColor="main"

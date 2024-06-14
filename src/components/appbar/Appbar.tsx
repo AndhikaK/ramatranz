@@ -107,6 +107,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     minHeight: 48,
+    gap: 12,
   },
   subtitleWrapper: {
     alignItems: "center",

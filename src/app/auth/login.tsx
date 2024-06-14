@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StatusBar, StyleSheet } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -68,6 +68,7 @@ export default function LoginScreen() {
 
   return (
     <PageWrapper backgroundColor="main" isLoading={loginMutation.isPending}>
+      <StatusBar barStyle="light-content" />
       <ScrollView
         style={style.container}
         contentContainerStyle={{ flexGrow: 1 }}

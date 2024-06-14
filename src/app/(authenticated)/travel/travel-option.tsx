@@ -9,10 +9,15 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Typography, View } from "@/components";
-import { IconDoorThin, IconPinSharp } from "@/components/icons";
+import {
+  IconDoorThin,
+  IconIcArrowRight,
+  IconPinSharp,
+} from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetTravelSchedule } from "@/features/travel/api/useGetSchedule";
 import { TravelTicketItem } from "@/features/travel/components";
+import { useTravelbookingPayload } from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 
 export default function TravelOptionScreen() {
@@ -21,17 +26,39 @@ export default function TravelOptionScreen() {
 
   const travelScheduleQuery = useGetTravelSchedule();
 
+  const travelBookingPayload = useTravelbookingPayload();
+
   return (
     <View backgroundColor="paper" style={style.container}>
       <Appbar
-        title="Palembang - Lampung"
+        title={
+          <View style={style.headerWrapper}>
+            <Typography
+              fontFamily="Poppins-Bold"
+              fontSize={16}
+              style={{ flex: 1 }}
+              numberOfLines={1}
+            >
+              {travelBookingPayload?.from}
+            </Typography>
+            <IconIcArrowRight height={16} width={16} />
+            <Typography
+              fontFamily="Poppins-Bold"
+              fontSize={16}
+              style={{ flex: 1 }}
+              numberOfLines={1}
+            >
+              {travelBookingPayload?.to}
+            </Typography>
+          </View>
+        }
         subtitle="1 Penumpang"
         backIconPress={() => router.back()}
       />
       <View style={style.contentHeaderContainer}>
         <View style={style.headerTitleWrapper}>
           <Typography fontFamily="Poppins-Bold" fontSize={14} color="main">
-            {formatDate(new Date())}
+            {formatDate(travelBookingPayload?.date)}
           </Typography>
           <View backgroundColor="main" style={style.indicator} />
         </View>
@@ -137,5 +164,12 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2,
     flexDirection: "row",
+  },
+  headerWrapper: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
+    width: "100%",
   },
 });
