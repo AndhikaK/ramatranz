@@ -5,6 +5,7 @@ export * from "./page-wrapper/PageWrapper";
 export * from "./rounded-button/RoundedButton";
 export * from "./search-box/SearchBox";
 export * from "./section-wrapper/SectionWrapper";
+export * from "./select-input-v2/SelectInputV2";
 export * from "./separator/Separator";
 export * from "./snackbar/Snackbar";
 export * from "./tab/Tab";

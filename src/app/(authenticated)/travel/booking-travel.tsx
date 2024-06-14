@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Appbar,
   Button,
+  SelectInputV2,
   Separator,
   TextInputV2,
   Typography,
@@ -18,6 +19,7 @@ import {
   IconSwap,
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { useGetTravelBranch } from "@/features/travel/api/useGetTravelBranch";
 import { formatDate } from "@/utils/datetime";
 
 export default function BookingTravelScreen() {
@@ -25,6 +27,8 @@ export default function BookingTravelScreen() {
   const router = useRouter();
 
   const { Colors } = useAppTheme();
+
+  const travelBranchQuery = useGetTravelBranch();
 
   return (
     <ScrollView
@@ -52,7 +56,7 @@ export default function BookingTravelScreen() {
         <View
           style={[style.destinationBox, { borderColor: Colors.outlineborder }]}
         >
-          <TextInputV2
+          <SelectInputV2
             value="Lampung"
             leadingIcon={
               <View>
@@ -65,7 +69,7 @@ export default function BookingTravelScreen() {
             withBorder={false}
           />
           <Separator />
-          <TextInputV2
+          <SelectInputV2
             value="Palembang"
             leadingIcon={
               <View>

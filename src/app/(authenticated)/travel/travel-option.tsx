@@ -11,12 +11,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Appbar, Typography, View } from "@/components";
 import { IconDoorThin, IconPinSharp } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { useGetTravelSchedule } from "@/features/travel/api/useGetSchedule";
 import { TravelTicketItem } from "@/features/travel/components";
 import { formatDate } from "@/utils/datetime";
 
 export default function TravelOptionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+
+  const travelScheduleQuery = useGetTravelSchedule();
 
   return (
     <View backgroundColor="paper" style={style.container}>

@@ -7,6 +7,7 @@ import {
   GetArticleDetailResponseSuccess,
   GetArticleQuery,
   GetArticleResponseSuccess,
+  GetTravelBranchResponseSuccess,
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostRegisterPayload,
@@ -83,6 +84,24 @@ export const getArticleById = async (id: string) => {
   const response = await apiClientMock<GetArticleDetailResponseSuccess>({
     method: "GET",
     url: "/api/articles/" + id,
+  });
+
+  return response.data;
+};
+
+export const getTravelSchedule = async () => {
+  const response = await apiClient<GetArticleDetailResponseSuccess>({
+    method: "GET",
+    url: "/api/jadwal/jadwal",
+  });
+
+  return response.data;
+};
+
+export const getTravelBranch = async () => {
+  const response = await apiClientMock<GetTravelBranchResponseSuccess>({
+    method: "GET",
+    url: "/api/cabang/master_cabang",
   });
 
   return response.data;

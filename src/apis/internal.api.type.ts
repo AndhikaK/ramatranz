@@ -66,3 +66,15 @@ export type GetArticleDetailResponseSuccess = {
     harga: number;
   };
 };
+
+export type GetTravelBranchResponseSuccess = {
+  data: {
+    created_at: string;
+    deleted_at: any;
+    id: number;
+    nama: string;
+    updated_at: string;
+  }[];
+  message: string;
+  success: boolean;
+};

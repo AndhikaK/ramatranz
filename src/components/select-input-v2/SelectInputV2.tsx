@@ -1,0 +1,85 @@
+import { ReactNode } from "react";
+import { StyleSheet, TextInputProps } from "react-native";
+import SelectDropdown from "react-native-select-dropdown";
+
+import { useAppTheme } from "@/context/theme-context";
+
+import { Typography } from "../typography/Typography";
+import { View } from "../view/View";
+
+export type SelectInputV2Props = {
+  leadingIcon?: ReactNode;
+  trailingIcon?: ReactNode;
+  withBorder?: boolean;
+} & TextInputProps;
+export function SelectInputV2(props: SelectInputV2Props) {
+  const { leadingIcon, trailingIcon, value, withBorder = true } = props;
+
+  const { Colors } = useAppTheme();
+
+  return (
+    <SelectDropdown
+      data={[{ title: "pilihan 1" }, { title: "Pilihan 2" }]}
+      onSelect={(selectedItem, index) => {
+        console.log(selectedItem, index);
+      }}
+      renderButton={(selected, isOpened) => (
+        <View
+          style={[
+            styles.container,
+            {
+              borderWidth: withBorder ? 1 : 0,
+              borderColor: Colors.outlineborder,
+              padding: withBorder ? 12 : 0,
+            },
+          ]}
+        >
+          {leadingIcon}
+
+          <Typography
+            fontFamily="OpenSans-Regular"
+            fontSize={14}
+            style={styles.textInput}
+          >
+            {value}
+          </Typography>
+
+          {trailingIcon}
+        </View>
+      )}
+      renderItem={(item, index, isSelected) => {
+        return (
+          <View
+            style={{
+              ...styles.dropdownItemStyle,
+              ...(isSelected && { backgroundColor: "#D2D9DF" }),
+            }}
+          >
+            <Typography>{item.title}</Typography>
+          </View>
+        );
+      }}
+      dropdownStyle={{
+        backgroundColor: Colors.paper,
+        transform: [{ translateY: -28 }],
+      }}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    gap: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 2,
+  },
+  textInput: {
+    flex: 1,
+  },
+  dropdownItemStyle: {
+    padding: 8,
+    borderRadius: 2,
+  },
+});
