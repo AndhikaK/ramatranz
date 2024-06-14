@@ -14,17 +14,10 @@ import {
   DateInputV2,
   SelectInputV2,
   Separator,
-  TextInputV2,
   Typography,
   View,
 } from "@/components";
-import {
-  IconCalendar,
-  IconCarSide,
-  IconChevronDown,
-  IconClock,
-  IconSwap,
-} from "@/components/icons";
+import { IconCalendar, IconCarSide, IconSwap } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetTravelBranch } from "@/features/travel/api/useGetTravelBranch";
 import { formatDate } from "@/utils/datetime";
@@ -46,6 +39,9 @@ export default function BookingTravelScreen() {
   }, [travelBranchQuery.data]);
 
   const { control, formState } = useForm<TravelScheduleQuery>({
+    defaultValues: {
+      date: new Date(),
+    },
     resolver: zodResolver(travelScheduleQuerySchema),
     mode: "all",
   });
@@ -127,21 +123,18 @@ export default function BookingTravelScreen() {
           </View>
         </View>
 
-        {/* <TextInputV2
-          placeholder={formatDate(new Date())}
-          leadingIcon={<IconCalendar width={21} height={21} color="main" />}
-        /> */}
-
-        <DateInputV2
-          placeholder={formatDate(new Date())}
-          leadingIcon={<IconCalendar width={21} height={21} color="main" />}
+        <Controller
+          control={control}
+          name="date"
+          render={({ field }) => (
+            <DateInputV2
+              placeholder={formatDate(new Date())}
+              leadingIcon={<IconCalendar width={21} height={21} color="main" />}
+              onChange={(date) => field.onChange(date)}
+              value={field.value}
+            />
+          )}
         />
-
-        {/* <TextInputV2
-          placeholder="00:00"
-          leadingIcon={<IconClock width={21} height={21} color="main" />}
-          trailingIcon={<IconChevronDown width={21} height={21} />}
-        /> */}
 
         <Button
           disabled={!formState.isValid}

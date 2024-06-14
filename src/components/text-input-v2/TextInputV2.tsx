@@ -8,6 +8,7 @@ import {
 
 import { useAppTheme } from "@/context/theme-context";
 
+import { Typography } from "../typography/Typography";
 import { View } from "../view/View";
 
 export type TextInputV2Props = {
@@ -24,6 +25,8 @@ export function TextInputV2(props: TextInputV2Props) {
     withBorder = true,
     asTouchable = false,
     onTouchablePress,
+    value,
+    placeholder,
     ...rest
   } = props;
 
@@ -46,12 +49,18 @@ export function TextInputV2(props: TextInputV2Props) {
       >
         {leadingIcon}
 
-        <TextInput
-          placeholderTextColor={Colors.textsecondary}
-          style={[styles.textInput, { color: Colors.textprimary }]}
-          editable={!asTouchable}
-          {...rest}
-        />
+        {asTouchable ? (
+          <Typography color={value ? "textprimary" : "textsecondary"}>
+            {value || placeholder}
+          </Typography>
+        ) : (
+          <TextInput
+            placeholderTextColor={Colors.textsecondary}
+            style={[styles.textInput, { color: Colors.textprimary }]}
+            editable={!asTouchable}
+            {...rest}
+          />
+        )}
 
         {trailingIcon}
       </View>

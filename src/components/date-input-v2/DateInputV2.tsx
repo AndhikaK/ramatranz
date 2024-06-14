@@ -9,11 +9,18 @@ import RNDateTimePicker, {
 import { TextInputV2, TextInputV2Props } from "../text-input-v2/TextInputV2";
 
 export type DateInputV2Props = {
-  value: Date;
+  value: Date | string;
+  onChange: (date: Date | undefined) => void;
 } & Pick<TextInputV2Props, "placeholder" | "trailingIcon" | "leadingIcon"> &
   BaseProps;
 export function DateInputV2(props: DateInputV2Props) {
-  const { value, placeholder, trailingIcon, leadingIcon } = props;
+  const {
+    value,
+    onChange = () => {},
+    placeholder,
+    trailingIcon,
+    leadingIcon,
+  } = props;
 
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -35,6 +42,10 @@ export function DateInputV2(props: DateInputV2Props) {
           value={value || new Date()}
           mode="date"
           accentColor={Colors.main}
+          onChange={(_, date) => {
+            setShowDatePicker(false);
+            onChange(date);
+          }}
         />
       )}
     </>

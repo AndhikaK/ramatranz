@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { StyleSheet, TextInputProps } from "react-native";
+import { StyleSheet } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
 import { useAppTheme } from "@/context/theme-context";
@@ -78,7 +78,7 @@ export function SelectInputV2(props: SelectInputV2Props) {
       }}
       dropdownStyle={{
         backgroundColor: Colors.paper,
-        transform: [{ translateY: -28 }],
+        // transform: [{ translateY: -28 }],
       }}
       dropdownOverlayColor="transparent"
     />
