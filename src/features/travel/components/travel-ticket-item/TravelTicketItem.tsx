@@ -56,13 +56,19 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
               {formatCurrency(price)}
             </Typography>
             <Typography
-              color={availableSeat > carSeat / 2 ? "success" : "dangerbase"}
+              color={
+                availableSeat <= 0 || availableSeat < carSeat / 2
+                  ? "dangerbase"
+                  : "success"
+              }
               fontFamily="OpenSans-Regular"
               fontSize={14}
             >
-              {availableSeat > carSeat / 2
-                ? "Tersedia"
-                : `${availableSeat} kursi lagi`}
+              {availableSeat <= 0
+                ? "Tidak tersedia"
+                : availableSeat > carSeat / 2
+                  ? "Tersedia"
+                  : `${availableSeat} kursi lagi`}
             </Typography>
           </View>
         </View>

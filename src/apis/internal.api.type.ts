@@ -87,6 +87,7 @@ export const travelScheduleQuerySchema = z.object({
 export type TravelScheduleQuery = z.infer<typeof travelScheduleQuerySchema>;
 export type TravelScheduleResponseSuccess = {
   data: {
+    img_url: string;
     availableSeat: number;
     carModel: string;
     carSeat: number;
@@ -96,6 +97,8 @@ export type TravelScheduleResponseSuccess = {
     originCity: string;
     originDepartureDate: string;
     price: number;
+    fasilitas: string;
+    syarat_dan_ketentuan: string;
   }[];
   message: string;
   success: boolean;

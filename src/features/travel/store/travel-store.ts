@@ -1,7 +1,10 @@
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
-import { TravelScheduleQuery } from "@/apis/internal.api.type";
+import {
+  TravelScheduleQuery,
+  TravelScheduleResponseSuccess,
+} from "@/apis/internal.api.type";
 import { ExtractState } from "@/libs/zustand";
 
 type TravelStore = {
@@ -10,6 +13,7 @@ type TravelStore = {
     from?: string;
     to?: string;
   };
+  travelSchedule?: TravelScheduleResponseSuccess["data"][number];
 
   actions: {
     setBookingPayload: (bookinPayload?: TravelScheduleQuery) => void;
@@ -17,16 +21,22 @@ type TravelStore = {
       from?: string;
       to?: string;
     }) => void;
+    setTravelSchedule: (
+      bookinPayload?: TravelScheduleResponseSuccess["data"][number]
+    ) => void;
     clearBookingSession: () => void;
   };
 };
 
 const travelStore = createStore<TravelStore>()((set, get) => ({
   bookingPayload: undefined,
+  doorToDoorPayload: undefined,
+  travelSchedule: undefined,
 
   actions: {
     setBookingPayload: (bookingPayload) => set({ bookingPayload }),
     setDoorToDoorPayload: (doorToDoorPayload) => set({ doorToDoorPayload }),
+    setTravelSchedule: (travelSchedule) => set({ travelSchedule }),
     clearBookingSession: async () => {
       set({
         bookingPayload: undefined,
@@ -42,6 +52,8 @@ const bookingPayloadSelector = (state: ExtractState<typeof travelStore>) =>
   state.bookingPayload;
 const doorToDoorPayloadSelector = (state: ExtractState<typeof travelStore>) =>
   state.doorToDoorPayload;
+const travelScheduleSelector = (state: ExtractState<typeof travelStore>) =>
+  state.travelSchedule;
 const actionsSelector = (state: ExtractState<typeof travelStore>) =>
   state.actions;
 
@@ -50,6 +62,8 @@ export const getbookingPayload = () =>
   bookingPayloadSelector(travelStore.getState());
 export const getdoorToDoorPayload = () =>
   doorToDoorPayloadSelector(travelStore.getState());
+export const getTravelSchedule = () =>
+  travelScheduleSelector(travelStore.getState());
 export const getTravelActions = () => actionsSelector(travelStore.getState());
 
 function useTravelStore<U>(selector: Params<U>[1]) {
@@ -61,4 +75,6 @@ export const useTravelbookingPayload = () =>
   useTravelStore(bookingPayloadSelector);
 export const useTravelDoorToDoorPayload = () =>
   useTravelStore(doorToDoorPayloadSelector);
+export const useTravelTravelSchedule = () =>
+  useTravelStore(travelScheduleSelector);
 export const useTravelActions = () => useTravelStore(actionsSelector);

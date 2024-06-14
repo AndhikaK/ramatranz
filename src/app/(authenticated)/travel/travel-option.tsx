@@ -8,6 +8,7 @@ import {
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { TravelScheduleResponseSuccess } from "@/apis/internal.api.type";
 import { Appbar, Loader, Snackbar, Typography, View } from "@/components";
 import {
   IconDoorThin,
@@ -30,7 +31,7 @@ export default function TravelOptionScreen() {
 
   const travelBookingPayload = useTravelbookingPayload();
   const doorToDoorPayload = useTravelDoorToDoorPayload();
-  const { setDoorToDoorPayload } = useTravelActions();
+  const { setDoorToDoorPayload, setTravelSchedule } = useTravelActions();
 
   const travelScheduleQuery = useGetTravelSchedule({
     from: travelBookingPayload?.from || "",
@@ -38,7 +39,9 @@ export default function TravelOptionScreen() {
     date: travelBookingPayload?.date as Date,
   });
 
-  const handleSelectSchedule = () => {
+  const handleSelectSchedule = (
+    travelSchedule: TravelScheduleResponseSuccess["data"][number]
+  ) => {
     if (!doorToDoorPayload?.from || !doorToDoorPayload.to) {
       Snackbar.show({
         message:
@@ -46,6 +49,14 @@ export default function TravelOptionScreen() {
       });
       return;
     }
+
+    if (travelSchedule.availableSeat <= 0) {
+      Snackbar.show({
+        message: "Kursi sudah habis",
+      });
+      return;
+    }
+    setTravelSchedule(travelSchedule);
     router.push("/travel/travel-detail");
   };
 
@@ -135,7 +146,7 @@ export default function TravelOptionScreen() {
             originCity={item.destinationCity}
             originDepartureDate={new Date(item.originDepartureDate)}
             price={item.price}
-            onPress={handleSelectSchedule}
+            onPress={() => handleSelectSchedule(item)}
           />
         )}
         ListEmptyComponent={() => (
