@@ -20,6 +20,7 @@ import {
 import { IconCalendar, IconCarSide, IconSwap } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetTravelBranch } from "@/features/travel/api/useGetTravelBranch";
+import { useTravelActions } from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -28,6 +29,8 @@ export default function BookingTravelScreen() {
   const router = useRouter();
 
   const { Colors } = useAppTheme();
+
+  const { setBookingPayload } = useTravelActions();
 
   const travelBranchQuery = useGetTravelBranch();
 
@@ -38,12 +41,17 @@ export default function BookingTravelScreen() {
     }));
   }, [travelBranchQuery.data]);
 
-  const { control, formState } = useForm<TravelScheduleQuery>({
+  const { control, formState, handleSubmit } = useForm<TravelScheduleQuery>({
     defaultValues: {
       date: new Date(),
     },
     resolver: zodResolver(travelScheduleQuerySchema),
     mode: "all",
+  });
+
+  const handleSubmitForm = handleSubmit((data) => {
+    setBookingPayload(data);
+    router.push("/travel/travel-option");
   });
 
   return (
@@ -136,10 +144,7 @@ export default function BookingTravelScreen() {
           )}
         />
 
-        <Button
-          disabled={!formState.isValid}
-          onPressIn={() => router.push("/travel/travel-option")}
-        >
+        <Button disabled={!formState.isValid} onPressIn={handleSubmitForm}>
           Cari
         </Button>
       </View>
