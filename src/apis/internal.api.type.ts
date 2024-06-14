@@ -85,3 +85,18 @@ export const travelScheduleQuerySchema = z.object({
   date: z.date(),
 });
 export type TravelScheduleQuery = z.infer<typeof travelScheduleQuerySchema>;
+export type TravelScheduleResponseSuccess = {
+  data: {
+    availableSeat: number;
+    carModel: string;
+    carSeat: number;
+    departureDate: string;
+    destinationCity: string;
+    destinationDepartureDate: string;
+    originCity: string;
+    originDepartureDate: string;
+    price: number;
+  }[];
+  message: string;
+  success: boolean;
+};

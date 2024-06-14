@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
@@ -53,6 +53,10 @@ export default function BookingTravelScreen() {
     setBookingPayload(data);
     router.push("/travel/travel-option");
   });
+
+  useEffect(() => {
+    setBookingPayload(undefined);
+  }, [setBookingPayload]);
 
   return (
     <ScrollView

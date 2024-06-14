@@ -11,6 +11,8 @@ import {
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostRegisterPayload,
+  TravelScheduleQuery,
+  TravelScheduleResponseSuccess,
 } from "./internal.api.type";
 
 const apiClient = axios.create({
@@ -89,10 +91,11 @@ export const getArticleById = async (id: string) => {
   return response.data;
 };
 
-export const getTravelSchedule = async () => {
-  const response = await apiClient<GetArticleDetailResponseSuccess>({
+export const getTravelSchedule = async (params: TravelScheduleQuery) => {
+  const response = await apiClientMock<TravelScheduleResponseSuccess>({
     method: "GET",
     url: "/api/jadwal/jadwal",
+    params: params,
   });
 
   return response.data;

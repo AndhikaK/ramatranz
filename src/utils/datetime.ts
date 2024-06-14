@@ -1,10 +1,13 @@
-export const formatDate = (date?: number | Date | undefined): string => {
-  return new Intl.DateTimeFormat("id-ID", {
+export const formatDate = (
+  date?: number | Date | undefined,
+  options: Intl.DateTimeFormatOptions | undefined = {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
-  }).format(date);
+  }
+): string => {
+  return new Intl.DateTimeFormat("id-ID", options).format(date);
 };
 
 export const formatTime = (date?: number | Date | undefined): string => {

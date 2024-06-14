@@ -8,7 +8,7 @@ import {
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Appbar, Typography, View } from "@/components";
+import { Appbar, Loader, Typography, View } from "@/components";
 import {
   IconDoorThin,
   IconIcArrowRight,
@@ -24,9 +24,13 @@ export default function TravelOptionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const travelScheduleQuery = useGetTravelSchedule();
-
   const travelBookingPayload = useTravelbookingPayload();
+
+  const travelScheduleQuery = useGetTravelSchedule({
+    from: travelBookingPayload?.from || "",
+    to: travelBookingPayload?.to || "",
+    date: travelBookingPayload?.date as Date,
+  });
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -36,7 +40,7 @@ export default function TravelOptionScreen() {
             <Typography
               fontFamily="Poppins-Bold"
               fontSize={16}
-              style={{ flex: 1 }}
+              style={{ flex: 1, textAlign: "right" }}
               numberOfLines={1}
             >
               {travelBookingPayload?.from}
@@ -76,20 +80,31 @@ export default function TravelOptionScreen() {
       </View>
 
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7]}
-        renderItem={() => (
+        data={travelScheduleQuery.data?.data || []}
+        renderItem={({ item }) => (
           <TravelTicketItem
-            availableSeat={8}
-            carModel="Toyota hiace"
-            carSeat={9}
-            departureDate="24 Feb 2023"
-            destinationCity="Lampung"
-            destinationDepartureDate="24 Feb 2023"
-            originCity="Palembang"
-            originDepartureDate="24 Feb 2023"
-            price={350000}
+            carModel={item.carModel}
+            carSeat={item.carSeat}
+            availableSeat={item.availableSeat}
+            departureDate={new Date(item.departureDate)}
+            destinationCity={item.originCity}
+            destinationDepartureDate={new Date(item.destinationDepartureDate)}
+            originCity={item.destinationCity}
+            originDepartureDate={new Date(item.originDepartureDate)}
+            price={item.price}
             onPress={() => router.push("/travel/travel-detail")}
           />
+        )}
+        ListEmptyComponent={() => (
+          <View style={style.emptyScheduleContainer}>
+            {travelScheduleQuery.isFetching ? (
+              <Loader />
+            ) : (
+              <Typography fontFamily="Poppins-Medium">
+                Tidak ada jadwal
+              </Typography>
+            )}
+          </View>
         )}
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -171,5 +186,10 @@ const style = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     width: "100%",
+  },
+  emptyScheduleContainer: {
+    minHeight: 400,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

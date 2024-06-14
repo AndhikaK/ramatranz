@@ -7,6 +7,8 @@ import {
 import { Separator, Typography, View } from "@/components";
 import { IconCarSide } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { formatCurrency } from "@/utils/common";
+import { formatDate, formatTime } from "@/utils/datetime";
 
 export type TravelTicketItemProps = {
   carModel: string;
@@ -14,10 +16,10 @@ export type TravelTicketItemProps = {
   price: number;
   availableSeat: number;
   originCity: string;
-  originDepartureDate: string;
+  originDepartureDate: Date;
   destinationCity: string;
-  destinationDepartureDate: string;
-  departureDate: string;
+  destinationDepartureDate: Date;
+  departureDate: Date;
 } & TouchableNativeFeedbackProps;
 export function TravelTicketItem(props: TravelTicketItemProps) {
   const {
@@ -51,14 +53,16 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
               fontFamily="OpenSans-Semibold"
               fontSize={16}
             >
-              {price}
+              {formatCurrency(price)}
             </Typography>
             <Typography
-              color="main"
+              color={availableSeat > carSeat / 2 ? "success" : "dangerbase"}
               fontFamily="OpenSans-Regular"
               fontSize={14}
             >
-              {availableSeat}
+              {availableSeat > carSeat / 2
+                ? "Tersedia"
+                : `${availableSeat} kursi lagi`}
             </Typography>
           </View>
         </View>
@@ -68,12 +72,16 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
         </View>
 
         <View style={style.headerContainer}>
-          <View>
-            <Typography color="textsecondary" fontSize={14}>
+          <View style={style.contentLeftWrapper}>
+            <Typography color="textsecondary" fontSize={14} numberOfLines={1}>
               {originCity}
             </Typography>
             <Typography color="textsecondary" fontSize={12}>
-              {originDepartureDate}
+              {formatDate(originDepartureDate, {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </Typography>
           </View>
 
@@ -87,19 +95,23 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
             <View backgroundColor="main" style={style.separatorPoint} />
           </View>
 
-          <View style={style.rightHeaderWrapper}>
-            <Typography color="textsecondary" fontSize={14}>
+          <View style={style.contentRightWrapper}>
+            <Typography color="textsecondary" fontSize={14} numberOfLines={1}>
               {destinationCity}
             </Typography>
             <Typography color="textsecondary" fontSize={12}>
-              {destinationDepartureDate}
+              {formatDate(destinationDepartureDate, {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </Typography>
           </View>
         </View>
 
         <View style={style.center}>
           <Typography fontFamily="OpenSans-Regular" fontSize={12}>
-            08.00
+            {formatTime(departureDate)}
           </Typography>
         </View>
       </View>
@@ -122,7 +134,7 @@ const style = StyleSheet.create({
   leftHeaderWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 5,
+    gap: 4,
   },
   rightHeaderWrapper: {
     alignItems: "flex-end",
@@ -156,5 +168,14 @@ const style = StyleSheet.create({
     height: 6,
     width: 6,
     borderRadius: 99,
+  },
+  contentLeftWrapper: {
+    flex: 1,
+    gap: 5,
+  },
+  contentRightWrapper: {
+    flex: 1,
+    alignItems: "flex-end",
+    gap: 4,
   },
 });
