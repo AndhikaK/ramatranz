@@ -1,7 +1,13 @@
+import { useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import {
+  TravelScheduleQuery,
+  travelScheduleQuerySchema,
+} from "@/apis/internal.api.type";
 import {
   Appbar,
   Button,
@@ -21,6 +27,7 @@ import {
 import { useAppTheme } from "@/context/theme-context";
 import { useGetTravelBranch } from "@/features/travel/api/useGetTravelBranch";
 import { formatDate } from "@/utils/datetime";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function BookingTravelScreen() {
   const insets = useSafeAreaInsets();
@@ -29,6 +36,18 @@ export default function BookingTravelScreen() {
   const { Colors } = useAppTheme();
 
   const travelBranchQuery = useGetTravelBranch();
+
+  const branchList = useMemo(() => {
+    if (!travelBranchQuery.data) return [];
+    return travelBranchQuery.data?.data.map((item) => ({
+      title: item.nama,
+    }));
+  }, [travelBranchQuery.data]);
+
+  const { control, formState } = useForm<TravelScheduleQuery>({
+    resolver: zodResolver(travelScheduleQuerySchema),
+    mode: "all",
+  });
 
   return (
     <ScrollView
@@ -56,32 +75,50 @@ export default function BookingTravelScreen() {
         <View
           style={[style.destinationBox, { borderColor: Colors.outlineborder }]}
         >
-          <SelectInputV2
-            value="Lampung"
-            leadingIcon={
-              <View>
-                <Typography fontFamily="OpenSans-Regular" fontSize={10}>
-                  Dari
-                </Typography>
-                <IconCarSide width={21} height={21} color="main" />
-              </View>
-            }
-            withBorder={false}
+          <Controller
+            control={control}
+            name="from"
+            render={({ field }) => (
+              <SelectInputV2
+                placeholder="Berangkat dari..."
+                value={field.value}
+                data={branchList}
+                onSelect={(selectedItem) => field.onChange(selectedItem.title)}
+                leadingIcon={
+                  <View>
+                    <Typography fontFamily="OpenSans-Regular" fontSize={10}>
+                      Dari
+                    </Typography>
+                    <IconCarSide width={21} height={21} color="main" />
+                  </View>
+                }
+                withBorder={false}
+              />
+            )}
           />
           <Separator />
-          <SelectInputV2
-            value="Palembang"
-            leadingIcon={
-              <View>
-                <Typography fontFamily="OpenSans-Regular" fontSize={10}>
-                  Ke
-                </Typography>
-                <View style={{ transform: [{ scaleX: -1 }] }}>
-                  <IconCarSide width={21} height={21} color="main" />
-                </View>
-              </View>
-            }
-            withBorder={false}
+          <Controller
+            control={control}
+            name="to"
+            render={({ field }) => (
+              <SelectInputV2
+                placeholder="Menuju..."
+                value={field.value}
+                data={branchList}
+                onSelect={(selectedItem) => field.onChange(selectedItem.title)}
+                leadingIcon={
+                  <View>
+                    <Typography fontFamily="OpenSans-Regular" fontSize={10}>
+                      Ke
+                    </Typography>
+                    <View style={{ transform: [{ scaleX: -1 }] }}>
+                      <IconCarSide width={21} height={21} color="main" />
+                    </View>
+                  </View>
+                }
+                withBorder={false}
+              />
+            )}
           />
 
           <View backgroundColor="main" style={style.destinationIconSwap}>
@@ -94,13 +131,16 @@ export default function BookingTravelScreen() {
           leadingIcon={<IconCalendar width={21} height={21} color="main" />}
         />
 
-        <TextInputV2
+        {/* <TextInputV2
           placeholder="00:00"
           leadingIcon={<IconClock width={21} height={21} color="main" />}
           trailingIcon={<IconChevronDown width={21} height={21} />}
-        />
+        /> */}
 
-        <Button onPressIn={() => router.push("/travel/travel-option")}>
+        <Button
+          disabled={!formState.isValid}
+          onPressIn={() => router.push("/travel/travel-option")}
+        >
           Cari
         </Button>
       </View>

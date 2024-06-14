@@ -7,24 +7,38 @@ import { useAppTheme } from "@/context/theme-context";
 import { Typography } from "../typography/Typography";
 import { View } from "../view/View";
 
+type DataItem = {
+  title: string;
+};
 export type SelectInputV2Props = {
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
   withBorder?: boolean;
-} & TextInputProps;
+  data: DataItem[];
+  onSelect: (selectedItem: DataItem, index: number) => void;
+  value: string;
+  placeholder?: string;
+};
 export function SelectInputV2(props: SelectInputV2Props) {
-  const { leadingIcon, trailingIcon, value, withBorder = true } = props;
+  const {
+    leadingIcon,
+    trailingIcon,
+    value,
+    withBorder = true,
+    data = [],
+    onSelect = () => {},
+    placeholder = "",
+  } = props;
 
   const { Colors } = useAppTheme();
 
   return (
     <SelectDropdown
-      data={[{ title: "pilihan 1" }, { title: "Pilihan 2" }]}
-      onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
-      }}
+      data={data}
+      onSelect={onSelect}
       renderButton={(selected, isOpened) => (
         <View
+          backgroundColor={selected ? "outlineborder" : "paper"}
           style={[
             styles.container,
             {
@@ -39,9 +53,10 @@ export function SelectInputV2(props: SelectInputV2Props) {
           <Typography
             fontFamily="OpenSans-Regular"
             fontSize={14}
+            color={value ? "textprimary" : "textsecondary"}
             style={styles.textInput}
           >
-            {value}
+            {value || placeholder}
           </Typography>
 
           {trailingIcon}
@@ -50,10 +65,12 @@ export function SelectInputV2(props: SelectInputV2Props) {
       renderItem={(item, index, isSelected) => {
         return (
           <View
-            style={{
-              ...styles.dropdownItemStyle,
-              ...(isSelected && { backgroundColor: "#D2D9DF" }),
-            }}
+            style={[
+              styles.dropdownItemStyle,
+              {
+                ...(isSelected && { backgroundColor: "#D2D9DF" }),
+              },
+            ]}
           >
             <Typography>{item.title}</Typography>
           </View>
@@ -63,6 +80,7 @@ export function SelectInputV2(props: SelectInputV2Props) {
         backgroundColor: Colors.paper,
         transform: [{ translateY: -28 }],
       }}
+      dropdownOverlayColor="transparent"
     />
   );
 }

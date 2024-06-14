@@ -78,3 +78,9 @@ export type GetTravelBranchResponseSuccess = {
   message: string;
   success: boolean;
 };
+
+export const travelScheduleQuerySchema = z.object({
+  from: z.string(),
+  to: z.string(),
+});
+export type TravelScheduleQuery = z.infer<typeof travelScheduleQuerySchema>;
