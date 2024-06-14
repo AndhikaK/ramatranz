@@ -11,6 +11,7 @@ import {
 import {
   Appbar,
   Button,
+  DateInputV2,
   SelectInputV2,
   Separator,
   TextInputV2,
@@ -126,7 +127,12 @@ export default function BookingTravelScreen() {
           </View>
         </View>
 
-        <TextInputV2
+        {/* <TextInputV2
+          placeholder={formatDate(new Date())}
+          leadingIcon={<IconCalendar width={21} height={21} color="main" />}
+        /> */}
+
+        <DateInputV2
           placeholder={formatDate(new Date())}
           leadingIcon={<IconCalendar width={21} height={21} color="main" />}
         />
