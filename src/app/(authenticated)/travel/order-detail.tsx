@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
+import { TravelTicketItem } from "@/features/travel/components";
 import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";
 
@@ -23,6 +24,8 @@ export default function TravelOrderDetailScreen() {
         <Typography fontFamily="Poppins-Bold" fontSize={16}>
           Perjalananmu
         </Typography>
+
+        <TravelTicketItem />
 
         <View
           style={{

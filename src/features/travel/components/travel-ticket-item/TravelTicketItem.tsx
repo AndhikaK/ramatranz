@@ -10,10 +10,6 @@ import { useAppTheme } from "@/context/theme-context";
 import { formatDate, formatTime } from "@/utils/datetime";
 
 export type TravelTicketItemProps = {
-  carModel: string;
-  carSeat: number;
-  price: number;
-  availableSeat: number;
   originCity: string;
   originDepartureDate: Date;
   destinationCity: string;
@@ -25,15 +21,11 @@ export type TravelTicketItemProps = {
 } & TouchableNativeFeedbackProps;
 export function TravelTicketItem(props: TravelTicketItemProps) {
   const {
-    availableSeat,
-    carModel,
-    carSeat,
     departureDate,
     destinationCity,
     destinationDepartureDate,
     originCity,
     originDepartureDate,
-    price,
     icon,
     customHeader,
     customFooter,
@@ -74,6 +66,7 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
               backgroundColor="paper"
               style={[style.separatorPoint, { borderColor: Colors.main }]}
             />
+            {icon}
             {icon}
             <View backgroundColor="main" style={style.separatorPoint} />
           </View>
