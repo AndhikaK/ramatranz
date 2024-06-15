@@ -139,7 +139,7 @@ export default function TravelOptionScreen() {
           <TravelTicketItem
             carModel={item.carModel}
             carSeat={item.carSeat}
-            availableSeat={item.availableSeat}
+            availableSeat={item.carSeat - item.seatTaken.length}
             departureDate={new Date(item.departureDate)}
             destinationCity={item.originCity}
             destinationDepartureDate={new Date(item.destinationDepartureDate)}
