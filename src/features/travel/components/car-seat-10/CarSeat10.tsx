@@ -39,7 +39,6 @@ export function CarSeat10(props: CarSeat10Props) {
 
       <View style={styles.backSeat}>
         <View style={styles.door}>
-<<<<<<< HEAD
           <Typography fontFamily="Poppins-SemiBold">P</Typography>
           <Typography fontFamily="Poppins-SemiBold" style={{ marginTop: -10 }}>
             i
@@ -53,19 +52,6 @@ export function CarSeat10(props: CarSeat10Props) {
           <Typography fontFamily="Poppins-SemiBold" style={{ marginTop: -10 }}>
             u
           </Typography>
-=======
-          {/* <Typography
-            fontFamily="Poppins-SemiBold"
-            style={{ position: "absolute", transform: [{ rotateX: "-90deg" }] }}
-          >
-            Pintu
-          </Typography> */}
-          <Typography fontFamily="Poppins-SemiBold">P</Typography>
-          <Typography fontFamily="Poppins-SemiBold">i</Typography>
-          <Typography fontFamily="Poppins-SemiBold">n</Typography>
-          <Typography fontFamily="Poppins-SemiBold">t</Typography>
-          <Typography fontFamily="Poppins-SemiBold">u</Typography>
->>>>>>> 73ade6a6471d21c8180bc4793947fca4eb89e1ec
         </View>
         <View style={{ alignItems: "flex-end", gap: 10 }}>
           <View style={{ flexDirection: "row", gap: 2 }}>
@@ -194,11 +180,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     alignItems: "center",
     justifyContent: "center",
-<<<<<<< HEAD
     width: 22,
-=======
-    width: 18,
->>>>>>> 73ade6a6471d21c8180bc4793947fca4eb89e1ec
     // transform: [{ rotate: "-90deg" }],
   },
 });
