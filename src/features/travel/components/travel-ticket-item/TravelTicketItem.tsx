@@ -67,7 +67,6 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
               style={[style.separatorPoint, { borderColor: Colors.main }]}
             />
             {icon}
-            {icon}
             <View backgroundColor="main" style={style.separatorPoint} />
           </View>
 

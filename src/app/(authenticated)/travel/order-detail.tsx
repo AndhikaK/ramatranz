@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
+import { IconCarSide } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { TravelTicketItem } from "@/features/travel/components";
 import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
@@ -16,6 +17,8 @@ export default function TravelOrderDetailScreen() {
 
   const travelSchedule = useTravelTravelSchedule();
 
+  if (!travelSchedule) return null;
+
   return (
     <View backgroundColor="paper" style={style.container}>
       <Appbar title="Detail Pesanan" backIconPress={() => router.back()} />
@@ -25,7 +28,33 @@ export default function TravelOrderDetailScreen() {
           Perjalananmu
         </Typography>
 
-        <TravelTicketItem />
+        <TravelTicketItem
+          departureDate={new Date(travelSchedule?.departureDate)}
+          destinationCity={travelSchedule?.originCity}
+          destinationDepartureDate={
+            new Date(travelSchedule?.destinationDepartureDate)
+          }
+          originCity={travelSchedule?.destinationCity}
+          originDepartureDate={new Date(travelSchedule?.originDepartureDate)}
+          icon={<IconCarSide color="main" />}
+          customHeader={
+            <View>
+              <Typography>{"\u2022"}</Typography>
+            </View>
+          }
+          customFooter={
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignContent: "center",
+              }}
+            >
+              <Typography>Titik Jemput</Typography>
+              <Typography>Titik Antar</Typography>
+            </View>
+          }
+        />
 
         <View
           style={{

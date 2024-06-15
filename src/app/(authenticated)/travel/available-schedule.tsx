@@ -151,15 +151,11 @@ export default function TravelOptionScreen() {
 
           return (
             <TravelTicketItem
-              carModel={item.carModel}
-              carSeat={item.carSeat}
-              availableSeat={availableSeat}
               departureDate={new Date(item.departureDate)}
               destinationCity={item.originCity}
               destinationDepartureDate={new Date(item.destinationDepartureDate)}
               originCity={item.destinationCity}
               originDepartureDate={new Date(item.originDepartureDate)}
-              price={item.price}
               onPress={() => handleSelectSchedule(item)}
               icon={<IconCarSide color="main" />}
               customHeader={
