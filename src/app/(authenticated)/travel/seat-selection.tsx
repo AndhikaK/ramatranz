@@ -22,10 +22,14 @@ export default function SeatSelectionScreen() {
   const traveSchedule = useTravelTravelSchedule();
 
   const handleSelectSeat = (seatNumber: string) => {
-    if (selectedSeats.find((item) => item === seatNumber)) {
+    const limit = 1;
+
+    if (selectedSeats.includes(seatNumber)) {
       setSelectedSeat(selectedSeats.filter((item) => item !== seatNumber));
     } else {
-      setSelectedSeat([...selectedSeats, seatNumber]);
+      if (selectedSeats.length < limit) {
+        setSelectedSeat([...selectedSeats, seatNumber]);
+      }
     }
   };
 
@@ -46,15 +50,19 @@ export default function SeatSelectionScreen() {
                 <Typography color="textsecondary">
                   {traveSchedule?.carModel}
                 </Typography>
-                <View
-                  backgroundColor="main"
-                  style={{ height: 4, width: 4, borderRadius: 99 }}
-                />
-                <Typography color="textsecondary">
-                  {selectedSeats
-                    .sort((a, b) => parseFloat(a) - parseFloat(b))
-                    .join(", ")}
-                </Typography>
+                {selectedSeats.length > 0 && (
+                  <>
+                    <View
+                      backgroundColor="main"
+                      style={{ height: 4, width: 4, borderRadius: 99 }}
+                    />
+                    <Typography color="textsecondary">
+                      {selectedSeats
+                        .sort((a, b) => parseFloat(a) - parseFloat(b))
+                        .join(", ")}
+                    </Typography>
+                  </>
+                )}
               </View>
             </View>
 
