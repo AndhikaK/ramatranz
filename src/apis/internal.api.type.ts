@@ -99,6 +99,7 @@ export type TravelScheduleResponseSuccess = {
     price: number;
     fasilitas: string;
     syarat_dan_ketentuan: string;
+    seatTaken: string[];
   }[];
   message: string;
   success: boolean;

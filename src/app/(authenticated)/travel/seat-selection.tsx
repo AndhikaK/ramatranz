@@ -1,15 +1,33 @@
+import { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
+import { IconCIChecklist } from "@/components/icons";
 import { AppColorUnion } from "@/constants/Colors";
 import { useAppTheme } from "@/context/theme-context";
+import { useAuthProfile } from "@/features/auth/store/auth-store";
+import { CarSeat10 } from "@/features/travel/components";
+import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
 
 export default function SeatSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { Colors } = useAppTheme();
+
+  const [selectedSeats, setSelectedSeat] = useState<string[]>([]);
+
+  const userProfile = useAuthProfile();
+  const traveSchedule = useTravelTravelSchedule();
+
+  const handleSelectSeat = (seatNumber: string) => {
+    if (selectedSeats.find((item) => item === seatNumber)) {
+      setSelectedSeat(selectedSeats.filter((item) => item !== seatNumber));
+    } else {
+      setSelectedSeat([...selectedSeats, seatNumber]);
+    }
+  };
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -17,6 +35,43 @@ export default function SeatSelectionScreen() {
 
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={style.headerContainer}>
+          <View style={[style.userInfoContainer, { borderColor: Colors.main }]}>
+            <View style={{ flex: 1, gap: 12 }}>
+              <Typography fontFamily="Poppins-Bold" fontSize={16}>
+                1. {userProfile?.nama}
+              </Typography>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <Typography color="textsecondary">
+                  {traveSchedule?.carModel}
+                </Typography>
+                <View
+                  backgroundColor="main"
+                  style={{ height: 4, width: 4, borderRadius: 99 }}
+                />
+                <Typography color="textsecondary">
+                  {selectedSeats
+                    .sort((a, b) => parseFloat(a) - parseFloat(b))
+                    .join(", ")}
+                </Typography>
+              </View>
+            </View>
+
+            <View
+              style={{
+                height: 16,
+                width: 16,
+                borderRadius: 99,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              backgroundColor="secondary"
+            >
+              <IconCIChecklist color="paper" size={10} />
+            </View>
+          </View>
+
           <View style={style.seatDescriptionContainer}>
             <SeatDescription color="quarternary" label="Terisi" />
             <SeatDescription color="dangerbase" label="Terpilih" />
@@ -32,6 +87,14 @@ export default function SeatSelectionScreen() {
               WAJIB BELI UNTUK ANAK DIATAS USIA 7 TAHUN{" "}
             </Typography>
           </View>
+
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <CarSeat10
+              filled={traveSchedule?.seatTaken || []}
+              selected={selectedSeats}
+              onSeatPress={handleSelectSeat}
+            />
+          </View>
         </View>
       </ScrollView>
 
@@ -44,7 +107,7 @@ export default function SeatSelectionScreen() {
           },
         ]}
       >
-        <Button>Lanjutkan</Button>
+        <Button disabled={selectedSeats.length <= 0}>Lanjutkan</Button>
       </View>
     </View>
   );
@@ -99,5 +162,12 @@ const style = StyleSheet.create({
     height: 16,
     width: 16,
     borderRadius: 2,
+  },
+  userInfoContainer: {
+    borderWidth: 1,
+    borderRadius: 2,
+    flexDirection: "row",
+    gap: 12,
+    padding: 12,
   },
 });

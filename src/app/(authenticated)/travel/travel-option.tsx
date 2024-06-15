@@ -42,6 +42,13 @@ export default function TravelOptionScreen() {
   const handleSelectSchedule = (
     travelSchedule: TravelScheduleResponseSuccess["data"][number]
   ) => {
+    if (travelSchedule.carSeat - travelSchedule.seatTaken.length <= 0) {
+      Snackbar.show({
+        message: "Kursi sudah habis",
+      });
+      return;
+    }
+
     if (!doorToDoorPayload?.from || !doorToDoorPayload.to) {
       Snackbar.show({
         message:
@@ -50,12 +57,6 @@ export default function TravelOptionScreen() {
       return;
     }
 
-    if (travelSchedule.availableSeat <= 0) {
-      Snackbar.show({
-        message: "Kursi sudah habis",
-      });
-      return;
-    }
     setTravelSchedule(travelSchedule);
     router.push("/travel/travel-detail");
   };
@@ -139,7 +140,7 @@ export default function TravelOptionScreen() {
           <TravelTicketItem
             carModel={item.carModel}
             carSeat={item.carSeat}
-            availableSeat={item.availableSeat}
+            availableSeat={item.carSeat - item.seatTaken.length}
             departureDate={new Date(item.departureDate)}
             destinationCity={item.originCity}
             destinationDepartureDate={new Date(item.destinationDepartureDate)}
