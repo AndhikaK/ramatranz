@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import RenderHTML, { defaultSystemFonts } from "react-native-render-html";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Button, Separator, Tab, Typography, View } from "@/components";
+import { Button, Tab, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
 import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";

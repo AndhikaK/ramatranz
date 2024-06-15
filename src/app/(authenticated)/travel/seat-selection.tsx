@@ -37,72 +37,77 @@ export default function SeatSelectionScreen() {
     <View backgroundColor="paper" style={style.container}>
       <Appbar backIconPress={() => router.back()} title="Pilih Kursi" />
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={style.headerContainer}>
-          <View style={[style.userInfoContainer, { borderColor: Colors.main }]}>
-            <View style={{ flex: 1, gap: 12 }}>
-              <Typography fontFamily="Poppins-Bold" fontSize={16}>
-                1. {userProfile?.nama}
-              </Typography>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <Typography color="textsecondary">
-                  {traveSchedule?.carModel}
-                </Typography>
-                {selectedSeats.length > 0 && (
-                  <>
-                    <View
-                      backgroundColor="main"
-                      style={{ height: 4, width: 4, borderRadius: 99 }}
-                    />
-                    <Typography color="textsecondary">
-                      {selectedSeats
-                        .sort((a, b) => parseFloat(a) - parseFloat(b))
-                        .join(", ")}
-                    </Typography>
-                  </>
-                )}
-              </View>
-            </View>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={style.contentContainer}
+      >
+        <Typography fontFamily="Poppins-Bold" fontSize={16}>
+          Perjalananmu
+        </Typography>
 
-            <View
-              style={{
-                height: 16,
-                width: 16,
-                borderRadius: 99,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              backgroundColor="secondary"
-            >
-              <IconCIChecklist color="paper" size={10} />
-            </View>
-          </View>
-
-          <View style={style.seatDescriptionContainer}>
-            <SeatDescription color="quarternary" label="Terisi" />
-            <SeatDescription color="dangerbase" label="Terpilih" />
-            <SeatDescription color="main" label="Tersedia" />
-          </View>
-
-          <View backgroundColor="dangerlight" style={style.informationBanner}>
-            <Typography
-              fontFamily="OpenSans-Semibold"
-              fontSize={7}
-              color="dangerbase"
-            >
-              WAJIB BELI UNTUK ANAK DIATAS USIA 7 TAHUN{" "}
+        <View style={[style.userInfoContainer, { borderColor: Colors.main }]}>
+          <View style={{ flex: 1, gap: 12 }}>
+            <Typography fontFamily="Poppins-Bold" fontSize={16}>
+              1. {userProfile?.nama}
             </Typography>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <Typography color="textsecondary">
+                {traveSchedule?.carModel}
+              </Typography>
+              {selectedSeats.length > 0 && (
+                <>
+                  <View
+                    backgroundColor="main"
+                    style={{ height: 4, width: 4, borderRadius: 99 }}
+                  />
+                  <Typography color="textsecondary">
+                    {selectedSeats
+                      .sort((a, b) => parseFloat(a) - parseFloat(b))
+                      .join(", ")}
+                  </Typography>
+                </>
+              )}
+            </View>
           </View>
 
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <CarSeat10
-              filled={traveSchedule?.seatTaken || []}
-              selected={selectedSeats}
-              onSeatPress={handleSelectSeat}
-            />
+          <View
+            style={{
+              height: 16,
+              width: 16,
+              borderRadius: 99,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            backgroundColor="secondary"
+          >
+            <IconCIChecklist color="paper" size={10} />
           </View>
+        </View>
+
+        <View style={style.seatDescriptionContainer}>
+          <SeatDescription color="quarternary" label="Terisi" />
+          <SeatDescription color="dangerbase" label="Terpilih" />
+          <SeatDescription color="main" label="Tersedia" />
+        </View>
+
+        <View backgroundColor="dangerlight" style={style.informationBanner}>
+          <Typography
+            fontFamily="OpenSans-Semibold"
+            fontSize={7}
+            color="dangerbase"
+          >
+            WAJIB BELI UNTUK ANAK DIATAS USIA 7 TAHUN{" "}
+          </Typography>
+        </View>
+
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <CarSeat10
+            filled={traveSchedule?.seatTaken || []}
+            selected={selectedSeats}
+            onSeatPress={handleSelectSeat}
+          />
         </View>
       </ScrollView>
 
@@ -115,7 +120,12 @@ export default function SeatSelectionScreen() {
           },
         ]}
       >
-        <Button disabled={selectedSeats.length <= 0}>Lanjutkan</Button>
+        <Button
+          disabled={selectedSeats.length <= 0}
+          onPress={() => router.replace("/travel/order-detail")}
+        >
+          Lanjutkan
+        </Button>
       </View>
     </View>
   );
@@ -140,7 +150,8 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerContainer: {
+  contentContainer: {
+    flexGrow: 1,
     padding: 24,
     gap: 24,
   },

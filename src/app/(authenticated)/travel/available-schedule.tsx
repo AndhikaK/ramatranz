@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TravelScheduleResponseSuccess } from "@/apis/internal.api.type";
 import { Appbar, Loader, Snackbar, Typography, View } from "@/components";
 import {
+  IconCarSide,
   IconDoorThin,
   IconIcArrowRight,
   IconPinSharp,
@@ -23,6 +24,7 @@ import {
   useTravelbookingPayload,
   useTravelPointToPointPayload,
 } from "@/features/travel/store/travel-store";
+import { formatCurrency } from "@/utils/common";
 import { formatDate } from "@/utils/datetime";
 
 export default function TravelOptionScreen() {
@@ -144,20 +146,28 @@ export default function TravelOptionScreen() {
 
       <FlatList
         data={travelScheduleQuery.data?.data || []}
-        renderItem={({ item }) => (
-          <TravelTicketItem
-            carModel={item.carModel}
-            carSeat={item.carSeat}
-            availableSeat={item.carSeat - item.seatTaken.length}
-            departureDate={new Date(item.departureDate)}
-            destinationCity={item.originCity}
-            destinationDepartureDate={new Date(item.destinationDepartureDate)}
-            originCity={item.destinationCity}
-            originDepartureDate={new Date(item.originDepartureDate)}
-            price={item.price}
-            onPress={() => handleSelectSchedule(item)}
-          />
-        )}
+        renderItem={({ item }) => {
+          const availableSeat = item.carSeat - item.seatTaken.length;
+
+          return (
+            <TravelTicketItem
+              carModel={item.carModel}
+              carSeat={item.carSeat}
+              availableSeat={availableSeat}
+              departureDate={new Date(item.departureDate)}
+              destinationCity={item.originCity}
+              destinationDepartureDate={new Date(item.destinationDepartureDate)}
+              originCity={item.destinationCity}
+              originDepartureDate={new Date(item.originDepartureDate)}
+              price={item.price}
+              onPress={() => handleSelectSchedule(item)}
+              icon={<IconCarSide color="main" />}
+              customHeader={
+                <ScheduleHeader item={item} availableSeat={availableSeat} />
+              }
+            />
+          );
+        }}
         ListEmptyComponent={() => (
           <View style={style.emptyScheduleContainer}>
             {travelScheduleQuery.isFetching ? (
@@ -178,6 +188,43 @@ export default function TravelOptionScreen() {
           paddingBottom: insets.bottom + 20,
         }}
       />
+    </View>
+  );
+}
+
+type ScheduleHeaderProps = {
+  item: TravelScheduleResponseSuccess["data"][number];
+  availableSeat: number;
+};
+function ScheduleHeader({ item, availableSeat }: ScheduleHeaderProps) {
+  return (
+    <View style={style.headerContainer}>
+      <View style={style.leftHeaderWrapper}>
+        <Typography color="main">{item.carModel}</Typography>
+        <View backgroundColor="main" style={style.point} />
+        <Typography color="main">{item.carSeat}</Typography>
+      </View>
+
+      <View style={style.rightHeaderWrapper}>
+        <Typography color="main" fontFamily="OpenSans-Semibold" fontSize={16}>
+          {formatCurrency(item.price)}
+        </Typography>
+        <Typography
+          color={
+            availableSeat <= 0 || availableSeat < item.carSeat / 2
+              ? "dangerbase"
+              : "success"
+          }
+          fontFamily="OpenSans-Regular"
+          fontSize={14}
+        >
+          {availableSeat <= 0
+            ? "Tidak tersedia"
+            : availableSeat > item.carSeat / 2
+              ? "Tersedia"
+              : `${availableSeat} kursi lagi`}
+        </Typography>
+      </View>
     </View>
   );
 }
@@ -260,5 +307,25 @@ const style = StyleSheet.create({
     minHeight: 400,
     justifyContent: "center",
     alignItems: "center",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 24,
+  },
+  leftHeaderWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  rightHeaderWrapper: {
+    alignItems: "flex-end",
+    gap: 4,
+  },
+  point: {
+    height: 4,
+    width: 4,
+    borderRadius: 99,
   },
 });

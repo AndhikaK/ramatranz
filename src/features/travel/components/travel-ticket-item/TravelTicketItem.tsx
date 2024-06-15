@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   StyleSheet,
   TouchableNativeFeedbackProps,
@@ -5,9 +6,7 @@ import {
 } from "react-native";
 
 import { Separator, Typography, View } from "@/components";
-import { IconCarSide } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
-import { formatCurrency } from "@/utils/common";
 import { formatDate, formatTime } from "@/utils/datetime";
 
 export type TravelTicketItemProps = {
@@ -20,6 +19,9 @@ export type TravelTicketItemProps = {
   destinationCity: string;
   destinationDepartureDate: Date;
   departureDate: Date;
+  customHeader?: ReactNode;
+  customFooter?: ReactNode;
+  icon?: ReactNode;
 } & TouchableNativeFeedbackProps;
 export function TravelTicketItem(props: TravelTicketItemProps) {
   const {
@@ -32,6 +34,9 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
     originCity,
     originDepartureDate,
     price,
+    icon,
+    customHeader,
+    customFooter,
     ...rest
   } = props;
 
@@ -40,44 +45,16 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
   return (
     <TouchableWithoutFeedback {...rest}>
       <View style={[style.container, { borderColor: Colors.outlineborder }]}>
-        <View style={style.headerContainer}>
-          <View style={style.leftHeaderWrapper}>
-            <Typography color="main">{carModel}</Typography>
-            <View backgroundColor="main" style={style.point} />
-            <Typography color="main">{carSeat}</Typography>
-          </View>
+        {!!customHeader && (
+          <>
+            {customHeader}
+            <View>
+              <Separator />
+            </View>
+          </>
+        )}
 
-          <View style={style.rightHeaderWrapper}>
-            <Typography
-              color="main"
-              fontFamily="OpenSans-Semibold"
-              fontSize={16}
-            >
-              {formatCurrency(price)}
-            </Typography>
-            <Typography
-              color={
-                availableSeat <= 0 || availableSeat < carSeat / 2
-                  ? "dangerbase"
-                  : "success"
-              }
-              fontFamily="OpenSans-Regular"
-              fontSize={14}
-            >
-              {availableSeat <= 0
-                ? "Tidak tersedia"
-                : availableSeat > carSeat / 2
-                  ? "Tersedia"
-                  : `${availableSeat} kursi lagi`}
-            </Typography>
-          </View>
-        </View>
-
-        <View>
-          <Separator />
-        </View>
-
-        <View style={style.headerContainer}>
+        <View style={style.contentContainer}>
           <View style={style.contentLeftWrapper}>
             <Typography color="textsecondary" fontSize={14} numberOfLines={1}>
               {originCity}
@@ -97,7 +74,7 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
               backgroundColor="paper"
               style={[style.separatorPoint, { borderColor: Colors.main }]}
             />
-            <IconCarSide color="main" />
+            {icon}
             <View backgroundColor="main" style={style.separatorPoint} />
           </View>
 
@@ -120,6 +97,8 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
             {formatTime(departureDate)}
           </Typography>
         </View>
+
+        {customFooter}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -130,26 +109,6 @@ const style = StyleSheet.create({
     borderWidth: 1,
     padding: 12,
     gap: 10,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 24,
-  },
-  leftHeaderWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  rightHeaderWrapper: {
-    alignItems: "flex-end",
-    gap: 4,
-  },
-  point: {
-    height: 4,
-    width: 4,
-    borderRadius: 99,
   },
   row: {
     flexDirection: "row",
@@ -183,5 +142,11 @@ const style = StyleSheet.create({
     flex: 1,
     alignItems: "flex-end",
     gap: 4,
+  },
+  contentContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 24,
   },
 });

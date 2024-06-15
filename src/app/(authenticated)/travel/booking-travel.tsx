@@ -51,7 +51,7 @@ export default function BookingTravelScreen() {
 
   const handleSubmitForm = handleSubmit((data) => {
     setBookingPayload(data);
-    router.push("/travel/travel-option");
+    router.push("/travel/available-schedule");
   });
 
   useEffect(() => {

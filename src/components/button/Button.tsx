@@ -45,6 +45,7 @@ export function Button(props: ButtonProps) {
                       ? "outlineborder"
                       : "main"
                 }
+                style={{ textAlign: "center" }}
               >
                 {children}
               </Typography>
