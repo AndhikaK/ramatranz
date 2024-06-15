@@ -11,10 +11,10 @@ import {
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostRegisterPayload,
-  TraveDoorToDoorResponseSuccess,
-  TravelDoorToDoorParams,
+  TravelPointToPointApiParams,
   TravelScheduleQuery,
   TravelScheduleResponseSuccess,
+  TravePointToPointApiResponseSuccess,
 } from "./internal.api.type";
 
 const apiClient = axios.create({
@@ -116,10 +116,12 @@ export const getTravelBranch = async () => {
   return response.data;
 };
 
-export const getDoorToDoorPoint = async (params: TravelDoorToDoorParams) => {
-  const response = await apiClientMock<TraveDoorToDoorResponseSuccess>({
+export const getPointToPointApi = async (
+  params: TravelPointToPointApiParams
+) => {
+  const response = await apiClientMock<TravePointToPointApiResponseSuccess>({
     method: "GET",
-    url: "/api/door-to-door",
+    url: "/api/point-to-point",
     params,
   });
 

@@ -104,10 +104,10 @@ export type TravelScheduleResponseSuccess = {
   message: string;
   success: boolean;
 };
-export type TravelDoorToDoorParams = {
+export type TravelPointToPointApiParams = {
   point: string;
 };
-export type TraveDoorToDoorResponseSuccess = {
+export type TravePointToPointApiResponseSuccess = {
   data: {
     nama: string;
   }[];

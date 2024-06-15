@@ -21,7 +21,7 @@ import { TravelTicketItem } from "@/features/travel/components";
 import {
   useTravelActions,
   useTravelbookingPayload,
-  useTravelDoorToDoorPayload,
+  useTravelPointToPointPayload,
 } from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 
@@ -30,8 +30,8 @@ export default function TravelOptionScreen() {
   const insets = useSafeAreaInsets();
 
   const travelBookingPayload = useTravelbookingPayload();
-  const doorToDoorPayload = useTravelDoorToDoorPayload();
-  const { setDoorToDoorPayload, setTravelSchedule } = useTravelActions();
+  const pointToPointPayload = useTravelPointToPointPayload();
+  const { setPointToPointPayload, setTravelSchedule } = useTravelActions();
 
   const travelScheduleQuery = useGetTravelSchedule({
     from: travelBookingPayload?.from || "",
@@ -49,7 +49,7 @@ export default function TravelOptionScreen() {
       return;
     }
 
-    if (!doorToDoorPayload?.from || !doorToDoorPayload.to) {
+    if (!pointToPointPayload?.from || !pointToPointPayload.to) {
       Snackbar.show({
         message:
           "Pilih alamat pada Door to Door/Point to Point terlebih dahulu",
@@ -61,13 +61,13 @@ export default function TravelOptionScreen() {
     router.push("/travel/travel-detail");
   };
 
-  // reset doorToDoorPayload to make sure it fresh data
+  // reset pointToPointPaylaod to make sure it fresh data
   useEffect(() => {
-    setDoorToDoorPayload({
+    setPointToPointPayload({
       from: undefined,
       to: undefined,
     });
-  }, [setDoorToDoorPayload]);
+  }, [setPointToPointPayload]);
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -110,11 +110,12 @@ export default function TravelOptionScreen() {
             label="Door to Door"
             disabled={
               !travelScheduleQuery.data ||
-              travelScheduleQuery.data?.data.length <= 0
+              travelScheduleQuery.data?.data.length <= 0 ||
+              true
             }
             onPress={() =>
               router.push({
-                pathname: "/travel/form-door-to-door/[pageType]",
+                pathname: "/travel/form-point-to-point/[pageType]",
                 params: {
                   pageType: "from",
                 },
@@ -127,8 +128,15 @@ export default function TravelOptionScreen() {
             // disable point to point, since it need TBD
             disabled={
               !travelScheduleQuery.data ||
-              travelScheduleQuery.data?.data.length <= 0 ||
-              true
+              travelScheduleQuery.data?.data.length <= 0
+            }
+            onPress={() =>
+              router.push({
+                pathname: "/travel/form-point-to-point/[pageType]",
+                params: {
+                  pageType: "from",
+                },
+              })
             }
           />
         </View>

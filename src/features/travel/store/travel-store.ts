@@ -9,7 +9,7 @@ import { ExtractState } from "@/libs/zustand";
 
 type TravelStore = {
   bookingPayload?: TravelScheduleQuery;
-  doorToDoorPayload?: {
+  pointToPointPayload?: {
     from?: string;
     to?: string;
   };
@@ -17,7 +17,7 @@ type TravelStore = {
 
   actions: {
     setBookingPayload: (bookinPayload?: TravelScheduleQuery) => void;
-    setDoorToDoorPayload: (bookinPayload?: {
+    setPointToPointPayload: (bookinPayload?: {
       from?: string;
       to?: string;
     }) => void;
@@ -30,12 +30,13 @@ type TravelStore = {
 
 const travelStore = createStore<TravelStore>()((set, get) => ({
   bookingPayload: undefined,
-  doorToDoorPayload: undefined,
+  pointToPointPayload: undefined,
   travelSchedule: undefined,
 
   actions: {
     setBookingPayload: (bookingPayload) => set({ bookingPayload }),
-    setDoorToDoorPayload: (doorToDoorPayload) => set({ doorToDoorPayload }),
+    setPointToPointPayload: (pointToPointPayload) =>
+      set({ pointToPointPayload: pointToPointPayload }),
     setTravelSchedule: (travelSchedule) => set({ travelSchedule }),
     clearBookingSession: async () => {
       set({
@@ -50,8 +51,8 @@ type Params<U> = Parameters<typeof useStore<typeof travelStore, U>>;
 // Selectors
 const bookingPayloadSelector = (state: ExtractState<typeof travelStore>) =>
   state.bookingPayload;
-const doorToDoorPayloadSelector = (state: ExtractState<typeof travelStore>) =>
-  state.doorToDoorPayload;
+const pointToPointPayloadSelector = (state: ExtractState<typeof travelStore>) =>
+  state.pointToPointPayload;
 const travelScheduleSelector = (state: ExtractState<typeof travelStore>) =>
   state.travelSchedule;
 const actionsSelector = (state: ExtractState<typeof travelStore>) =>
@@ -60,8 +61,8 @@ const actionsSelector = (state: ExtractState<typeof travelStore>) =>
 // getters
 export const getbookingPayload = () =>
   bookingPayloadSelector(travelStore.getState());
-export const getdoorToDoorPayload = () =>
-  doorToDoorPayloadSelector(travelStore.getState());
+export const getPointToPointPayload = () =>
+  pointToPointPayloadSelector(travelStore.getState());
 export const getTravelSchedule = () =>
   travelScheduleSelector(travelStore.getState());
 export const getTravelActions = () => actionsSelector(travelStore.getState());
@@ -73,8 +74,8 @@ function useTravelStore<U>(selector: Params<U>[1]) {
 // Hooks
 export const useTravelbookingPayload = () =>
   useTravelStore(bookingPayloadSelector);
-export const useTravelDoorToDoorPayload = () =>
-  useTravelStore(doorToDoorPayloadSelector);
+export const useTravelPointToPointPayload = () =>
+  useTravelStore(pointToPointPayloadSelector);
 export const useTravelTravelSchedule = () =>
   useTravelStore(travelScheduleSelector);
 export const useTravelActions = () => useTravelStore(actionsSelector);

@@ -12,13 +12,13 @@ import {
   View,
 } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
-import { useGetDoorToDoor } from "@/features/travel/api/useGetDoorToDoor";
+import { useGetPointToPointApi } from "@/features/travel/api/useGetPointToPointApi";
 import {
   useTravelActions,
-  useTravelDoorToDoorPayload,
+  useTravelPointToPointPayload,
 } from "@/features/travel/store/travel-store";
 
-export default function FormDoorToDoor() {
+export default function FormPoinToPointScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const params = useLocalSearchParams<{
@@ -31,22 +31,22 @@ export default function FormDoorToDoor() {
 
   const [selectedPoint, setSelectedPoint] = useState("");
 
-  const doorToDoorPayload = useTravelDoorToDoorPayload();
-  const { setDoorToDoorPayload } = useTravelActions();
+  const pointToPointPayload = useTravelPointToPointPayload();
+  const { setPointToPointPayload } = useTravelActions();
 
-  const doorToDoorQuery = useGetDoorToDoor({
-    point: doorToDoorPayload?.[pageType] || "",
+  const pointToPointQuery = useGetPointToPointApi({
+    point: pointToPointPayload?.[pageType] || "",
   });
 
   const handleSavePoint = () => {
-    setDoorToDoorPayload({
-      ...doorToDoorPayload,
+    setPointToPointPayload({
+      ...pointToPointPayload,
       [pageType]: selectedPoint,
     });
 
     if (pageType === "from") {
       router.replace({
-        pathname: "/travel/form-door-to-door/[pageType]",
+        pathname: "/travel/form-point-to-point/[pageType]",
         params: {
           pageType: "to",
         },
@@ -65,7 +65,7 @@ export default function FormDoorToDoor() {
       />
 
       <FlatList
-        data={doorToDoorQuery.data?.data ?? []}
+        data={pointToPointQuery.data?.data ?? []}
         ListHeaderComponent={() => (
           <View backgroundColor="outlineborder" style={styles.headerContainer}>
             <Typography
@@ -92,7 +92,7 @@ export default function FormDoorToDoor() {
         )}
         ListEmptyComponent={() => (
           <View style={styles.emptyListContainer}>
-            {doorToDoorQuery.isFetching ? (
+            {pointToPointQuery.isFetching ? (
               <Loader />
             ) : (
               <Typography fontFamily="Poppins-Medium">
