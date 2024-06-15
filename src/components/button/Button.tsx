@@ -72,7 +72,8 @@ export function Button(props: ButtonProps) {
 const style = StyleSheet.create({
   container: {
     borderRadius: 2,
-    minHeight: 48,
+    minHeight: 40,
+    paddingVertical: 4,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,

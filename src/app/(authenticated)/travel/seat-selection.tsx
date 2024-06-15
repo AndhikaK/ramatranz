@@ -9,28 +9,46 @@ import { AppColorUnion } from "@/constants/Colors";
 import { useAppTheme } from "@/context/theme-context";
 import { useAuthProfile } from "@/features/auth/store/auth-store";
 import { CarSeat10 } from "@/features/travel/components";
-import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
+import {
+  useTravelActions,
+  useTravelSchedule,
+} from "@/features/travel/store/travel-store";
 
+export type SelectedSeat = {
+  passengerName: string;
+  seat: string;
+};
 export default function SeatSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { Colors } = useAppTheme();
 
-  const [selectedSeats, setSelectedSeat] = useState<string[]>([]);
+  const [selectedSeats, setSelectedSeat] = useState<SelectedSeat[]>([]);
 
   const userProfile = useAuthProfile();
-  const traveSchedule = useTravelTravelSchedule();
+  const traveSchedule = useTravelSchedule();
+  const { setPassenger } = useTravelActions();
 
   const handleSelectSeat = (seatNumber: string) => {
     const limit = 1;
 
-    if (selectedSeats.includes(seatNumber)) {
-      setSelectedSeat(selectedSeats.filter((item) => item !== seatNumber));
+    if (selectedSeats.find((seats) => seats.seat === seatNumber)) {
+      setSelectedSeat(
+        selectedSeats.filter((seats) => seats.seat !== seatNumber)
+      );
     } else {
       if (selectedSeats.length < limit) {
-        setSelectedSeat([...selectedSeats, seatNumber]);
+        setSelectedSeat([
+          ...selectedSeats,
+          { passengerName: userProfile?.nama || "", seat: seatNumber },
+        ]);
       }
     }
+  };
+
+  const onProceedNextPage = () => {
+    setPassenger(selectedSeats);
+    router.replace("/travel/order-detail");
   };
 
   return (
@@ -64,6 +82,7 @@ export default function SeatSelectionScreen() {
                   />
                   <Typography color="textsecondary">
                     {selectedSeats
+                      .map((item) => item.seat)
                       .sort((a, b) => parseFloat(a) - parseFloat(b))
                       .join(", ")}
                   </Typography>
@@ -105,7 +124,7 @@ export default function SeatSelectionScreen() {
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <CarSeat10
             filled={traveSchedule?.seatTaken || []}
-            selected={selectedSeats}
+            selected={selectedSeats.map((item) => item.seat)}
             onSeatPress={handleSelectSeat}
           />
         </View>
@@ -122,7 +141,7 @@ export default function SeatSelectionScreen() {
       >
         <Button
           disabled={selectedSeats.length <= 0}
-          onPress={() => router.replace("/travel/order-detail")}
+          onPress={onProceedNextPage}
         >
           Lanjutkan
         </Button>

@@ -1,12 +1,16 @@
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import parseErrorStack from "react-native/Libraries/Core/Devtools/parseErrorStack";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
 import { IconCarSide } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { TravelTicketItem } from "@/features/travel/components";
-import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
+import {
+  useTravelPassenger,
+  useTravelSchedule,
+} from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";
 
 export default function TravelOrderDetailScreen() {
@@ -15,7 +19,8 @@ export default function TravelOrderDetailScreen() {
 
   const { Colors } = useAppTheme();
 
-  const travelSchedule = useTravelTravelSchedule();
+  const travelSchedule = useTravelSchedule();
+  const travelPassenger = useTravelPassenger();
 
   if (!travelSchedule) return null;
 
@@ -39,7 +44,10 @@ export default function TravelOrderDetailScreen() {
           icon={<IconCarSide color="main" />}
           customHeader={
             <View>
-              <Typography>{"\u2022"}</Typography>
+              <Typography>
+                {travelSchedule.carModel} {"\u2022"}{" "}
+                {travelPassenger?.map((item) => item.seat).join(", ")}
+              </Typography>
             </View>
           }
           customFooter={
@@ -68,6 +76,31 @@ export default function TravelOrderDetailScreen() {
           </Typography>
           <Button>Tambah</Button>
         </View>
+
+        {travelPassenger?.map((passenger) => (
+          <View
+            key={passenger.passengerName}
+            style={[
+              style.passengerContainer,
+              { borderColor: Colors.outlineborder },
+            ]}
+          >
+            <View>
+              <Typography
+                fontFamily="Poppins-Bold"
+                fontSize={16}
+                numberOfLines={1}
+              >
+                {passenger.passengerName}
+              </Typography>
+              <Typography color="textsecondary">
+                {travelSchedule.carModel} {"\u2022"} {passenger.seat}
+              </Typography>
+            </View>
+
+            <Button variant="secondary">Ganti kursi</Button>
+          </View>
+        ))}
       </View>
 
       <View
@@ -93,7 +126,7 @@ export default function TravelOrderDetailScreen() {
         </View>
         <View style={{ flex: 1 }}>
           <Button onPressIn={() => router.push("/travel/seat-selection")}>
-            {"Proses ke" + `\n` + "pembayaran"}
+            {"Proses ke" + `\n` + "Pembayaran"}
           </Button>
         </View>
       </View>
@@ -116,5 +149,13 @@ const style = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
     borderTopWidth: 1,
+  },
+  passengerContainer: {
+    borderWidth: 1,
+    borderRadius: 2,
+    padding: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

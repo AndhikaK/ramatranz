@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button, Tab, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
-import { useTravelTravelSchedule } from "@/features/travel/store/travel-store";
+import { useTravelSchedule } from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";
 import { formatTime } from "@/utils/datetime";
 
@@ -16,7 +16,7 @@ export default function TravelDetailScreen() {
 
   const [activeTab, setActiveTab] = useState("description");
 
-  const travelSchedule = useTravelTravelSchedule();
+  const travelSchedule = useTravelSchedule();
 
   return (
     <View
