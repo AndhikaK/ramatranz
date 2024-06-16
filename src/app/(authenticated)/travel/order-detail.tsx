@@ -30,8 +30,6 @@ export default function TravelOrderDetailScreen() {
     } else {
       router.push("/travel/seat-selection");
     }
-
-    return;
   };
 
   if (!travelSchedule) return null;

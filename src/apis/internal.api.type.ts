@@ -121,3 +121,8 @@ export type GetPaymentMethodResponseSuccess = {
     nama: string;
   }[];
 };
+
+export const postProcessPaymentSchema = z.object({});
+export type PostProcessPaymentPayload = z.infer<
+  typeof postProcessPaymentSchema
+>;

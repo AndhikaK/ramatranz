@@ -11,6 +11,7 @@ import {
   GetTravelBranchResponseSuccess,
   PostLoginPayload,
   PostLoginResponseSuccess,
+  PostProcessPaymentPayload,
   PostRegisterPayload,
   TravelPointToPointApiParams,
   TravelScheduleQuery,
@@ -133,6 +134,16 @@ export const getPaymentMethod = async () => {
   const response = await apiClientMock<GetPaymentMethodResponseSuccess>({
     method: "GET",
     url: "/api/pembayaran/metode-pembayaran",
+  });
+
+  return response.data;
+};
+
+export const postProcessPayment = async (data: PostProcessPaymentPayload) => {
+  const response = await apiClientMock({
+    method: "POST",
+    url: "/api/pembayaran/process",
+    data,
   });
 
   return response.data;

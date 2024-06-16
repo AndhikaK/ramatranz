@@ -8,12 +8,15 @@ import {
   Button,
   Checkbox,
   Loader,
+  PageWrapper,
+  Snackbar,
   Typography,
   View,
 } from "@/components";
 import { IconCarSide, IconPinSharp } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetPaymentMethodQuery } from "@/features/payment/api/useGetPaymentMethodQuery";
+import { usePostProcessPaymentMutation } from "@/features/payment/api/usePostProcessPaymentMutation";
 import { TravelTicketItem } from "@/features/travel/components";
 import {
   useTravelPassenger,
@@ -38,11 +41,33 @@ export default function TravelPaymentScreen() {
 
   // query & mutation
   const paymentMethodQuery = useGetPaymentMethodQuery();
+  const processPaymentMutation = usePostProcessPaymentMutation();
+
+  // method
+  const handleProcessPayment = () => {
+    const processPaymentData = {};
+    processPaymentMutation.mutate(processPaymentData, {
+      onSuccess: () => {
+        Snackbar.show({ message: "Order pesanan berhasil" });
+        router.push("/payment/status");
+      },
+      onError: () => {
+        Snackbar.show({
+          message: "Order pesanan gagal, coba setelah beberapa saat",
+          variant: "danger",
+        });
+      },
+    });
+  };
 
   if (!travelSchedule) return null;
 
   return (
-    <View backgroundColor="paper" style={styles.container}>
+    <PageWrapper
+      isLoading={processPaymentMutation.isPending}
+      backgroundColor="paper"
+      style={styles.container}
+    >
       <Appbar title="Pembayaran" backIconPress={() => router.back()} />
       <View style={styles.contentContainer}>
         <Typography fontFamily="Poppins-Bold" fontSize={16}>
@@ -154,12 +179,15 @@ export default function TravelPaymentScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button onPressIn={() => router.push("/travel/seat-selection")}>
+          <Button
+            disabled={!selectedPaymentMethod}
+            onPressIn={handleProcessPayment}
+          >
             Bayar
           </Button>
         </View>
       </View>
-    </View>
+    </PageWrapper>
   );
 }
 
