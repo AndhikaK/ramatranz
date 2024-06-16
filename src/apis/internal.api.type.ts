@@ -141,3 +141,9 @@ export type OrderListResponseSuccess = {
   message: string;
   success: boolean;
 };
+
+export type GetPaymentStatusResponseSuccess = {
+  data: {
+    status: "waiting" | "success" | "failed";
+  };
+};

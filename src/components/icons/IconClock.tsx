@@ -1,31 +1,15 @@
-import * as React from "react";
-import Svg, { Path } from "react-native-svg";
+import { Iconify } from "react-native-iconify";
 
 import { useAppTheme } from "@/context/theme-context";
 
 import { IconProps } from "./icon.type";
 
-export function IconClock({
-  width = 24,
-  height = 24,
-  color = "textprimary",
-  ...rest
-}: IconProps) {
+export function IconClock({ size = 24, color = "textprimary" }: IconProps) {
   const { Colors } = useAppTheme();
 
   return (
-    <Svg
-      width={width}
-      height={height}
-      viewBox="0 0 22 22"
-      fill="none"
-      {...rest}
-    >
-      <Path fill="#fff" d="M0 0H22V22H0z" />
-      <Path
-        d="M11 2a9.38 9.38 0 00-5 1.433 8.625 8.625 0 00-3.315 3.814 8.062 8.062 0 00-.512 4.911 8.365 8.365 0 002.463 4.352 9.175 9.175 0 004.608 2.327 9.494 9.494 0 005.2-.484 8.91 8.91 0 004.04-3.13A8.168 8.168 0 0020 10.5c-.003-2.254-.951-4.414-2.639-6.008C15.674 2.9 13.386 2.002 11 2zm0 15.692a7.938 7.938 0 01-4.23-1.212 7.298 7.298 0 01-2.806-3.228 6.822 6.822 0 01-.433-4.155 7.078 7.078 0 012.084-3.683 7.764 7.764 0 013.9-1.968 8.032 8.032 0 014.4.41 7.539 7.539 0 013.417 2.648 6.911 6.911 0 011.283 3.996c-.002 1.907-.805 3.735-2.233 5.083-1.427 1.349-3.363 2.107-5.382 2.11zm5.538-7.192c0 .173-.073.34-.202.462a.713.713 0 01-.49.192H11a.713.713 0 01-.49-.192.636.636 0 01-.202-.462V5.923c0-.173.073-.34.203-.462A.713.713 0 0111 5.269c.184 0 .36.07.49.192s.202.289.202.462v3.923h4.154c.184 0 .36.069.49.192.13.122.203.289.203.462z"
-        fill={Colors[color]}
-      />
-    </Svg>
+    <Iconify icon="iconamoon:clock-light" size={size} color={Colors[color]} />
   );
 }
+
+// iconamoon:clock-light

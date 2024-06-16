@@ -8,6 +8,7 @@ import {
   GetArticleQuery,
   GetArticleResponseSuccess,
   GetPaymentMethodResponseSuccess,
+  GetPaymentStatusResponseSuccess,
   GetTravelBranchResponseSuccess,
   OrderListResponseSuccess,
   PostLoginPayload,
@@ -154,6 +155,15 @@ export const getOrderList = async () => {
   const response = await apiClientMock<OrderListResponseSuccess>({
     method: "GET",
     url: "/api/pesanan",
+  });
+
+  return response.data;
+};
+
+export const getPaymentStatusDetail = async (id: string) => {
+  const response = await apiClientMock<GetPaymentStatusResponseSuccess>({
+    method: "GET",
+    url: "/api/pesanan/" + id,
   });
 
   return response.data;

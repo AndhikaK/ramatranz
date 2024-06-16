@@ -1,10 +1,25 @@
+import { useCallback, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Appbar, Button, Separator, Typography, View } from "@/components";
-import { IconCIChecklist, IconCross, IconDownload } from "@/components/icons";
+import {
+  Appbar,
+  Button,
+  Loader,
+  Separator,
+  Snackbar,
+  Typography,
+  View,
+} from "@/components";
+import {
+  IconCIChecklist,
+  IconClock,
+  IconCross,
+  IconDownload,
+} from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { useGetPaymentStatusDetail } from "@/features/payment/api/useGetPaymentStatusDetail";
 import { useHardwareBackpress } from "@/hooks/useHardwareBackPress";
 
 export default function PaymentStatusScreen() {
@@ -16,7 +31,7 @@ export default function PaymentStatusScreen() {
 
   const { Colors } = useAppTheme();
 
-  const handleOnBackPress = () => {
+  const handleOnBackPress = useCallback(() => {
     const routes = navigation.getState()?.routes;
     const prevRoute = routes[routes.length - 2];
 
@@ -28,17 +43,45 @@ export default function PaymentStatusScreen() {
     } else {
       router.back();
     }
-  };
+  }, [navigation, router]);
 
   useHardwareBackpress(handleOnBackPress);
+
+  // query
+  const paymentStatusQuery = useGetPaymentStatusDetail(params?.id || "");
+
+  useEffect(() => {
+    if (paymentStatusQuery.error) {
+      Snackbar.show({
+        message: "Terjadi kesalahan, coba kembali nanti",
+        variant: "danger",
+      });
+      handleOnBackPress();
+    }
+  }, [handleOnBackPress, paymentStatusQuery.error]);
 
   return (
     <View backgroundColor="paper" style={styles.container}>
       <Appbar title="Status Pembayaran" backIconPress={handleOnBackPress} />
 
       <View style={styles.contentContainer}>
-        {/* <PaymentFailed /> */}
-        <PaymentSuccess />
+        {paymentStatusQuery.isFetching ? (
+          <View
+            style={{
+              height: 300,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader />
+          </View>
+        ) : paymentStatusQuery.data?.data.status === "success" ? (
+          <PaymentSuccess />
+        ) : paymentStatusQuery.data?.data.status === "failed" ? (
+          <PaymentFailed />
+        ) : paymentStatusQuery.data?.data.status === "waiting" ? (
+          <PaymentWaiting />
+        ) : null}
       </View>
 
       <View
@@ -78,6 +121,32 @@ function PaymentFailed() {
       >
         Pembayaran gagal karena melebihi batas waktu yang telah ditentukan,
         silahkan pesan kembali.
+      </Typography>
+    </View>
+  );
+}
+
+function PaymentWaiting() {
+  const { Colors } = useAppTheme();
+
+  return (
+    <View style={[styles.statusWrapper, { borderColor: Colors.outlineborder }]}>
+      <View backgroundColor="textsecondary" style={styles.roundedIconWrapper}>
+        <IconClock color="paper" size={40} />
+      </View>
+
+      <Typography fontFamily="Poppins-Bold" fontSize={20} color="textsecondary">
+        Menunggu Pembayaran...
+      </Typography>
+
+      <Separator />
+
+      <Typography
+        color="textsecondary"
+        fontSize={13}
+        style={{ textAlign: "center" }}
+      >
+        Silahkan lakukan pembayaran dengan batas waktu yang telah ditentukan.
       </Typography>
     </View>
   );
