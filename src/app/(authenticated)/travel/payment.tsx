@@ -49,7 +49,12 @@ export default function TravelPaymentScreen() {
     processPaymentMutation.mutate(processPaymentData, {
       onSuccess: () => {
         Snackbar.show({ message: "Order pesanan berhasil" });
-        router.push("/payment/status");
+        router.push({
+          pathname: "/payment/status/[id]",
+          params: {
+            id: 1,
+          },
+        });
       },
       onError: () => {
         Snackbar.show({

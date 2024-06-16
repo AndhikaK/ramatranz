@@ -126,3 +126,17 @@ export const postProcessPaymentSchema = z.object({});
 export type PostProcessPaymentPayload = z.infer<
   typeof postProcessPaymentSchema
 >;
+
+export type OrderListResponseSuccess = {
+  data: {
+    id: number;
+    departureDate: string;
+    destinationCity: string;
+    destinationDepartureDate: string;
+    originCity: string;
+    originDepartureDate: string;
+    orderType: "travel" | "paket";
+  }[];
+  message: string;
+  success: boolean;
+};

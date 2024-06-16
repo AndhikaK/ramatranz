@@ -84,11 +84,13 @@ export function TravelTicketItem(props: TravelTicketItemProps) {
           </View>
         </View>
 
-        <View style={style.center}>
-          <Typography fontFamily="OpenSans-Regular" fontSize={12}>
-            {formatTime(departureDate)}
-          </Typography>
-        </View>
+        {!!departureDate && (
+          <View style={style.center}>
+            <Typography fontFamily="OpenSans-Regular" fontSize={12}>
+              {formatTime(departureDate)}
+            </Typography>
+          </View>
+        )}
 
         {customFooter}
       </View>

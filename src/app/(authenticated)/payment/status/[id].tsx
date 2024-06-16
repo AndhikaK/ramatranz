@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 
 import { Appbar, View } from "@/components";
 import { useHardwareBackpress } from "@/hooks/useHardwareBackPress";
@@ -7,6 +7,9 @@ import { useHardwareBackpress } from "@/hooks/useHardwareBackPress";
 export default function PaymentStatusScreen() {
   const router = useRouter();
   const navigation = useNavigation<any>();
+
+  const params = useLocalSearchParams<{ id: string }>();
+  console.log(params);
 
   const handleOnBackPress = () => {
     const routes = navigation.getState()?.routes;

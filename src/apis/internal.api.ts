@@ -9,6 +9,7 @@ import {
   GetArticleResponseSuccess,
   GetPaymentMethodResponseSuccess,
   GetTravelBranchResponseSuccess,
+  OrderListResponseSuccess,
   PostLoginPayload,
   PostLoginResponseSuccess,
   PostProcessPaymentPayload,
@@ -48,7 +49,7 @@ apiClient.interceptors.response.use(
 );
 
 const apiClientMock = axios.create({
-  baseURL: "https://83fa7e7c-aebc-4193-9178-3a09063e7f9a.mock.pstmn.io",
+  baseURL: "https://f0f2764d-a0d1-45f1-bb3d-f72539758a03.mock.pstmn.io",
 });
 apiClientMock.interceptors.request.use(requestInterceptor);
 apiClientMock.interceptors.response.use(
@@ -144,6 +145,15 @@ export const postProcessPayment = async (data: PostProcessPaymentPayload) => {
     method: "POST",
     url: "/api/pembayaran/process",
     data,
+  });
+
+  return response.data;
+};
+
+export const getOrderList = async () => {
+  const response = await apiClientMock<OrderListResponseSuccess>({
+    method: "GET",
+    url: "/api/pesanan",
   });
 
   return response.data;
