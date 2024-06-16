@@ -153,6 +153,8 @@ function PaymentWaiting() {
 }
 
 function PaymentSuccess() {
+  const router = useRouter();
+
   const { Colors } = useAppTheme();
 
   return (
@@ -207,6 +209,7 @@ function PaymentSuccess() {
             backgroundColor: Colors.bgsecondary,
             borderColor: Colors.bgsecondary,
           }}
+          onPress={() => router.push("/payment/receipt")}
         >
           <IconDownload color="main" />
           <Typography fontFamily="Poppins-Bold" color="main">
