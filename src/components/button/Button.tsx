@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Pressable, PressableProps, StyleSheet } from "react-native";
+import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 
 import { useAppTheme } from "@/context/theme-context";
 
@@ -9,10 +10,17 @@ import { View } from "../view/View";
 export type ButtonProps = {
   children: ReactNode;
   variant?: "primary" | "secondary";
+  style?: ViewProps["style"];
 } & PressableProps;
 
 export function Button(props: ButtonProps) {
-  const { children, variant = "primary", disabled = false, ...rest } = props;
+  const {
+    children,
+    variant = "primary",
+    disabled = false,
+    style,
+    ...rest
+  } = props;
 
   const { Colors } = useAppTheme();
 
@@ -20,21 +28,21 @@ export function Button(props: ButtonProps) {
     <Pressable disabled={disabled} {...rest}>
       {(pressable) => (
         <View
-          backgroundColor={
-            variant === "primary"
-              ? disabled
-                ? "outlineborder"
-                : "main"
-              : "paper"
-          }
           style={[
-            style.container,
             {
               borderColor: disabled ? Colors.outlineborder : Colors.main,
+              backgroundColor:
+                variant === "primary"
+                  ? disabled
+                    ? Colors.outlineborder
+                    : Colors.main
+                  : Colors.paper,
             },
+            styles.container,
+            style,
           ]}
         >
-          <View style={style.childrenWrapper}>
+          <View style={styles.childrenWrapper}>
             {typeof children === "string" ? (
               <Typography
                 fontFamily="OpenSans-Semibold"
@@ -56,7 +64,7 @@ export function Button(props: ButtonProps) {
           {pressable.pressed && (
             <View
               style={[
-                style.mask,
+                styles.mask,
                 {
                   backgroundColor: `${Colors.main}${variant === "primary" ? "80" : "0D"}`,
                 },
@@ -69,7 +77,7 @@ export function Button(props: ButtonProps) {
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     borderRadius: 2,
     minHeight: 48,
@@ -80,7 +88,9 @@ const style = StyleSheet.create({
     overflow: "hidden",
   },
   childrenWrapper: {
+    flexDirection: "row",
     paddingHorizontal: 16,
+    gap: 12,
   },
   mask: {
     position: "absolute",

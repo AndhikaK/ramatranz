@@ -17,22 +17,20 @@ export default function OrderTabScreen() {
   const orderListQuery = useGetOrderListQuery();
 
   // methods
-  const getOrderListByFilter = useMemo(() => {
-    const isHistoryTab = activeTab === "history";
-
-    return (
-      orderListQuery.data?.data
-        .filter((item) =>
-          item.orderType === activeFilter && isHistoryTab
+  const isHistoryTab = activeTab === "history";
+  const getOrderListByFilter =
+    orderListQuery.data?.data
+      .filter(
+        (item) =>
+          item.orderType === activeFilter &&
+          (isHistoryTab
             ? new Date().getTime() > new Date(item.departureDate).getTime()
-            : new Date().getTime() < new Date(item.departureDate).getTime()
-        )
-        .map((item) => ({
-          ...item,
-          isOrderActive: !isHistoryTab,
-        })) || []
-    );
-  }, [activeFilter, activeTab, orderListQuery.data?.data]);
+            : new Date().getTime() < new Date(item.departureDate).getTime())
+      )
+      .map((item) => ({
+        ...item,
+        isOrderActive: !isHistoryTab,
+      })) || [];
 
   const hasActiveOrder = useMemo(() => {
     if (!orderListQuery.data?.data) return false;
@@ -96,6 +94,29 @@ export default function OrderTabScreen() {
                 ) : (
                   <IconCarSide color="main" />
                 )
+              }
+              customHeader={
+                item.isOrderActive ? (
+                  <View style={{ alignItems: "center" }}>
+                    <Typography
+                      fontFamily="Poppins-Bold"
+                      fontSize={10}
+                      color={
+                        item.status === "success"
+                          ? "success"
+                          : item.status === "waiting"
+                            ? "textsecondary"
+                            : "dangerbase"
+                      }
+                    >
+                      {item.status === "success"
+                        ? "Success"
+                        : item.status === "waiting"
+                          ? "Menunggu Pembayaran"
+                          : "failed"}
+                    </Typography>
+                  </View>
+                ) : null
               }
               disabled={!item.isOrderActive}
               onPress={() =>

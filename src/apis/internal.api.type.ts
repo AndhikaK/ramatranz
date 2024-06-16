@@ -130,6 +130,7 @@ export type PostProcessPaymentPayload = z.infer<
 export type OrderListResponseSuccess = {
   data: {
     id: number;
+    status: "success" | "waiting" | "failed";
     departureDate: string;
     destinationCity: string;
     destinationDepartureDate: string;
