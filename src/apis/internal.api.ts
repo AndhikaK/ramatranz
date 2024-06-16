@@ -7,6 +7,7 @@ import {
   GetArticleDetailResponseSuccess,
   GetArticleQuery,
   GetArticleResponseSuccess,
+  GetPaymentMethodResponseSuccess,
   GetTravelBranchResponseSuccess,
   PostLoginPayload,
   PostLoginResponseSuccess,
@@ -123,6 +124,15 @@ export const getPointToPointApi = async (
     method: "GET",
     url: "/api/point-to-point",
     params,
+  });
+
+  return response.data;
+};
+
+export const getPaymentMethod = async () => {
+  const response = await apiClientMock<GetPaymentMethodResponseSuccess>({
+    method: "GET",
+    url: "/api/pembayaran/metode-pembayaran",
   });
 
   return response.data;

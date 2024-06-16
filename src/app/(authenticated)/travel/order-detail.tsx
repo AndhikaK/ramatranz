@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
-import parseErrorStack from "react-native/Libraries/Core/Devtools/parseErrorStack";
+import { useNavigation, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
@@ -15,12 +14,25 @@ import { formatCurrency } from "@/utils/common";
 
 export default function TravelOrderDetailScreen() {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
   const router = useRouter();
 
   const { Colors } = useAppTheme();
 
   const travelSchedule = useTravelSchedule();
   const travelPassenger = useTravelPassenger();
+
+  const handleNavigateToSeatSelection = () => {
+    const routes = navigation.getState()?.routes;
+    const prevRoute = routes[routes.length - 2];
+    if (prevRoute.name === "travel/travel-detail") {
+      router.replace("/travel/seat-selection");
+    } else {
+      router.push("/travel/seat-selection");
+    }
+
+    return;
+  };
 
   if (!travelSchedule) return null;
 
@@ -98,7 +110,9 @@ export default function TravelOrderDetailScreen() {
               </Typography>
             </View>
 
-            <Button variant="secondary">Ganti kursi</Button>
+            <Button variant="secondary" onPress={handleNavigateToSeatSelection}>
+              Ganti kursi
+            </Button>
           </View>
         ))}
       </View>
@@ -114,7 +128,9 @@ export default function TravelOrderDetailScreen() {
       >
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Typography fontFamily="OpenSans-Semibold" fontSize={16} color="main">
-            {formatCurrency(travelSchedule?.price || 0)}
+            {formatCurrency(
+              travelSchedule?.price * (travelPassenger?.length || 0)
+            )}
           </Typography>
           <Typography
             fontFamily="OpenSans-Regular"
@@ -125,7 +141,7 @@ export default function TravelOrderDetailScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button onPressIn={() => router.push("/travel/seat-selection")}>
+          <Button onPressIn={() => router.push("/travel/payment")}>
             {"Proses ke" + `\n` + "Pembayaran"}
           </Button>
         </View>

@@ -114,3 +114,10 @@ export type TravePointToPointApiResponseSuccess = {
   message: string;
   success: boolean;
 };
+
+export type GetPaymentMethodResponseSuccess = {
+  data: {
+    id: number;
+    nama: string;
+  }[];
+};
