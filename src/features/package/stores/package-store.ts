@@ -1,21 +1,24 @@
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
+import { GetDoorToDoorApiResponseSuccess } from "@/apis/internal.api.type";
 import { ExtractState } from "@/libs/zustand";
 
-type PackageOrderPayload = {};
+type PackageOrderPayloadType = {
+  location?: GetDoorToDoorApiResponseSuccess["data"][number];
+  form?: {};
+};
+type PackageOrderPayload = {
+  from: PackageOrderPayloadType;
+  to: PackageOrderPayloadType;
+};
 type PackageStore = {
-  packageOrderPayload?: {
-    from: PackageOrderPayload;
-    to: PackageOrderPayload;
-  };
+  packageOrderPayload: PackageOrderPayload | undefined;
 
   actions: {
-    setPackageOrderPayload: (packageOrderPayload?: {
-      from: PackageOrderPayload;
-      to: PackageOrderPayload;
-    }) => void;
-    clearBookingSession: () => void;
+    setPackageOrderPayload: (
+      packageOrderPayload: PackageOrderPayload | undefined
+    ) => void;
   };
 };
 
@@ -25,11 +28,6 @@ const packageStore = createStore<PackageStore>()((set, get) => ({
   actions: {
     setPackageOrderPayload: (packageOrderPayload) =>
       set({ packageOrderPayload }),
-    clearBookingSession: async () => {
-      set({
-        packageOrderPayload: undefined,
-      });
-    },
   },
 }));
 

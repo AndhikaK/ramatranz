@@ -1,0 +1,159 @@
+import { StyleSheet } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Appbar, Button, TextInputV2, Typography, View } from "@/components";
+import { useAppTheme } from "@/context/theme-context";
+import {
+  usePackageActions,
+  usePackageOrderPayload,
+} from "@/features/package/stores/package-store";
+
+const pageContent = {
+  from: {
+    title: "Detail Pengambilan Paket",
+    contentTitle: "Detail Pengirim",
+  },
+  to: {
+    title: "Ambil paket di mana?",
+    contentTitle: "Detail Penerima",
+  },
+};
+export default function ShipmentDetailForm() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+
+  const { Colors } = useAppTheme();
+
+  const params = useLocalSearchParams<{ pageType: "to" | "from" }>();
+
+  // store
+  const packageOrderPayload = usePackageOrderPayload();
+  const { setPackageOrderPayload } = usePackageActions();
+
+  if (!params.pageType) return null;
+
+  const handleSaveShipmentDetailForm = () => {
+    setPackageOrderPayload({
+      ...packageOrderPayload,
+      [params.pageType]: {
+        ...packageOrderPayload[params.pageType],
+        form: {
+          test: "test",
+        },
+      },
+    });
+
+    const compare1 = params.pageType === "from" ? "to" : "from";
+
+    if (packageOrderPayload?.[compare1]?.form) {
+      router.push("/package/payment");
+      return;
+    } else {
+      router.back();
+      router.back();
+    }
+  };
+
+  return (
+    <View backgroundColor="paper" style={styles.container}>
+      <Appbar
+        title={pageContent[params.pageType].title}
+        backIconPress={() => router.back()}
+      />
+
+      <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.locationContainer,
+            { borderColor: Colors.outlineborder },
+          ]}
+        >
+          <View style={styles.locationHeaderWrapper}>
+            <Typography fontFamily="OpenSans-Bold">
+              {packageOrderPayload?.[params.pageType].location?.nama}
+            </Typography>
+
+            <Button
+              variant="secondary"
+              style={{
+                backgroundColor: Colors.outlineborder,
+                borderColor: Colors.outlineborder,
+                minHeight: 20,
+              }}
+              onPress={() => router.back()}
+            >
+              <Typography fontFamily="OpenSans-Bold" fontSize={10} color="main">
+                Edit
+              </Typography>
+            </Button>
+          </View>
+          <Typography fontFamily="OpenSans-Light" fontSize={8}>
+            {packageOrderPayload?.[params.pageType].location?.location}
+          </Typography>
+        </View>
+
+        <View style={styles.formContainer}>
+          <Typography fontFamily="OpenSans-Semibold">
+            {pageContent[params.pageType].contentTitle}
+            <Typography color="dangerbase"> *</Typography>
+          </Typography>
+
+          <View style={styles.formWrapper}>
+            <TextInputV2 placeholder="Nama Pengirim" />
+            <TextInputV2
+              placeholder="Masukkan Nomor Telepon"
+              leadingString="+62"
+            />
+
+            <TextInputV2 placeholder="Deskripsi" numberOfLines={4} />
+          </View>
+        </View>
+      </View>
+
+      <View
+        style={[
+          styles.bottomActionContainer,
+          {
+            paddingBottom: insets.bottom + 24,
+            borderColor: Colors.outlineborder,
+          },
+        ]}
+      >
+        <Button onPress={handleSaveShipmentDetailForm}>Simpan</Button>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 24,
+    gap: 43,
+  },
+  locationContainer: {
+    borderWidth: 1,
+    padding: 24,
+    borderRadius: 2,
+    gap: 8,
+  },
+  locationHeaderWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  formContainer: {
+    gap: 24,
+  },
+  formWrapper: {
+    gap: 12,
+  },
+  bottomActionContainer: {
+    padding: 24,
+    borderTopWidth: 1,
+  },
+});

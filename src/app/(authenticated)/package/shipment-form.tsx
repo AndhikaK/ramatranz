@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,11 +10,23 @@ import {
   IconSwap,
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import {
+  usePackageActions,
+  usePackageOrderPayload,
+} from "@/features/package/stores/package-store";
 
 export default function PackageShipmentFormScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { Colors } = useAppTheme();
+
+  // store
+  const packageOrderPayload = usePackageOrderPayload();
+  const { setPackageOrderPayload } = usePackageActions();
+
+  useEffect(() => {
+    setPackageOrderPayload(undefined);
+  }, [setPackageOrderPayload]);
 
   return (
     <View backgroundColor="paper" style={styles.container}>
@@ -52,6 +65,7 @@ export default function PackageShipmentFormScreen() {
                 <IconPackageImport width={20} height={20} color="main" />
               </View>
             }
+            value={packageOrderPayload?.from?.location?.nama}
             withBorder={false}
             asTouchable
             onTouchablePress={() =>
@@ -74,8 +88,17 @@ export default function PackageShipmentFormScreen() {
                 <IconPackageExport width={20} height={20} color="main" />
               </View>
             }
+            value={packageOrderPayload?.to?.location?.nama}
             withBorder={false}
             asTouchable
+            onTouchablePress={() =>
+              router.push({
+                pathname: "/package/search-place/[type]",
+                params: {
+                  type: "to",
+                },
+              })
+            }
           />
 
           <View backgroundColor="main" style={styles.destinationIconSwap}>

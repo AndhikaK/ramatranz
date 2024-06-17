@@ -16,6 +16,10 @@ import {
 } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetDoorToDoorQuery } from "@/features/package/api/useGetDoorToDoorQuery";
+import {
+  usePackageActions,
+  usePackageOrderPayload,
+} from "@/features/package/stores/package-store";
 import useDebounce from "@/hooks/useDebounce";
 
 const pageContent = {
@@ -24,8 +28,8 @@ const pageContent = {
     placeholder: "Cari Lokasi Pengambilan Paket",
   },
   to: {
-    title: "Ambil paket di mana?",
-    placeholder: "Cari Lokasi Pengambilan Paket",
+    title: "Kirim pake ke mana?",
+    placeholder: "Cari Lokasi Pengiriman Paket",
   },
 };
 
@@ -45,6 +49,10 @@ export default function SearchPlaceScreen() {
 
   const searchValueDebounce = useDebounce(searchValue, 1000);
 
+  // stores
+  const packageOrderPayload = usePackageOrderPayload();
+  const { setPackageOrderPayload } = usePackageActions();
+
   // query & muatation
   const doorToDoorQuery = useGetDoorToDoorQuery({
     query: searchValueDebounce,
@@ -56,16 +64,36 @@ export default function SearchPlaceScreen() {
     }
   }, [params]);
 
+  const handleProceedShipmentDetailForm = () => {
+    if (!selectedPlace) return;
+
+    setPackageOrderPayload({
+      ...packageOrderPayload,
+      [params.type]: {
+        location: selectedPlace,
+      },
+    });
+
+    router.push({
+      pathname: "/package/shipment-detail-form/[pageType]",
+      params: {
+        pageType: params.type,
+      },
+    });
+  };
+
+  if (!params.type) return null;
+
   return (
     <View backgroundColor="paper" style={styles.container}>
       <Appbar
-        title={pageContent[params.type || "from"].title}
+        title={pageContent[params.type].title}
         backIconPress={() => router.back()}
       />
 
       <View style={styles.contentContainer}>
         <SearchBox
-          placeholder={pageContent[params.type || "from"].title}
+          placeholder={pageContent[params.type].title}
           value={searchValue}
           onChangeText={setSearchValue}
           trailingIcon={
@@ -111,7 +139,12 @@ export default function SearchPlaceScreen() {
           },
         ]}
       >
-        <Button onPress={() => router.back()}>Lanjut</Button>
+        <Button
+          onPress={handleProceedShipmentDetailForm}
+          disabled={!selectedPlace}
+        >
+          Lanjut
+        </Button>
       </View>
     </View>
   );

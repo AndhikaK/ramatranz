@@ -9,6 +9,6 @@ export const useGetDoorToDoorQuery = (params: GetDoorToDoorParams) => {
   return useQuery({
     queryKey: ["useGetDoorToDoorQuery", params],
     queryFn: () => getDoorToDoorApi(params),
-    enabled: !!accessToken,
+    enabled: !!accessToken && !!params.query,
   });
 };
