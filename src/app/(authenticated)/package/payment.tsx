@@ -2,8 +2,21 @@ import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Appbar, Button, Typography, View } from "@/components";
+import {
+  Appbar,
+  Button,
+  Separator,
+  TextInputV2,
+  Typography,
+  View,
+} from "@/components";
+import {
+  IconPackageExport,
+  IconPackageImport,
+  IconSwap,
+} from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { usePackageOrderPayload } from "@/features/package/stores/package-store";
 import { formatCurrency } from "@/utils/common";
 
 export default function PackagePaymentScreen() {
@@ -12,11 +25,48 @@ export default function PackagePaymentScreen() {
 
   const { Colors } = useAppTheme();
 
+  // store
+  const packageOrderPayload = usePackageOrderPayload();
+
   return (
-    <View>
+    <View backgroundColor="paper" style={styles.container}>
       <Appbar title="Pembayaran" backIconPress={() => router.back()} />
 
-      <View style={styles.contentContainer}></View>
+      <View style={styles.contentContainer}>
+        <View
+          style={[styles.destinationBox, { borderColor: Colors.outlineborder }]}
+        >
+          <View style={{ gap: 4 }}>
+            <TextInputV2
+              placeholder="Lampung"
+              leadingIcon={
+                <IconPackageImport width={20} height={20} color="main" />
+              }
+              value={packageOrderPayload?.from?.location?.nama}
+              withBorder={false}
+              asTouchable
+            />
+            <Typography>{packageOrderPayload?.from.form?.name}</Typography>
+          </View>
+          <Separator />
+          <View style={{ gap: 4 }}>
+            <TextInputV2
+              placeholder="Palembang"
+              leadingIcon={
+                <IconPackageExport width={20} height={20} color="main" />
+              }
+              value={packageOrderPayload?.to?.location?.nama}
+              withBorder={false}
+              asTouchable
+            />
+            <Typography>{packageOrderPayload?.from.form?.name}</Typography>
+          </View>
+
+          <View backgroundColor="main" style={styles.destinationIconSwap}>
+            <IconSwap width={20} height={20} color="paper" />
+          </View>
+        </View>
+      </View>
 
       <View
         style={[
@@ -62,5 +112,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
     borderTopWidth: 1,
+  },
+  destinationBox: {
+    borderWidth: 1,
+    borderRadius: 2,
+    padding: 12,
+    gap: 12,
+    justifyContent: "center",
+  },
+  destinationIconSwap: {
+    height: 40,
+    width: 40,
+    borderRadius: 99,
+    position: "absolute",
+    right: 12,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
