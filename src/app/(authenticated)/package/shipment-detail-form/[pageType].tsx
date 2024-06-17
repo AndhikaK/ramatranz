@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { z } from "zod";
 
 import { Appbar, Button, TextInputV2, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
@@ -8,6 +10,7 @@ import {
   usePackageActions,
   usePackageOrderPayload,
 } from "@/features/package/stores/package-store";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const pageContent = {
   from: {
@@ -19,6 +22,13 @@ const pageContent = {
     contentTitle: "Detail Penerima",
   },
 };
+
+const shipmentDetailFormSchema = z.object({
+  name: z.string(),
+  mobileNumber: z.string(),
+  address: z.string(),
+});
+type ShipmentDetailForm = z.infer<typeof shipmentDetailFormSchema>;
 export default function ShipmentDetailForm() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -27,33 +37,36 @@ export default function ShipmentDetailForm() {
 
   const params = useLocalSearchParams<{ pageType: "to" | "from" }>();
 
+  const { control, formState, handleSubmit } = useForm<ShipmentDetailForm>({
+    resolver: zodResolver(shipmentDetailFormSchema),
+    mode: "all",
+  });
+
   // store
   const packageOrderPayload = usePackageOrderPayload();
   const { setPackageOrderPayload } = usePackageActions();
 
   if (!params.pageType) return null;
 
-  const handleSaveShipmentDetailForm = () => {
+  const handleSaveShipmentDetailForm = handleSubmit((data) => {
     setPackageOrderPayload({
       ...packageOrderPayload,
       [params.pageType]: {
         ...packageOrderPayload[params.pageType],
-        form: {
-          test: "test",
-        },
+        form: data,
       },
     });
 
     const compare1 = params.pageType === "from" ? "to" : "from";
 
     if (packageOrderPayload?.[compare1]?.form) {
-      router.push("/package/payment");
+      router.push("/package/package-detail-form");
       return;
     } else {
       router.back();
       router.back();
     }
-  };
+  });
 
   return (
     <View backgroundColor="paper" style={styles.container}>
@@ -100,13 +113,44 @@ export default function ShipmentDetailForm() {
           </Typography>
 
           <View style={styles.formWrapper}>
-            <TextInputV2 placeholder="Nama Pengirim" />
-            <TextInputV2
-              placeholder="Masukkan Nomor Telepon"
-              leadingString="+62"
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="Nama Pengirim"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
             />
-
-            <TextInputV2 placeholder="Deskripsi" numberOfLines={4} />
+            <Controller
+              control={control}
+              name="mobileNumber"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="Masukkan Nomor Telepon"
+                  leadingString="+62"
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="Deskripsi"
+                  numberOfLines={4}
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
           </View>
         </View>
       </View>
@@ -120,7 +164,12 @@ export default function ShipmentDetailForm() {
           },
         ]}
       >
-        <Button onPress={handleSaveShipmentDetailForm}>Simpan</Button>
+        <Button
+          onPress={handleSaveShipmentDetailForm}
+          disabled={!formState.isValid}
+        >
+          Simpan
+        </Button>
       </View>
     </View>
   );

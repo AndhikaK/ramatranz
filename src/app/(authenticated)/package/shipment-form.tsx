@@ -28,6 +28,8 @@ export default function PackageShipmentFormScreen() {
     setPackageOrderPayload(undefined);
   }, [setPackageOrderPayload]);
 
+  console.log(packageOrderPayload);
+
   return (
     <View backgroundColor="paper" style={styles.container}>
       <View
