@@ -9,6 +9,6 @@ export const useGetArticleList = (query?: GetArticleQuery) => {
   return useQuery({
     queryKey: ["useGetArticleList", accessToken, query],
     queryFn: () => getArticles(query),
-    enabled: !!accessToken,
+    enabled: !!accessToken && false,
   });
 };

@@ -7,6 +7,8 @@ import {
   GetArticleDetailResponseSuccess,
   GetArticleQuery,
   GetArticleResponseSuccess,
+  GetDoorToDoorApiResponseSuccess,
+  GetDoorToDoorParams,
   GetPaymentMethodResponseSuccess,
   GetPaymentStatusResponseSuccess,
   GetTravelBranchResponseSuccess,
@@ -164,6 +166,16 @@ export const getPaymentStatusDetail = async (id: string) => {
   const response = await apiClientMock<GetPaymentStatusResponseSuccess>({
     method: "GET",
     url: "/api/pesanan/" + id,
+  });
+
+  return response.data;
+};
+
+export const getDoorToDoorApi = async (params: GetDoorToDoorParams) => {
+  const response = await apiClientMock<GetDoorToDoorApiResponseSuccess>({
+    method: "GET",
+    url: "/api/door-to-door",
+    params,
   });
 
   return response.data;

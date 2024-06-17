@@ -78,7 +78,6 @@ export function SelectInputV2(props: SelectInputV2Props) {
       }}
       dropdownStyle={{
         backgroundColor: Colors.paper,
-        // transform: [{ translateY: -28 }],
       }}
       dropdownOverlayColor="transparent"
     />

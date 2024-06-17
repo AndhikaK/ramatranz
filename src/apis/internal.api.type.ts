@@ -147,3 +147,16 @@ export type GetPaymentStatusResponseSuccess = {
     status: "waiting" | "success" | "failed";
   };
 };
+
+export const getDoorToDoorParamsSchema = z.object({
+  query: z.string(),
+});
+export type GetDoorToDoorParams = z.infer<typeof getDoorToDoorParamsSchema>;
+export type GetDoorToDoorApiResponseSuccess = {
+  data: {
+    nama: string;
+    location: string;
+  }[];
+  message: string;
+  success: boolean;
+};

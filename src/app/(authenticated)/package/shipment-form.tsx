@@ -43,7 +43,7 @@ export default function PackageShipmentFormScreen() {
           style={[styles.destinationBox, { borderColor: Colors.outlineborder }]}
         >
           <TextInputV2
-            value="Lampung"
+            placeholder="Lampung"
             leadingIcon={
               <View>
                 <Typography fontFamily="OpenSans-Regular" fontSize={10}>
@@ -53,10 +53,19 @@ export default function PackageShipmentFormScreen() {
               </View>
             }
             withBorder={false}
+            asTouchable
+            onTouchablePress={() =>
+              router.push({
+                pathname: "/package/search-place/[type]",
+                params: {
+                  type: "from",
+                },
+              })
+            }
           />
           <Separator />
           <TextInputV2
-            value="Palembang"
+            placeholder="Palembang"
             leadingIcon={
               <View>
                 <Typography fontFamily="OpenSans-Regular" fontSize={10}>
@@ -66,6 +75,7 @@ export default function PackageShipmentFormScreen() {
               </View>
             }
             withBorder={false}
+            asTouchable
           />
 
           <View backgroundColor="main" style={styles.destinationIconSwap}>
