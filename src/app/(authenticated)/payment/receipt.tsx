@@ -1,7 +1,11 @@
-import { Image, StyleSheet } from "react-native";
+import { useRef } from "react";
+import { Image, Platform, StyleSheet } from "react-native";
+import * as FileSystem from "expo-file-system";
 import { useRouter } from "expo-router";
+import * as Sharing from "expo-sharing";
 import Barcode from "react-native-barcode-sked";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import ViewShot from "react-native-view-shot";
 
 import { Appbar, Button, Separator, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
@@ -12,15 +16,62 @@ export default function PaymentReceiptScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
+  const receiptImgRef = useRef<ViewShot | null>();
+
   const { Colors } = useAppTheme();
 
   const userProfile = useAuthProfile();
+
+  // methods
+  const handleOnReceiptCapture = () => {
+    async function saveFile(uri: string, filename: string, mimetype: string) {
+      try {
+        if (Platform.OS === "android") {
+          const permissions =
+            await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+          if (permissions.granted) {
+            const base64 = await FileSystem.readAsStringAsync(uri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            await FileSystem.StorageAccessFramework.createFileAsync(
+              permissions.directoryUri,
+              filename,
+              mimetype
+            )
+              .then(async (uri) => {
+                await FileSystem.writeAsStringAsync(uri, base64, {
+                  encoding: FileSystem.EncodingType.Base64,
+                });
+              })
+              .catch((e) => console.log(e));
+          } else {
+            Sharing.shareAsync(uri);
+          }
+        } else {
+          Sharing.shareAsync(uri);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (receiptImgRef.current) {
+      receiptImgRef.current.capture?.().then((uri) => {
+        // console.log("do something with ", uri);
+        saveFile(uri, "ticket.jpg", "image/jpeg");
+      });
+    }
+  };
 
   return (
     <View backgroundColor="paper" style={styles.container}>
       <Appbar title="e-Ticket" backIconPress={() => router.back()} />
 
-      <View style={styles.contentContainer}>
+      <ViewShot
+        ref={receiptImgRef}
+        options={{ fileName: "Your-File-Name", format: "jpg", quality: 0.9 }}
+        style={[styles.contentContainer, { backgroundColor: Colors.paper }]}
+      >
         <View
           style={[styles.receiptWrapper, { borderColor: Colors.outlineborder }]}
         >
@@ -81,7 +132,7 @@ export default function PaymentReceiptScreen() {
             <Typography fontFamily="Poppins-Bold">EESBH21200001088</Typography>
           </View>
         </View>
-      </View>
+      </ViewShot>
 
       <View
         style={[
@@ -92,7 +143,7 @@ export default function PaymentReceiptScreen() {
           },
         ]}
       >
-        <Button onPress={() => router.back()}>Unduh</Button>
+        <Button onPress={handleOnReceiptCapture}>Unduh</Button>
       </View>
     </View>
   );
