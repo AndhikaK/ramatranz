@@ -11,7 +11,10 @@ import { TextInputV2, TextInputV2Props } from "../text-input-v2/TextInputV2";
 export type DateInputV2Props = {
   value: Date | string;
   onChange: (date: Date | undefined) => void;
-} & Pick<TextInputV2Props, "placeholder" | "trailingIcon" | "leadingIcon"> &
+} & Pick<
+  TextInputV2Props,
+  "placeholder" | "trailingIcon" | "leadingIcon" | "withBorder"
+> &
   BaseProps;
 export function DateInputV2(props: DateInputV2Props) {
   const {
@@ -20,6 +23,7 @@ export function DateInputV2(props: DateInputV2Props) {
     placeholder,
     trailingIcon,
     leadingIcon,
+    withBorder = false,
   } = props;
 
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -35,6 +39,7 @@ export function DateInputV2(props: DateInputV2Props) {
         placeholder={placeholder}
         onTouchablePress={() => setShowDatePicker(!showDatePicker)}
         asTouchable
+        withBorder={withBorder}
       />
 
       {showDatePicker && (

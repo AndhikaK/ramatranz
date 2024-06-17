@@ -1,53 +1,148 @@
 import { PropsWithChildren } from "react";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+import { z } from "zod";
 
 import { Appbar, Button, TextInputV2, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
+import {
+  usePackageActions,
+  usePackageOrderPayload,
+} from "@/features/package/stores/package-store";
 import { formatCurrency } from "@/utils/common";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+const packageDetailSchema = z.object({
+  departureDate: z.string(),
+  arrivalDate: z.string(),
+  packageType: z.string(),
+  packageDescription: z.string(),
+  totalWeight: z.string(),
+});
+export type PackageDetailPayload = z.infer<typeof packageDetailSchema>;
 export default function PackageDetailFormScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
   const { Colors } = useAppTheme();
 
+  const { control, formState, handleSubmit } = useForm<PackageDetailPayload>({
+    resolver: zodResolver(packageDetailSchema),
+    mode: "all",
+  });
+
+  // stores
+  const packageOrderPayload = usePackageOrderPayload();
+  const { setPackageOrderPayload } = usePackageActions();
+
+  const handleProceedToPayment = handleSubmit((data) => {
+    setPackageOrderPayload({
+      ...packageOrderPayload,
+      orderDetail: data,
+    });
+
+    router.push("/package/payment");
+  });
+
   return (
     <View backgroundColor="paper" style={styles.container}>
       <Appbar title="Detail Paket" backIconPress={() => router.back()} />
 
-      <View style={styles.contentContainer}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.contentContainer}
+      >
         <View style={{ flexDirection: "row", gap: 16 }}>
           <InputWrapper
             title="Tanggal Dikirim"
             isMandatory
             containerStyle={{ flex: 1 }}
           >
-            <TextInputV2 />
+            <Controller
+              control={control}
+              name="departureDate"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="HH/BB/TTTT"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
           </InputWrapper>
           <InputWrapper
             title="Tanggal Diterima"
             isMandatory
             containerStyle={{ flex: 1 }}
           >
-            <TextInputV2 />
+            <Controller
+              control={control}
+              name="arrivalDate"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="HH/BB/TTTT"
+                  value={field.value}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
           </InputWrapper>
         </View>
 
         <InputWrapper title="Jenis Paket" isMandatory>
-          <TextInputV2 />
+          <Controller
+            control={control}
+            name="packageType"
+            render={({ field }) => (
+              <TextInputV2
+                placeholder="Masukan jenis paket"
+                value={field.value}
+                onChangeText={field.onChange}
+              />
+            )}
+          />
         </InputWrapper>
 
-        <InputWrapper title="Deskripsi" isMandatory>
-          <TextInputV2 numberOfLines={4} />
+        <InputWrapper title="Deskripsi Paket" isMandatory>
+          <Controller
+            control={control}
+            name="packageDescription"
+            render={({ field }) => (
+              <TextInputV2
+                placeholder="Deskripsi"
+                value={field.value}
+                onChangeText={field.onChange}
+                numberOfLines={4}
+              />
+            )}
+          />
         </InputWrapper>
 
-        <InputWrapper title="Total Berat" isMandatory>
-          <TextInputV2 />
-        </InputWrapper>
-      </View>
+        <View style={{ flexDirection: "row", gap: 16 }}>
+          <InputWrapper
+            title="Total Berat"
+            isMandatory
+            containerStyle={{ flex: 1 }}
+          >
+            <Controller
+              control={control}
+              name="totalWeight"
+              render={({ field }) => (
+                <TextInputV2
+                  placeholder="Masukan Total Berat "
+                  value={field.value}
+                  onChangeText={field.onChange}
+                />
+              )}
+            />
+          </InputWrapper>
+
+          <View style={{ flex: 1 }} />
+        </View>
+      </ScrollView>
 
       <View
         style={[
@@ -72,8 +167,8 @@ export default function PackageDetailFormScreen() {
         </View>
         <View style={{ flex: 1 }}>
           <Button
-          // disabled={!selectedPaymentMethod}
-          // onPressIn={handleProcessPayment}
+            disabled={!formState.isValid}
+            onPress={handleProceedToPayment}
           >
             Bayar
           </Button>
@@ -95,7 +190,7 @@ function InputWrapper({
   children,
 }: InputWrapperProps) {
   return (
-    <View style={containerStyle}>
+    <View style={[{ gap: 12 }, containerStyle]}>
       <Typography>
         {title}
         {isMandatory && <Typography color="dangerbase"> *</Typography>}
