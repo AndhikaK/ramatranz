@@ -35,7 +35,10 @@ export default function PaymentStatusScreen() {
     const routes = navigation.getState()?.routes;
     const prevRoute = routes[routes.length - 2];
 
-    if (prevRoute.name === "travel/payment") {
+    if (
+      prevRoute.name === "travel/payment" ||
+      prevRoute.name === "package/payment"
+    ) {
       navigation.reset({
         index: 0,
         routes: [{ name: "(authenticated)" }],

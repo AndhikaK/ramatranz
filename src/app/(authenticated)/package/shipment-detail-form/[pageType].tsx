@@ -12,8 +12,6 @@ import {
 } from "@/features/package/stores/package-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { PackageDetailPayload } from "../package-detail-form";
-
 const pageContent = {
   from: {
     title: "Detail Pengambilan Paket",

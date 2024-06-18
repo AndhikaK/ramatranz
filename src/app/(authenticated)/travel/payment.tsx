@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   Appbar,
   Button,
-  Checkbox,
-  Loader,
   PageWrapper,
   Snackbar,
   Typography,
@@ -15,8 +13,8 @@ import {
 } from "@/components";
 import { IconCarSide, IconPinSharp } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
-import { useGetPaymentMethodQuery } from "@/features/payment/api/useGetPaymentMethodQuery";
 import { usePostProcessPaymentMutation } from "@/features/payment/api/usePostProcessPaymentMutation";
+import { PaymentComponent } from "@/features/payment/components";
 import { TravelTicketItem } from "@/features/travel/components";
 import {
   useTravelPassenger,
@@ -40,7 +38,6 @@ export default function TravelPaymentScreen() {
   const travelPassenger = useTravelPassenger();
 
   // query & mutation
-  const paymentMethodQuery = useGetPaymentMethodQuery();
   const processPaymentMutation = usePostProcessPaymentMutation();
 
   // method
@@ -52,7 +49,7 @@ export default function TravelPaymentScreen() {
         router.push({
           pathname: "/payment/status/[id]",
           params: {
-            id: 1,
+            id: 10,
           },
         });
       },
@@ -110,43 +107,10 @@ export default function TravelPaymentScreen() {
           }
         />
 
-        <Typography fontFamily="Poppins-Bold" fontSize={16}>
-          Metode Pembayaran
-        </Typography>
-
-        <View
-          style={[
-            styles.paymentContainer,
-            { borderColor: Colors.outlineborder },
-          ]}
-        >
-          {paymentMethodQuery.isFetching ? (
-            <View style={styles.loadingContainer}>
-              <Loader />
-            </View>
-          ) : (
-            <FlatList
-              data={paymentMethodQuery.data?.data}
-              renderItem={({ item }) => (
-                <TouchableWithoutFeedback
-                  onPress={() => setSelectedPaymentMethod(item.id)}
-                >
-                  <View style={styles.paymentItem}>
-                    <Typography>{item.nama}</Typography>
-                    <Checkbox selected={item.id === selectedPaymentMethod} />
-                  </View>
-                </TouchableWithoutFeedback>
-              )}
-              ListEmptyComponent={() => (
-                <View style={styles.loadingContainer}>
-                  <Typography fontFamily="OpenSans-Semibold">
-                    Tidak ada data
-                  </Typography>
-                </View>
-              )}
-            />
-          )}
-        </View>
+        <PaymentComponent
+          selectedMethod={selectedPaymentMethod}
+          onMethodSelected={setSelectedPaymentMethod}
+        />
 
         <View backgroundColor="dangerlight" style={styles.warningWrapper}>
           <Typography

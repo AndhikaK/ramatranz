@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,6 +18,7 @@ import {
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { usePackageOrderPayload } from "@/features/package/stores/package-store";
+import { PaymentComponent } from "@/features/payment/components";
 import { formatCurrency } from "@/utils/common";
 
 export default function PackagePaymentScreen() {
@@ -25,8 +27,23 @@ export default function PackagePaymentScreen() {
 
   const { Colors } = useAppTheme();
 
+  // state
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    number | null
+  >(null);
+
   // store
   const packageOrderPayload = usePackageOrderPayload();
+
+  // method
+  const handleProcessPayment = () => {
+    router.push({
+      pathname: "/payment/status/[id]",
+      params: {
+        id: 10,
+      },
+    });
+  };
 
   return (
     <View backgroundColor="paper" style={styles.container}>
@@ -66,6 +83,11 @@ export default function PackagePaymentScreen() {
             <IconSwap width={20} height={20} color="paper" />
           </View>
         </View>
+
+        <PaymentComponent
+          onMethodSelected={setSelectedPaymentMethod}
+          selectedMethod={selectedPaymentMethod}
+        />
       </View>
 
       <View
@@ -90,7 +112,12 @@ export default function PackagePaymentScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button onPress={() => {}}>Bayar</Button>
+          <Button
+            onPress={handleProcessPayment}
+            disabled={!selectedPaymentMethod}
+          >
+            Bayar
+          </Button>
         </View>
       </View>
     </View>
