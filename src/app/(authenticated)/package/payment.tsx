@@ -6,7 +6,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Appbar,
   Button,
+  PageWrapper,
   Separator,
+  Snackbar,
   TextInputV2,
   Typography,
   View,
@@ -18,6 +20,7 @@ import {
 } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { usePackageOrderPayload } from "@/features/package/stores/package-store";
+import { usePostProcessPaymentMutation } from "@/features/payment/api/usePostProcessPaymentMutation";
 import { PaymentComponent } from "@/features/payment/components";
 import { formatCurrency } from "@/utils/common";
 
@@ -35,18 +38,37 @@ export default function PackagePaymentScreen() {
   // store
   const packageOrderPayload = usePackageOrderPayload();
 
+  // query & mutation
+  const processPaymentMutation = usePostProcessPaymentMutation();
+
   // method
   const handleProcessPayment = () => {
-    router.push({
-      pathname: "/payment/status/[id]",
-      params: {
-        id: 10,
+    const paymentData = {};
+    processPaymentMutation.mutate(paymentData, {
+      onSuccess: () => {
+        Snackbar.show({ message: "Order pesanan berhasil" });
+        router.push({
+          pathname: "/payment/status/[id]",
+          params: {
+            id: 11,
+          },
+        });
+      },
+      onError: () => {
+        Snackbar.show({
+          message: "Order pesanan gagal, coba setelah beberapa saat",
+          variant: "danger",
+        });
       },
     });
   };
 
   return (
-    <View backgroundColor="paper" style={styles.container}>
+    <PageWrapper
+      isLoading={processPaymentMutation.isPending}
+      backgroundColor="paper"
+      style={styles.container}
+    >
       <Appbar title="Pembayaran" backIconPress={() => router.back()} />
 
       <View style={styles.contentContainer}>
@@ -120,7 +142,7 @@ export default function PackagePaymentScreen() {
           </Button>
         </View>
       </View>
-    </View>
+    </PageWrapper>
   );
 }
 
