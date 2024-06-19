@@ -37,6 +37,11 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
 
 const responseInterceptorError = (error: AxiosError) => {
   const accessToken = getAccessToken();
+  console.error({
+    type: "api error",
+    url: error.config?.url,
+    data: error.response?.data,
+  });
   // force logout user if got status 401 Unauthorized
   if (error.status === 401 && accessToken) {
     handleLogoutSession();
@@ -46,10 +51,14 @@ const responseInterceptorError = (error: AxiosError) => {
 };
 
 apiClient.interceptors.request.use(requestInterceptor);
-apiClient.interceptors.response.use(
-  (response) => response,
-  responseInterceptorError
-);
+apiClient.interceptors.response.use((response) => {
+  console.log({
+    type: "api success",
+    url: response.config.url,
+    data: response.data,
+  });
+  return response;
+}, responseInterceptorError);
 
 const apiClientMock = axios.create({
   baseURL: "https://f0f2764d-a0d1-45f1-bb3d-f72539758a03.mock.pstmn.io",
@@ -81,19 +90,18 @@ export const postRegister = async (payload: PostRegisterPayload) => {
 };
 
 export const getArticles = async (query?: GetArticleQuery) => {
-  const response = await apiClientMock<GetArticleResponseSuccess>({
+  const response = await apiClient<GetArticleResponseSuccess>({
     method: "GET",
-    url: "/api/articles",
-    params: query,
+    url: `/api/artikel/artikel${query?.type ? "/" + query.type : ""}`,
   });
 
   return response.data;
 };
 
 export const getArticleById = async (id: string) => {
-  const response = await apiClientMock<GetArticleDetailResponseSuccess>({
+  const response = await apiClient<GetArticleDetailResponseSuccess>({
     method: "GET",
-    url: "/api/articles/" + id,
+    url: "/api/artikel/artikel/" + id,
   });
 
   return response.data;
