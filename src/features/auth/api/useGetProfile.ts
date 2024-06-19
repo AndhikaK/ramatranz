@@ -1,3 +1,4 @@
+import { getUserProfile } from "@/apis/internal.api";
 import { getItem } from "@/libs/async-storage";
 import { useQuery } from "@tanstack/react-query";
 
@@ -8,20 +9,9 @@ export const useGetProfile = () => {
   const { setProfile } = useAuthActions();
 
   return useQuery({
-    queryKey: ["useGetProfile"],
+    queryKey: ["useGetProfile", accessToken],
     // TODO replace with actual get Profile API
-    queryFn: async () => {
-      const storageProfile = await getItem("profile");
-
-      if (storageProfile) {
-        setProfile(storageProfile);
-        return storageProfile;
-      } else {
-        throw {
-          message: "Unauthorized",
-        };
-      }
-    },
+    queryFn: () => getUserProfile(),
     enabled: !!accessToken,
   });
 };

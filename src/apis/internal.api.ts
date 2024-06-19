@@ -98,6 +98,15 @@ export const postRegister = async (payload: PostRegisterPayload) => {
   return response.data;
 };
 
+export const getUserProfile = async () => {
+  const response = await apiClient<PostLoginResponseSuccess>({
+    method: "GET",
+    url: "/api/auth/user-profile",
+  });
+
+  return response.data;
+};
+
 export const getArticles = async (query?: GetArticleQuery) => {
   const response = await apiClient<GetArticleResponseSuccess>({
     method: "GET",

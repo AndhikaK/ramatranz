@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import {
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -8,13 +10,33 @@ import {
 import { Appbar, Snackbar, TextInput, Typography, View } from "@/components";
 import { IconCILogout } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
+import { useGetProfile } from "@/features/auth/api/useGetProfile";
 import { handleLogoutSession } from "@/features/auth/services/auth.service";
-import { useAuthProfile } from "@/features/auth/store/auth-store";
+import {
+  useAuthActions,
+  useAuthProfile,
+} from "@/features/auth/store/auth-store";
 
 export default function ProfileTabScreen() {
   const { Colors } = useAppTheme();
 
+  // store
   const userProfile = useAuthProfile();
+  const { setProfile } = useAuthActions();
+
+  // query & mutations
+  const userProfileQuery = useGetProfile();
+
+  useEffect(() => {
+    if (userProfileQuery.data) {
+      setProfile(userProfileQuery.data.data);
+    }
+  }, [userProfileQuery.data, setProfile]);
+
+  // methods
+  const handleRefresh = () => {
+    userProfileQuery.refetch();
+  };
 
   const handleLogout = async () => {
     // TODO integrate with logout API
@@ -30,6 +52,13 @@ export default function ProfileTabScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1, gap: 27, padding: 27 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={userProfileQuery.isRefetching}
+            onRefresh={handleRefresh}
+            progressViewOffset={20}
+          />
+        }
       >
         <View style={style.avatarContainer}>
           <Image

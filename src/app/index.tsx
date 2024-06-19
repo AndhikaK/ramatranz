@@ -11,7 +11,7 @@ export default function InitialScreen() {
   const router = useRouter();
   const navigation = useNavigation<any>();
 
-  const { setAccessToken } = useAuthActions();
+  const { setAccessToken, setProfile } = useAuthActions();
 
   const profileQuery = useGetProfile();
 
@@ -35,6 +35,7 @@ export default function InitialScreen() {
         index: 0,
         routes: [{ name: "(authenticated)" }],
       });
+      setProfile(profileQuery.data.data);
     } else if (profileQuery.error) {
       setAccessToken(null);
       router.replace("/auth/initial");
@@ -45,6 +46,7 @@ export default function InitialScreen() {
     router,
     navigation,
     setAccessToken,
+    setProfile,
   ]);
 
   return (
