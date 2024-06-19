@@ -1,4 +1,8 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 
 import { handleLogoutSession } from "@/features/auth/services/auth.service";
 import { getAccessToken } from "@/features/auth/store/auth-store";
@@ -35,6 +39,15 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
   return config;
 };
 
+const responseInterceptorSuccess = (response: AxiosResponse) => {
+  console.log({
+    type: "api success",
+    url: response.config.url,
+    data: response.data,
+  });
+  return response;
+};
+
 const responseInterceptorError = (error: AxiosError) => {
   const accessToken = getAccessToken();
   console.error({
@@ -51,21 +64,17 @@ const responseInterceptorError = (error: AxiosError) => {
 };
 
 apiClient.interceptors.request.use(requestInterceptor);
-apiClient.interceptors.response.use((response) => {
-  console.log({
-    type: "api success",
-    url: response.config.url,
-    data: response.data,
-  });
-  return response;
-}, responseInterceptorError);
+apiClient.interceptors.response.use(
+  responseInterceptorSuccess,
+  responseInterceptorError
+);
 
 const apiClientMock = axios.create({
   baseURL: "https://f0f2764d-a0d1-45f1-bb3d-f72539758a03.mock.pstmn.io",
 });
 apiClientMock.interceptors.request.use(requestInterceptor);
 apiClientMock.interceptors.response.use(
-  (response) => response,
+  responseInterceptorSuccess,
   responseInterceptorError
 );
 
