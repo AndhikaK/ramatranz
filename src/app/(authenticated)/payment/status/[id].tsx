@@ -10,6 +10,7 @@ import {
   PaymentStatusFailed,
   PaymentStatusSuccess,
   PaymentStatusWaiting,
+  PaymentStatusWaitingVA,
 } from "@/features/payment/components";
 import { useHardwareBackpress } from "@/hooks/useHardwareBackPress";
 
@@ -74,7 +75,11 @@ export default function PaymentStatusScreen() {
         ) : paymentStatusQuery.data?.data.status === "failed" ? (
           <PaymentStatusFailed />
         ) : paymentStatusQuery.data?.data.status === "waiting" ? (
-          <PaymentStatusWaiting />
+          paymentStatusQuery.data?.data.type === "va" ? (
+            <PaymentStatusWaitingVA data={paymentStatusQuery.data?.data} />
+          ) : (
+            <PaymentStatusWaiting />
+          )
         ) : null}
       </View>
 

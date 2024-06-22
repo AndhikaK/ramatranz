@@ -153,6 +153,7 @@ export type OrderListResponseSuccess = {
 export type GetPaymentStatusResponseSuccess = {
   data: {
     status: "waiting" | "success" | "failed";
+    type?: "va";
   };
 };
 

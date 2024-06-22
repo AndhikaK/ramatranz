@@ -49,7 +49,7 @@ export default function TravelPaymentScreen() {
         router.push({
           pathname: "/payment/status/[id]",
           params: {
-            id: 11,
+            id: 13,
           },
         });
       },

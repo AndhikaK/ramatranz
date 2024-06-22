@@ -73,7 +73,6 @@ export default function ProfileTabScreen() {
           Snackbar.show({ message: "Berhasil update profile!" });
         },
         onError: (error) => {
-          console.log(error);
           Snackbar.show({ message: "Gagal update profile", variant: "danger" });
         },
       }
