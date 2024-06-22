@@ -21,6 +21,7 @@ import {
   PostLoginResponseSuccess,
   PostProcessPaymentPayload,
   PostRegisterPayload,
+  PostUpdateProfileData as PutUpdateProfileData,
   TravelPointToPointApiParams,
   TravelScheduleQuery,
   TravelScheduleResponseSuccess,
@@ -102,6 +103,16 @@ export const getUserProfile = async () => {
   const response = await apiClient<PostLoginResponseSuccess>({
     method: "GET",
     url: "/api/auth/user-profile",
+  });
+
+  return response.data;
+};
+
+export const putUpdateUserProfile = async (data: PutUpdateProfileData) => {
+  const response = await apiClient({
+    method: "PUT",
+    url: "/api/auth/update-profile",
+    data: data,
   });
 
   return response.data;

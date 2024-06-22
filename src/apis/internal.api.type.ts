@@ -44,6 +44,14 @@ export type PostRegisterResponseError = {
   error: string;
 };
 
+export const postUpdateProfileSchema = z.object({
+  nama: z.string().optional(),
+  email: z.string().optional(),
+  no_hp: z.string(),
+  alamat: z.string().optional(),
+});
+export type PostUpdateProfileData = z.infer<typeof postUpdateProfileSchema>;
+
 export const getArticlesQuerySchema = z.object({
   type: z.enum(["rekomendasi"]).optional(),
 });

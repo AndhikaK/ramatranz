@@ -24,6 +24,7 @@ export function TextInput(props: TextInputProps) {
     style,
     errorMessage = "",
     secureTextEntry = false,
+    trailingIcon,
     ...rest
   } = props;
 
@@ -50,15 +51,16 @@ export function TextInput(props: TextInputProps) {
           />
         </View>
 
-        {secureTextEntry && (
-          <TouchableWithoutFeedback
-            onPress={() => setHidePassword(!hidePassword)}
-          >
-            <View>
-              <IconCIHide color="textsecondary" />
-            </View>
-          </TouchableWithoutFeedback>
-        )}
+        {trailingIcon ||
+          (secureTextEntry && (
+            <TouchableWithoutFeedback
+              onPress={() => setHidePassword(!hidePassword)}
+            >
+              <View>
+                <IconCIHide color="textsecondary" />
+              </View>
+            </TouchableWithoutFeedback>
+          ))}
       </View>
 
       {!!errorMessage && (

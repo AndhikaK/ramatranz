@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   RefreshControl,
@@ -7,15 +7,24 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { Appbar, Snackbar, TextInput, Typography, View } from "@/components";
+import {
+  Appbar,
+  Loader,
+  Snackbar,
+  TextInput,
+  Typography,
+  View,
+} from "@/components";
 import { IconCILogout } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { useGetProfile } from "@/features/auth/api/useGetProfile";
+import { useUpdateProfileMutation } from "@/features/auth/api/useUpdateProfile";
 import { handleLogoutSession } from "@/features/auth/services/auth.service";
 import {
   useAuthActions,
   useAuthProfile,
 } from "@/features/auth/store/auth-store";
+import useDebounce from "@/hooks/useDebounce";
 
 export default function ProfileTabScreen() {
   const { Colors } = useAppTheme();
@@ -26,6 +35,12 @@ export default function ProfileTabScreen() {
 
   // query & mutations
   const userProfileQuery = useGetProfile();
+  const updateUserProfileMutation = useUpdateProfileMutation();
+
+  // state
+  const [mobileNumber, setMobileNumber] = useState(userProfile?.no_telp || "");
+  // const [address, setAddress] = useState(userProfile?.);
+  const debouncedMobileNumber = useDebounce(mobileNumber, 1000);
 
   useEffect(() => {
     if (userProfileQuery.data) {
@@ -44,6 +59,26 @@ export default function ProfileTabScreen() {
     handleLogoutSession();
     Snackbar.show({ message: "Logout berhasil!" });
   };
+
+  useEffect(() => {
+    if (debouncedMobileNumber === userProfile?.no_telp) return;
+
+    updateUserProfileMutation.mutate(
+      {
+        no_hp: debouncedMobileNumber,
+      },
+      {
+        onSuccess: (data) => {
+          setProfile(data?.data);
+          Snackbar.show({ message: "Berhasil update profile!" });
+        },
+        onError: (error) => {
+          console.log(error);
+          Snackbar.show({ message: "Gagal update profile", variant: "danger" });
+        },
+      }
+    );
+  }, [debouncedMobileNumber, userProfile?.no_telp]);
 
   return (
     <View backgroundColor="paper" style={style.container}>
@@ -75,8 +110,11 @@ export default function ProfileTabScreen() {
         {!!userProfile?.no_telp && (
           <TextInput
             label="Nomor Telepon"
-            value={userProfile?.no_telp}
-            editable={false}
+            value={mobileNumber}
+            trailingIcon={
+              updateUserProfileMutation.isPending && <Loader size={16} />
+            }
+            onChangeText={setMobileNumber}
           />
         )}
         <TextInput label="Alamat" numberOfLines={5} value="" />
