@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   countdownWrapper: {
     borderWidth: 1,
     marginHorizontal: 40,
-    height: 28,
+    height: 32,
     justifyContent: "center",
     alignItems: "center",
   },
