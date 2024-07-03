@@ -104,7 +104,9 @@ export function PaymentStatusWaitingVA(props: PaymentStatusWaitingVAProps) {
 
             {openedTutorialIndex.includes(index) &&
               tutorial.data.map((item, itemIndex) => (
-                <Typography>{`${itemIndex + 1}. ${item}`}</Typography>
+                <Typography
+                  key={itemIndex}
+                >{`${itemIndex + 1}. ${item}`}</Typography>
               ))}
           </View>
         ))}
