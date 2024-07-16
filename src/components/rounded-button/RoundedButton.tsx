@@ -48,7 +48,11 @@ export function RoundedButton(props: RoundedButtonProps) {
           )}
         </View>
 
-        <Typography fontFamily="OpenSans-Regular" fontSize={14}>
+        <Typography
+          fontFamily="OpenSans-Regular"
+          fontSize={12}
+          numberOfLines={1}
+        >
           {label}
         </Typography>
       </View>

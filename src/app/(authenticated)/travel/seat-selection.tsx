@@ -114,7 +114,7 @@ export default function SeatSelectionScreen() {
         <View backgroundColor="dangerlight" style={style.informationBanner}>
           <Typography
             fontFamily="OpenSans-Semibold"
-            fontSize={7}
+            fontSize={10}
             color="dangerbase"
           >
             WAJIB BELI UNTUK ANAK DIATAS USIA 7 TAHUN{" "}
@@ -178,7 +178,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: 15,
+    paddingVertical: 4,
     borderRadius: 2,
   },
   bottomActionContainer: {

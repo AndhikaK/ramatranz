@@ -48,36 +48,36 @@ export default function TravelDetailScreen() {
               <View>
                 <Typography
                   fontFamily="Poppins-Medium"
-                  fontSize={12}
+                  fontSize={14}
                   color="textsecondary"
                 >
                   Tipe Mobil
                 </Typography>
-                <Typography fontFamily="Poppins-Medium" fontSize={10}>
+                <Typography fontFamily="Poppins-Medium" fontSize={13}>
                   {travelSchedule?.carModel}
                 </Typography>
               </View>
               <View>
                 <Typography
                   fontFamily="Poppins-Medium"
-                  fontSize={12}
+                  fontSize={14}
                   color="textsecondary"
                 >
                   Spesifikasi
                 </Typography>
-                <Typography fontFamily="Poppins-Medium" fontSize={10}>
+                <Typography fontFamily="Poppins-Medium" fontSize={13}>
                   Kapasitas kursi {travelSchedule?.carSeat}
                 </Typography>
               </View>
               <View>
                 <Typography
                   fontFamily="Poppins-Medium"
-                  fontSize={12}
+                  fontSize={14}
                   color="textsecondary"
                 >
                   Fasilitas
                 </Typography>
-                <Typography fontFamily="Poppins-Medium" fontSize={10}>
+                <Typography fontFamily="Poppins-Medium" fontSize={13}>
                   {travelSchedule?.fasilitas || "-"}
                 </Typography>
               </View>
@@ -94,12 +94,12 @@ export default function TravelDetailScreen() {
               <View style={style.routeTitle}>
                 <Typography
                   fontFamily="Poppins-Medium"
-                  fontSize={4}
+                  fontSize={8}
                   style={{ textAlign: "center" }}
                 >
                   Jam{`\n`}Berangkat
                 </Typography>
-                <Typography fontFamily="Poppins-Medium" fontSize={4}>
+                <Typography fontFamily="Poppins-Medium" fontSize={8}>
                   {travelSchedule?.departureDate &&
                     formatTime(new Date(travelSchedule?.departureDate))}
                 </Typography>
@@ -137,18 +137,18 @@ export default function TravelDetailScreen() {
                 </View>
                 <View style={{ gap: 24 }}>
                   <View>
-                    <Typography fontFamily="Poppins-Medium" fontSize={8}>
+                    <Typography fontFamily="Poppins-Medium" fontSize={13}>
                       {travelSchedule?.originCity}
                     </Typography>
-                    <Typography fontFamily="Poppins-Light" fontSize={7}>
+                    <Typography fontFamily="Poppins-Light" fontSize={12}>
                       Titik jemput
                     </Typography>
                   </View>
                   <View>
-                    <Typography fontFamily="Poppins-Medium" fontSize={8}>
+                    <Typography fontFamily="Poppins-Medium" fontSize={13}>
                       {travelSchedule?.destinationCity}
                     </Typography>
-                    <Typography fontFamily="Poppins-Light" fontSize={7}>
+                    <Typography fontFamily="Poppins-Light" fontSize={12}>
                       Titik jemput
                     </Typography>
                   </View>
@@ -159,7 +159,7 @@ export default function TravelDetailScreen() {
 
           {activeTab === "ticket" && (
             <View style={{ gap: 12 }}>
-              <Typography fontFamily="Poppins-SemiBold">
+              <Typography fontFamily="Poppins-SemiBold" fontSize={14}>
                 Syarat & Ketentuan
               </Typography>
 
@@ -167,7 +167,7 @@ export default function TravelDetailScreen() {
                 systemFonts={[...defaultSystemFonts, "Poppins-Regular"]}
                 contentWidth={Dimensions.get("screen").width - 48}
                 baseStyle={{
-                  fontSize: 12,
+                  fontSize: 13,
                   color: Colors.textsecondary,
                 }}
                 source={{

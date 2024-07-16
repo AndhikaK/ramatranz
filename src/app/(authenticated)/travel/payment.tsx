@@ -115,7 +115,7 @@ export default function TravelPaymentScreen() {
         <View backgroundColor="dangerlight" style={styles.warningWrapper}>
           <Typography
             fontFamily="OpenSans-Regular"
-            fontSize={6}
+            fontSize={10}
             color="dangerbase"
           >
             Mohon diperhatikan, setiap pembelian tiket tidak dapat dikembalikan.
