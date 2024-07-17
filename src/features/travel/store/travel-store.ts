@@ -5,8 +5,8 @@ import {
   TravelScheduleQuery,
   TravelScheduleResponseSuccess,
 } from "@/apis/internal.api.type";
-import { SelectedSeat } from "@/app/(authenticated)/travel/seat-selection";
 import { ExtractState } from "@/libs/zustand";
+import { PassengerSeat } from "@/app/(authenticated)/travel/add-passenger";
 
 type TravelStore = {
   bookingPayload?: TravelScheduleQuery;
@@ -15,7 +15,7 @@ type TravelStore = {
     to?: string;
   };
   travelSchedule?: TravelScheduleResponseSuccess["data"][number];
-  passenger?: SelectedSeat[];
+  passenger: PassengerSeat[];
 
   actions: {
     setBookingPayload: (bookinPayload?: TravelScheduleQuery) => void;
@@ -26,7 +26,7 @@ type TravelStore = {
     setTravelSchedule: (
       bookinPayload?: TravelScheduleResponseSuccess["data"][number]
     ) => void;
-    setPassenger: (bookinPayload?: SelectedSeat[]) => void;
+    setPassenger: (bookinPayload: PassengerSeat[]) => void;
     clearBookingSession: () => void;
   };
 };
@@ -35,6 +35,7 @@ const travelStore = createStore<TravelStore>()((set, get) => ({
   bookingPayload: undefined,
   pointToPointPayload: undefined,
   travelSchedule: undefined,
+  passenger: [],
 
   actions: {
     setBookingPayload: (bookingPayload) => set({ bookingPayload }),

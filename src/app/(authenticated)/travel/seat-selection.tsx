@@ -13,17 +13,14 @@ import {
   useTravelActions,
   useTravelSchedule,
 } from "@/features/travel/store/travel-store";
+import { PassengerSeat } from "./add-passenger";
 
-export type SelectedSeat = {
-  passengerName: string;
-  seat: string;
-};
 export default function SeatSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { Colors } = useAppTheme();
 
-  const [selectedSeats, setSelectedSeat] = useState<SelectedSeat[]>([]);
+  const [selectedSeats, setSelectedSeat] = useState<PassengerSeat[]>([]);
 
   const userProfile = useAuthProfile();
   const traveSchedule = useTravelSchedule();
@@ -40,7 +37,13 @@ export default function SeatSelectionScreen() {
       if (selectedSeats.length < limit) {
         setSelectedSeat([
           ...selectedSeats,
-          { passengerName: userProfile?.nama || "", seat: seatNumber },
+          {
+            name: userProfile?.nama || "",
+            email: userProfile?.email || "",
+            phoneNumber: userProfile?.no_telp || "",
+            nik: "",
+            seat: seatNumber,
+          },
         ]);
       }
     }

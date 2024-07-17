@@ -84,12 +84,17 @@ export default function TravelOrderDetailScreen() {
           <Typography fontFamily="Poppins-Bold" fontSize={16}>
             Daftar Penumpang
           </Typography>
-          <Button>Tambah</Button>
+          <Button
+            onPress={() => router.push("/travel/add-passenger")}
+            style={{ minHeight: 40, height: 40 }}
+          >
+            Tambah
+          </Button>
         </View>
 
         {travelPassenger?.map((passenger) => (
           <View
-            key={passenger.passengerName}
+            key={passenger.name}
             style={[
               style.passengerContainer,
               { borderColor: Colors.outlineborder },
@@ -101,7 +106,7 @@ export default function TravelOrderDetailScreen() {
                 fontSize={16}
                 numberOfLines={1}
               >
-                {passenger.passengerName}
+                {passenger.name}
               </Typography>
               <Typography color="textsecondary">
                 {travelSchedule.carModel} {"\u2022"} {passenger.seat}
