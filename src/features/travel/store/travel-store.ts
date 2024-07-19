@@ -5,8 +5,8 @@ import {
   TravelScheduleQuery,
   TravelScheduleResponseSuccess,
 } from "@/apis/internal.api.type";
-import { ExtractState } from "@/libs/zustand";
 import { PassengerSeat } from "@/app/(authenticated)/travel/add-passenger";
+import { ExtractState } from "@/libs/zustand";
 
 type TravelStore = {
   bookingPayload?: TravelScheduleQuery;

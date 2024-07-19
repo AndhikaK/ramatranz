@@ -27,7 +27,7 @@ const vaPaymentTutorial = [
 ];
 const targetDate = new Date().getTime() + 300 * 1000;
 export function PaymentStatusWaitingVA(props: PaymentStatusWaitingVAProps) {
-  const { data } = props;
+  // const { data } = props;
 
   const { Colors } = useAppTheme();
 

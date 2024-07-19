@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Appbar, Button, Typography, View } from "@/components";
@@ -11,46 +11,66 @@ import { useAuthProfile } from "@/features/auth/store/auth-store";
 import { CarSeat10 } from "@/features/travel/components";
 import {
   useTravelActions,
+  useTravelPassenger,
   useTravelSchedule,
 } from "@/features/travel/store/travel-store";
-import { PassengerSeat } from "./add-passenger";
+
+import { PassengerSeat } from "../add-passenger";
 
 export default function SeatSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { Colors } = useAppTheme();
 
-  const [selectedSeats, setSelectedSeat] = useState<PassengerSeat[]>([]);
+  const params = useLocalSearchParams<{ index: string }>();
+  const passengerIndex = Number(params.index) || 0;
+
+  const [selectedSeats, setSelectedSeat] = useState<string[]>([]);
 
   const userProfile = useAuthProfile();
   const traveSchedule = useTravelSchedule();
+  const passengerList = useTravelPassenger();
   const { setPassenger } = useTravelActions();
+
+  const getSeatTaken = useMemo(() => {
+    let seatTakenTemp = traveSchedule?.seatTaken || [];
+    passengerList.forEach((passenger, index) => {
+      if (index !== passengerIndex) {
+        seatTakenTemp = seatTakenTemp.concat(passenger.seat);
+      }
+    });
+
+    return seatTakenTemp;
+  }, [passengerIndex, passengerList, traveSchedule?.seatTaken]);
 
   const handleSelectSeat = (seatNumber: string) => {
     const limit = 1;
 
-    if (selectedSeats.find((seats) => seats.seat === seatNumber)) {
-      setSelectedSeat(
-        selectedSeats.filter((seats) => seats.seat !== seatNumber)
-      );
+    if (selectedSeats.find((seats) => seats === seatNumber)) {
+      setSelectedSeat(selectedSeats.filter((seats) => seats !== seatNumber));
     } else {
       if (selectedSeats.length < limit) {
-        setSelectedSeat([
-          ...selectedSeats,
-          {
-            name: userProfile?.nama || "",
-            email: userProfile?.email || "",
-            phoneNumber: userProfile?.no_telp || "",
-            nik: "",
-            seat: seatNumber,
-          },
-        ]);
+        setSelectedSeat([...selectedSeats, seatNumber]);
       }
     }
   };
 
   const onProceedNextPage = () => {
-    setPassenger(selectedSeats);
+    const passengerListTemp: PassengerSeat[] = passengerList;
+
+    if (passengerIndex === 0) {
+      passengerListTemp[0] = {
+        name: userProfile?.nama || "",
+        phoneNumber: userProfile?.no_telp || "",
+        seat: selectedSeats,
+        nik: "",
+        email: "",
+      };
+    } else if (passengerListTemp?.[passengerIndex]) {
+      passengerListTemp[passengerIndex].seat = selectedSeats;
+    }
+
+    setPassenger(passengerListTemp);
     router.replace("/travel/order-detail");
   };
 
@@ -63,7 +83,7 @@ export default function SeatSelectionScreen() {
         contentContainerStyle={style.contentContainer}
       >
         <Typography fontFamily="Poppins-Bold" fontSize={16}>
-          Perjalananmu
+          Perjalananmu sdfd
         </Typography>
 
         <View style={[style.userInfoContainer, { borderColor: Colors.main }]}>
@@ -85,7 +105,7 @@ export default function SeatSelectionScreen() {
                   />
                   <Typography color="textsecondary">
                     {selectedSeats
-                      .map((item) => item.seat)
+                      .map((item) => item)
                       .sort((a, b) => parseFloat(a) - parseFloat(b))
                       .join(", ")}
                   </Typography>
@@ -126,8 +146,8 @@ export default function SeatSelectionScreen() {
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <CarSeat10
-            filled={traveSchedule?.seatTaken || []}
-            selected={selectedSeats.map((item) => item.seat)}
+            filled={getSeatTaken()}
+            selected={selectedSeats.map((item) => item)}
             onSeatPress={handleSelectSeat}
           />
         </View>

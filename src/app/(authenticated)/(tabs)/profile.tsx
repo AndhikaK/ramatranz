@@ -77,7 +77,8 @@ export default function ProfileTabScreen() {
         },
       }
     );
-  }, [debouncedMobileNumber, userProfile?.no_telp]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedMobileNumber, setProfile]);
 
   return (
     <View backgroundColor="paper" style={style.container}>

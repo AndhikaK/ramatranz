@@ -1,20 +1,22 @@
+import { StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Appbar, Button, TextInput, View } from "@/components";
 import {
   useTravelActions,
   useTravelPassenger,
 } from "@/features/travel/store/travel-store";
+import { useHardwareBackpress } from "@/hooks/useHardwareBackPress";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "expo-router";
-import { Controller, useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
-import { z } from "zod";
 
 export const passengerSeatSchema = z.object({
   name: z.string(),
   nik: z.string(),
   email: z.string().email(),
   phoneNumber: z.string(),
-  seat: z.string().optional(),
+  seat: z.string().array().default([]),
 });
 export type PassengerSeat = z.infer<typeof passengerSeatSchema>;
 
@@ -33,12 +35,17 @@ export default function AddPassengerScreen() {
   const onSavePassenger = handleSubmit((data) => {
     const tempPassenger = [...passengerList, data];
     setPassenger(tempPassenger);
-    router.replace("/travel/order-detail");
+    onBackPress();
   });
+
+  const onBackPress = () => {
+    router.replace("/travel/order-detail");
+  };
+  useHardwareBackpress(onBackPress);
 
   return (
     <View backgroundColor="paper" style={styles.container}>
-      <Appbar title="Tambah Penumpang" backIconPress={() => router.back()} />
+      <Appbar title="Tambah Penumpang" backIconPress={onBackPress} />
 
       <View borderColor="outlineborder" style={styles.contentContainer}>
         <Controller

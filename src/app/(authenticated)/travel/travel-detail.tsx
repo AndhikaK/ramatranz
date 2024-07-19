@@ -201,7 +201,16 @@ export default function TravelDetailScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button onPressIn={() => router.push("/travel/seat-selection")}>
+          <Button
+            onPressIn={() =>
+              router.push({
+                pathname: "/travel/seat-selection/[index]",
+                params: {
+                  index: 0,
+                },
+              })
+            }
+          >
             Pilih
           </Button>
         </View>

@@ -33,7 +33,7 @@ export default function LoginScreen() {
 
   const { control, handleSubmit, formState } = useForm<PostLoginPayload>({
     defaultValues: {
-      email: "test@gmail.com",
+      email: "test9@gmail.com",
       password: "123456",
     },
     resolver: zodResolver(postLoginPayloadSchema),

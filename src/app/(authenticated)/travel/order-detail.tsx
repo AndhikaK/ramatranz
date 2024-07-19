@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,6 +13,8 @@ import {
 } from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";
 
+import { PassengerSeat } from "./add-passenger";
+
 export default function TravelOrderDetailScreen() {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -22,15 +25,35 @@ export default function TravelOrderDetailScreen() {
   const travelSchedule = useTravelSchedule();
   const travelPassenger = useTravelPassenger();
 
-  const handleNavigateToSeatSelection = () => {
+  const handleNavigateToSeatSelection = (index: number) => {
     const routes = navigation.getState()?.routes;
     const prevRoute = routes[routes.length - 2];
     if (prevRoute.name === "travel/travel-detail") {
-      router.replace("/travel/seat-selection");
+      router.replace({
+        pathname: "/travel/seat-selection/[index]",
+        params: {
+          index,
+        },
+      });
     } else {
-      router.push("/travel/seat-selection");
+      router.push({
+        pathname: "/travel/seat-selection/[index]",
+        params: {
+          index,
+        },
+      });
     }
   };
+
+  const getPassengerSeat = useMemo(() => {
+    let selectedSeat: PassengerSeat["seat"] = [];
+
+    travelPassenger.forEach((passenger) => {
+      selectedSeat = selectedSeat.concat(passenger.seat);
+    });
+
+    return selectedSeat;
+  }, [travelPassenger]);
 
   if (!travelSchedule) return null;
 
@@ -56,7 +79,7 @@ export default function TravelOrderDetailScreen() {
             <View>
               <Typography>
                 {travelSchedule.carModel} {"\u2022"}{" "}
-                {travelPassenger?.map((item) => item.seat).join(", ")}
+                {getPassengerSeat?.map((item) => item).join(", ")}
               </Typography>
             </View>
           }
@@ -92,7 +115,7 @@ export default function TravelOrderDetailScreen() {
           </Button>
         </View>
 
-        {travelPassenger?.map((passenger) => (
+        {travelPassenger?.map((passenger, index) => (
           <View
             key={passenger.name}
             style={[
@@ -109,11 +132,14 @@ export default function TravelOrderDetailScreen() {
                 {passenger.name}
               </Typography>
               <Typography color="textsecondary">
-                {travelSchedule.carModel} {"\u2022"} {passenger.seat}
+                {travelSchedule.carModel} {"\u2022"} {passenger.seat.join(", ")}
               </Typography>
             </View>
 
-            <Button variant="secondary" onPress={handleNavigateToSeatSelection}>
+            <Button
+              variant="secondary"
+              onPress={() => handleNavigateToSeatSelection(index)}
+            >
               Ganti kursi
             </Button>
           </View>
