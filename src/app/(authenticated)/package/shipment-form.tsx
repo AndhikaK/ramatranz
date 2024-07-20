@@ -1,19 +1,36 @@
 import { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Appbar, Separator, TextInputV2, Typography, View } from "@/components";
 import {
+  Appbar,
+  SectionWrapper,
+  Separator,
+  TextInputV2,
+  Typography,
+  View,
+} from "@/components";
+import {
+  IconArrowRight,
   IconPackageExport,
   IconPackageImport,
   IconSwap,
 } from "@/components/icons";
+import { PromoItem } from "@/components/promo-item/PromoItem";
 import { useAppTheme } from "@/context/theme-context";
+import { ArticleEmpty } from "@/features/article/components";
 import {
   usePackageActions,
   usePackageOrderPayload,
 } from "@/features/package/stores/package-store";
+
+const PromoItemList = [
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+];
 
 export default function PackageShipmentFormScreen() {
   const insets = useSafeAreaInsets();
@@ -106,6 +123,34 @@ export default function PackageShipmentFormScreen() {
           </View>
         </View>
       </View>
+
+      <SectionWrapper
+        title="Langkah mudah untuk kirim paket"
+        action={
+          <TouchableWithoutFeedback
+            onPress={() => router.push("/(tabs)/article")}
+          >
+            <View
+              style={[
+                styles.touchableIconWrapper,
+                { backgroundColor: Colors.bgsecondary },
+              ]}
+            >
+              <IconArrowRight height={20} width={20} color="main" />
+            </View>
+          </TouchableWithoutFeedback>
+        }
+      >
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={PromoItemList}
+          renderItem={({ item }) => <PromoItem imgUrl={item.imgUrl} />}
+          style={{ width: "100%" }}
+          ListEmptyComponent={() => <ArticleEmpty />}
+          contentContainerStyle={styles.listArticleContainer}
+        />
+      </SectionWrapper>
     </View>
   );
 }
@@ -125,6 +170,7 @@ const styles = StyleSheet.create({
   shipmentBox: {
     margin: 24,
     marginTop: 16,
+    marginBottom: 32,
     padding: 16,
     gap: 16,
     borderWidth: 1,
@@ -145,5 +191,17 @@ const styles = StyleSheet.create({
     right: 12,
     justifyContent: "center",
     alignItems: "center",
+  },
+  touchableIconWrapper: {
+    height: 24,
+    width: 24,
+    borderRadius: 99,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  listArticleContainer: {
+    paddingHorizontal: 20,
+    gap: 16,
+    flexGrow: 1,
   },
 });

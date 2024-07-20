@@ -1,5 +1,10 @@
 import { useEffect, useMemo } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,17 +17,32 @@ import {
   Appbar,
   Button,
   DateInputV2,
+  SectionWrapper,
   SelectInputV2,
   Separator,
   Typography,
   View,
 } from "@/components";
-import { IconCalendar, IconCarSide, IconSwap } from "@/components/icons";
+import {
+  IconArrowRight,
+  IconCalendar,
+  IconCarSide,
+  IconSwap,
+} from "@/components/icons";
+import { PromoItem } from "@/components/promo-item/PromoItem";
 import { useAppTheme } from "@/context/theme-context";
+import { ArticleEmpty } from "@/features/article/components";
 import { useGetTravelBranch } from "@/features/travel/api/useGetTravelBranch";
 import { useTravelActions } from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+const PromoItemList = [
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+];
 
 export default function BookingTravelScreen() {
   const insets = useSafeAreaInsets();
@@ -152,6 +172,34 @@ export default function BookingTravelScreen() {
           Cari
         </Button>
       </View>
+
+      <SectionWrapper
+        title="Langkah mudah untuk memesan travel"
+        action={
+          <TouchableWithoutFeedback
+            onPress={() => router.push("/(tabs)/article")}
+          >
+            <View
+              style={[
+                style.touchableIconWrapper,
+                { backgroundColor: Colors.bgsecondary },
+              ]}
+            >
+              <IconArrowRight height={20} width={20} color="main" />
+            </View>
+          </TouchableWithoutFeedback>
+        }
+      >
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={PromoItemList}
+          renderItem={({ item }) => <PromoItem imgUrl={item.imgUrl} />}
+          style={{ width: "100%" }}
+          ListEmptyComponent={() => <ArticleEmpty />}
+          contentContainerStyle={style.listArticleContainer}
+        />
+      </SectionWrapper>
     </ScrollView>
   );
 }
@@ -187,5 +235,17 @@ const style = StyleSheet.create({
     right: 12,
     justifyContent: "center",
     alignItems: "center",
+  },
+  touchableIconWrapper: {
+    height: 24,
+    width: 24,
+    borderRadius: 99,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  listArticleContainer: {
+    paddingHorizontal: 20,
+    gap: 16,
+    flexGrow: 1,
   },
 });

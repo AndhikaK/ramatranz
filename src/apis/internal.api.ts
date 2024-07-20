@@ -119,7 +119,7 @@ export const putUpdateUserProfile = async (data: PutUpdateProfileData) => {
 };
 
 export const getArticles = async (query?: GetArticleQuery) => {
-  const response = await apiClient<GetArticleResponseSuccess>({
+  const response = await apiClientMock<GetArticleResponseSuccess>({
     method: "GET",
     url: `/api/artikel/artikel${query?.type ? "/" + query.type : ""}`,
   });
