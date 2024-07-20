@@ -43,6 +43,14 @@ export default function SeatSelectionScreen() {
     return seatTakenTemp;
   }, [passengerIndex, passengerList, traveSchedule?.seatTaken]);
 
+  const getUserSeatOwner = useMemo(() => {
+    if (passengerList?.[passengerIndex]) {
+      return `${passengerIndex + 1}. ${passengerList[passengerIndex].name}`;
+    }
+
+    return `1. ${userProfile?.nama}`;
+  }, [passengerIndex, passengerList, userProfile?.nama]);
+
   const handleSelectSeat = (seatNumber: string) => {
     const limit = 1;
 
@@ -89,7 +97,7 @@ export default function SeatSelectionScreen() {
         <View style={[style.userInfoContainer, { borderColor: Colors.main }]}>
           <View style={{ flex: 1, gap: 12 }}>
             <Typography fontFamily="Poppins-Bold" fontSize={16}>
-              1. {userProfile?.nama}
+              {getUserSeatOwner}
             </Typography>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
@@ -146,7 +154,7 @@ export default function SeatSelectionScreen() {
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <CarSeat10
-            filled={getSeatTaken()}
+            filled={getSeatTaken}
             selected={selectedSeats.map((item) => item)}
             onSeatPress={handleSelectSeat}
           />
