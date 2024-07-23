@@ -13,6 +13,7 @@ export * from "./IconClipboard";
 export * from "./IconClock";
 export * from "./IconCross";
 export * from "./IconDoorThin";
+export * from "./IconCiDiscountLight";
 export * from "./IconDownload";
 export * from "./IconHome";
 export * from "./IconIcArrowRight";

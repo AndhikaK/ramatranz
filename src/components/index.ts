@@ -6,6 +6,7 @@ export * from "./loader/Loader";
 export * from "./page-wrapper/PageWrapper";
 export * from "./radio-item/RadioItem";
 export * from "./rounded-button/RoundedButton";
+export * from "./promo-list-item/PromoListItem";
 export * from "./search-box/SearchBox";
 export * from "./section-wrapper/SectionWrapper";
 export * from "./select-input-v2/SelectInputV2";

@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Typography, View } from "@/components";
 import {
+  IconCiDiscountLight,
   IconClipboard,
   IconHome,
   IconPromo,
@@ -103,6 +104,19 @@ export default function TabLayout() {
           title: "Artikel",
           tabBarIcon: ({ focused }) => (
             <IconPromo
+              color={focused ? "main" : "textsecondary"}
+              width={24}
+              height={24}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="promo"
+        options={{
+          title: "Promo",
+          tabBarIcon: ({ focused }) => (
+            <IconCiDiscountLight
               color={focused ? "main" : "textsecondary"}
               width={24}
               height={24}
