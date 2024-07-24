@@ -41,24 +41,19 @@ const requestInterceptor = (config: InternalAxiosRequestConfig<any>) => {
 };
 
 const responseInterceptorSuccess = (response: AxiosResponse) => {
-  console.log({
+  console.log(response.config.url, {
     type: "api success",
-    url: response.config.url,
-    data: JSON.stringify(response.data),
+    data: response.data,
   });
   return response;
 };
 
 const responseInterceptorError = (error: AxiosError) => {
   const accessToken = getAccessToken();
-  console.error({
-    type: "api error",
-    url: error.config?.url,
-    header: error.config?.headers,
-    data: error.response?.data,
-  });
+  console.error(error.config?.url, error);
+
   // force logout user if got status 401 Unauthorized
-  if (error.status === 401 && accessToken) {
+  if (error.response?.status === 401 && accessToken) {
     handleLogoutSession();
   }
 
