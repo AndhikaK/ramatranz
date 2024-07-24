@@ -48,7 +48,7 @@ export default function ArticleDetailScreen() {
             </View>
             <Image
               source={{
-                uri: articleDetailQuery.data?.data.img_url,
+                uri: articleDetailQuery.data?.data.image_url,
               }}
               style={[
                 style.articleImage,
@@ -60,7 +60,7 @@ export default function ArticleDetailScreen() {
               systemFonts={[...defaultSystemFonts, "Poppins-Regular"]}
               contentWidth={Dimensions.get("screen").width - 48}
               source={{
-                html: articleDetailQuery.data?.data.content || "",
+                html: articleDetailQuery.data?.data.konten || "",
               }}
             />
           </>

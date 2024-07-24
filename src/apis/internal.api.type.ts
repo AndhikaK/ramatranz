@@ -60,8 +60,8 @@ export type GetArticleResponseSuccess = {
   data: {
     id: string;
     judul: string;
-    img_url: string;
-    content: string;
+    image_url: string;
+    konten: string;
     harga: number;
   }[];
 };
@@ -69,8 +69,8 @@ export type GetArticleDetailResponseSuccess = {
   data: {
     id: string;
     judul: string;
-    img_url: string;
-    content: string;
+    image_url: string;
+    konten: string;
     harga: number;
   };
 };

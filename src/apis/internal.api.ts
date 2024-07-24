@@ -44,7 +44,7 @@ const responseInterceptorSuccess = (response: AxiosResponse) => {
   console.log({
     type: "api success",
     url: response.config.url,
-    data: response.data,
+    data: JSON.stringify(response.data),
   });
   return response;
 };
@@ -54,6 +54,7 @@ const responseInterceptorError = (error: AxiosError) => {
   console.error({
     type: "api error",
     url: error.config?.url,
+    header: error.config?.headers,
     data: error.response?.data,
   });
   // force logout user if got status 401 Unauthorized
@@ -119,9 +120,9 @@ export const putUpdateUserProfile = async (data: PutUpdateProfileData) => {
 };
 
 export const getArticles = async (query?: GetArticleQuery) => {
-  const response = await apiClientMock<GetArticleResponseSuccess>({
+  const response = await apiClient<GetArticleResponseSuccess>({
     method: "GET",
-    url: `/api/artikel/artikel${query?.type ? "/" + query.type : ""}`,
+    url: `/api/artikel/artikel`,
   });
 
   return response.data;

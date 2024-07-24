@@ -139,7 +139,7 @@ export default function HomeTabScreen() {
               <ArticleItemPlaceholder />
             ) : (
               <ArticleItem
-                imgSource={{ uri: item.img_url }}
+                imgSource={{ uri: item.image_url }}
                 title={item.judul}
                 subtitle="Mulai dari"
                 price={formatCurrency(item.harga)}
