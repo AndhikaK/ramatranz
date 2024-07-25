@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Image, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -21,6 +21,10 @@ export default function ForgotPasswordScreen() {
         ]}
       >
         <View style={style.formContainer}>
+          <Image
+            source={require("@/assets/images/logo-rama.png")}
+            style={style.logo}
+          />
           <TextInput
             label="Masukan email yang terdaftar"
             placeholder="Contoh@email.com"
@@ -46,6 +50,11 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   formContainer: {
-    gap: 36,
+    gap: 54,
+  },
+  logo: {
+    marginHorizontal: "auto",
+    width: 151,
+    height: 151,
   },
 });
