@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import { useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
@@ -9,11 +10,34 @@ import { useAppTheme } from "@/context/theme-context";
 import { TravelTicketItem } from "@/features/travel/components";
 import {
   useTravelPassenger,
+  useTravelPointToPointPayload,
   useTravelSchedule,
+  useTravelbookingPayload
 } from "@/features/travel/store/travel-store";
 import { formatCurrency } from "@/utils/common";
 
 import { PassengerSeat } from "./add-passenger";
+import { useMutation } from "@tanstack/react-query";
+import { apiClientMock } from "@/apis/internal.api";
+import { AxiosError } from "axios";
+import { useGetPointToPointApi } from "@/features/travel/api/useGetPointToPointApi";
+
+const usePostPesananMutation = () => {
+  return useMutation({
+    mutationFn: async (data) => {
+      const response = await apiClientMock({
+        method: "POST",
+        url: "/api/pesanan/pesanan",
+        data,
+      });
+      return response.data;
+    },
+    onError: (error: AxiosError) => {
+      console.error("Error processing order:", error);
+    },
+  });
+};
+
 
 export default function TravelOrderDetailScreen() {
   const insets = useSafeAreaInsets();
@@ -54,6 +78,37 @@ export default function TravelOrderDetailScreen() {
 
     return selectedSeat;
   }, [travelPassenger]);
+
+
+  const { mutate: postPesanan } = usePostPesananMutation();
+  // const travelStore = useTravelbookingPayload()
+  const pointToPointPayload = useTravelPointToPointPayload();
+  const bookingPayload = useTravelbookingPayload();
+  const pointToPointQuery = useGetPointToPointApi(bookingPayload);
+
+
+  const handlerPesanan = () => {
+    const titikJemputId = pointToPointQuery?.data?.data.find(item => item.nama === pointToPointPayload?.from)
+
+    const payload: any = {
+      jadwal_id: travelSchedule?.id,
+      no_kursi: travelPassenger.map((p) => p.seat).join(", "),
+      nama: travelPassenger.map((p) => p.name).join(", "),
+      no_telp: travelPassenger.map((p) => p.phoneNumber).join(", "),
+      titik_jemput_id: titikJemputId,
+      biaya_tambahan: 0,
+      status: "Menunggu",
+    };
+
+    postPesanan(payload, {
+      onSuccess: () => {
+        router.push("/travel/payment");
+      },
+      onError: () => {
+        // Tetap di halaman ini jika ada error
+      },
+    });
+  };
 
   if (!travelSchedule) return null;
 
@@ -170,7 +225,7 @@ export default function TravelOrderDetailScreen() {
           </Typography>
         </View>
         <View style={{ flex: 1 }}>
-          <Button onPressIn={() => router.push("/travel/payment")}>
+          <Button onPressIn={handlerPesanan}>
             {"Proses ke" + `\n` + "Pembayaran"}
           </Button>
         </View>

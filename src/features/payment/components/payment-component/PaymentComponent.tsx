@@ -38,7 +38,7 @@ export function PaymentComponent(props: PaymentComponentProps) {
                 onPress={() => onMethodSelected(item.id)}
               >
                 <View style={styles.paymentItem}>
-                  <Typography>{item.nama}</Typography>
+                  <Typography>{item.metode}</Typography>
                   <Checkbox selected={item.id === selectedMethod} />
                 </View>
               </TouchableWithoutFeedback>

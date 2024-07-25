@@ -105,7 +105,6 @@ export default function TravelOptionScreen() {
           </Typography>
           <View backgroundColor="main" style={style.indicator} />
         </View>
-
         <View style={style.destinationOptionWrapper}>
           <TouchableWithIcon
             icon={<IconDoorThin width={20} height={20} color="main" />}
