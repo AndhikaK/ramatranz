@@ -127,6 +127,7 @@ export type GetPaymentMethodResponseSuccess = {
   data: {
     id: number;
     nama: string;
+    img: string;
   }[];
 };
 

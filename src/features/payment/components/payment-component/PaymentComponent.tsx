@@ -1,4 +1,9 @@
-import { FlatList, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 import { Checkbox, Loader, Typography, View } from "@/components";
 import { useAppTheme } from "@/context/theme-context";
@@ -38,7 +43,13 @@ export function PaymentComponent(props: PaymentComponentProps) {
                 onPress={() => onMethodSelected(item.id)}
               >
                 <View style={styles.paymentItem}>
-                  <Typography>{item.nama}</Typography>
+                  <Image
+                    source={{ uri: item.img }}
+                    style={{ height: 30, width: 30, resizeMode: "center" }}
+                  />
+                  <View style={{ flex: 1 }}>
+                    <Typography>{item.nama}</Typography>
+                  </View>
                   <Checkbox selected={item.id === selectedMethod} />
                 </View>
               </TouchableWithoutFeedback>
@@ -67,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 10,
+    gap: 16,
     paddingVertical: 10,
   },
   loadingContainer: {
