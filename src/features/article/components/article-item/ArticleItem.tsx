@@ -48,13 +48,13 @@ export function ArticleItem(props: ArticleItemProps) {
               >
                 {subtitle}
               </Typography>
-              <Typography
+              {/* <Typography
                 fontFamily="OpenSans-Semibold"
                 fontSize={16}
                 numberOfLines={1}
               >
                 {price}
-              </Typography>
+              </Typography> */}
             </View>
           </View>
         </View>
@@ -98,9 +98,10 @@ function Placeholder({ height = 10, width = "50%" }: ViewStyle) {
 const style = StyleSheet.create({
   container: {
     width: 155,
-    height: 225,
+    height: 200,
     borderWidth: 1,
-    borderRadius: 2,
+    borderRadius: 12,
+    overflow: "hidden",
   },
   image: {
     width: "100%",

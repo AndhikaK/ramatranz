@@ -143,7 +143,7 @@ export default function HomeTabScreen() {
                 <ArticleItem
                   imgSource={{ uri: item.image_url }}
                   title={item.judul}
-                  subtitle="Mulai dari"
+                  subtitle={item.konten}
                   price={formatCurrency(item.harga)}
                   onPress={() =>
                     router.push({
@@ -161,6 +161,8 @@ export default function HomeTabScreen() {
             contentContainerStyle={styles.listArticleContainer}
           />
         </SectionWrapper>
+
+        <View style={{ height: 80 }} />
       </ScrollView>
 
       <View style={styles.promoBannerContainer}>
