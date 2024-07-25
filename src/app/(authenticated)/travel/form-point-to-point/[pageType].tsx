@@ -15,6 +15,7 @@ import { useAppTheme } from "@/context/theme-context";
 import { useGetPointToPointApi } from "@/features/travel/api/useGetPointToPointApi";
 import {
   useTravelActions,
+  useTravelbookingPayload,
   useTravelPointToPointPayload,
 } from "@/features/travel/store/travel-store";
 
@@ -32,10 +33,13 @@ export default function FormPoinToPointScreen() {
   const [selectedPoint, setSelectedPoint] = useState("");
 
   const pointToPointPayload = useTravelPointToPointPayload();
+  const bookingPayload = useTravelbookingPayload();
   const { setPointToPointPayload } = useTravelActions();
 
+  console.log({ bookingPayload, pointToPointPayload });
+
   const pointToPointQuery = useGetPointToPointApi({
-    point: pointToPointPayload?.[pageType] || "",
+    point: bookingPayload?.[pageType]?.toLowerCase() || "",
   });
 
   const handleSavePoint = () => {
