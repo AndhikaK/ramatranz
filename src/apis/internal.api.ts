@@ -66,8 +66,8 @@ apiClient.interceptors.response.use(
   responseInterceptorError
 );
 
-const apiClientMock = axios.create({
-  baseURL: "https://f0f2764d-a0d1-45f1-bb3d-f72539758a03.mock.pstmn.io",
+export const apiClientMock = axios.create({
+  baseURL: "https://backend-superapps.newus.id",
 });
 apiClientMock.interceptors.request.use(requestInterceptor);
 apiClientMock.interceptors.response.use(
@@ -135,13 +135,15 @@ export const getArticleById = async (id: string) => {
 export const getTravelSchedule = async (params: TravelScheduleQuery) => {
   const response = await apiClientMock<TravelScheduleResponseSuccess>({
     method: "GET",
-    url: "/api/jadwal/jadwal",
+    url: "/api/jadwal/jadwal_by_rute",
     params: {
       ...params,
       // transform Date, into yyyy-mm-dd
       date: new Date(params.date).toISOString().slice(0, 10),
     },
   });
+
+  console.log(response.data);
 
   return response.data;
 };
@@ -160,7 +162,7 @@ export const getPointToPointApi = async (
 ) => {
   const response = await apiClientMock<TravePointToPointApiResponseSuccess>({
     method: "GET",
-    url: "/api/point-to-point",
+    url: "/api/titik_jemput/master_titik_jemput",
     params,
   });
 
@@ -182,6 +184,10 @@ export const postProcessPayment = async (data: PostProcessPaymentPayload) => {
     url: "/api/pembayaran/process",
     data,
   });
+
+  console.log("payment");
+  console.log("payment",);
+
 
   return response.data;
 };
