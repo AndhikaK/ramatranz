@@ -1,8 +1,10 @@
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { View } from "../view/View";
+
 import { useAppTheme } from "@/context/theme-context";
-import { Typography } from "../typography/Typography";
+
 import { Button } from "../button/Button";
+import { Typography } from "../typography/Typography";
+import { View } from "../view/View";
 
 export function PromoListItem() {
   const { Colors } = useAppTheme();

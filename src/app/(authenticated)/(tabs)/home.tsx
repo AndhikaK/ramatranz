@@ -1,5 +1,6 @@
 import {
   FlatList,
+  ImageBackground,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -48,118 +49,141 @@ export default function HomeTabScreen() {
   };
 
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.paper }}
-      stickyHeaderIndices={[0]}
-      refreshControl={
-        <RefreshControl
-          refreshing={articleListQuery.isRefetching}
-          onRefresh={handleRefresh}
-          progressViewOffset={20}
-        />
-      }
-    >
-      <View
-        backgroundColor="main"
-        style={[styles.headerContainer, { height: insets.top + 106 }]}
-      >
-        <View style={[styles.headerWrapper, { paddingTop: insets.top + 20 }]}>
-          <SearchBox placeholder="Cari disini..." />
-        </View>
-      </View>
-
-      <View style={styles.contentContainer}>
-        <View style={styles.contentGreetingWrapper}>
-          <Typography fontFamily="Poppins-Bold" fontSize={14}>
-            Hi, {userProfile?.nama}
-          </Typography>
-        </View>
-        <View style={styles.actionButtonWrapper}>
-          <RoundedButton
-            label="Travel"
-            icon={<IconCar width={24} height={24} color="paper" />}
-            iconColor="main"
-            onPress={() => router.push("/travel/booking-travel")}
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.paper }}
+        stickyHeaderIndices={[0]}
+        refreshControl={
+          <RefreshControl
+            refreshing={articleListQuery.isRefetching}
+            onRefresh={handleRefresh}
+            progressViewOffset={20}
           />
-          <RoundedButton
-            label="Paket"
-            icon={<IconPackage width={24} height={24} color="paper" />}
-            iconColor="secondary"
-            onPress={() => router.push("/package/shipment-form")}
-          />
-          <RoundedButton
-            label="Rental"
-            icon={<IconCarSide width={24} height={24} color="paper" />}
-            iconColor="dangerbase"
-            disabled
-          />
-          <RoundedButton
-            label="Oleh-oleh"
-            icon={<IconBasket width={24} height={24} color="paper" />}
-            iconColor="thirtiary"
-            disabled
-          />
-          <RoundedButton
-            label="Hotel"
-            icon={<IconBuilding width={24} height={24} color="paper" />}
-            iconColor="quarternary"
-            disabled
-          />
-        </View>
-      </View>
-
-      <SectionWrapper
-        title="Artikel"
-        action={
-          <TouchableWithoutFeedback
-            onPress={() => router.push("/(tabs)/article")}
-          >
-            <View
-              style={[
-                styles.touchableIconWrapper,
-                { backgroundColor: Colors.bgsecondary },
-              ]}
-            >
-              <IconArrowRight height={20} width={20} color="main" />
-            </View>
-          </TouchableWithoutFeedback>
         }
       >
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={
-            articleListQuery.isFetching
-              ? articleListPlaceholderData
-              : articleListQuery.data?.data || []
+        <View
+          backgroundColor="main"
+          style={[styles.headerContainer, { height: insets.top + 106 }]}
+        >
+          <View style={[styles.headerWrapper, { paddingTop: insets.top + 20 }]}>
+            <SearchBox placeholder="Cari disini..." />
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <View style={styles.contentGreetingWrapper}>
+            <Typography fontFamily="Poppins-Bold" fontSize={14}>
+              Hi, {userProfile?.nama}
+            </Typography>
+          </View>
+          <View style={styles.actionButtonWrapper}>
+            <RoundedButton
+              label="Travel"
+              icon={<IconCar width={24} height={24} color="paper" />}
+              iconColor="main"
+              onPress={() => router.push("/travel/booking-travel")}
+            />
+            <RoundedButton
+              label="Paket"
+              icon={<IconPackage width={24} height={24} color="paper" />}
+              iconColor="secondary"
+              onPress={() => router.push("/package/shipment-form")}
+            />
+            <RoundedButton
+              label="Rental"
+              icon={<IconCarSide width={24} height={24} color="paper" />}
+              iconColor="dangerbase"
+              disabled
+            />
+            <RoundedButton
+              label="Oleh-oleh"
+              icon={<IconBasket width={24} height={24} color="paper" />}
+              iconColor="thirtiary"
+              disabled
+            />
+            <RoundedButton
+              label="Hotel"
+              icon={<IconBuilding width={24} height={24} color="paper" />}
+              iconColor="quarternary"
+              disabled
+            />
+          </View>
+        </View>
+
+        <SectionWrapper
+          title="Artikel"
+          action={
+            <TouchableWithoutFeedback
+              onPress={() => router.push("/(tabs)/article")}
+            >
+              <View
+                style={[
+                  styles.touchableIconWrapper,
+                  { backgroundColor: Colors.bgsecondary },
+                ]}
+              >
+                <IconArrowRight height={20} width={20} color="main" />
+              </View>
+            </TouchableWithoutFeedback>
           }
-          renderItem={({ item }) =>
-            articleListQuery.isFetching ? (
-              <ArticleItemPlaceholder />
-            ) : (
-              <ArticleItem
-                imgSource={{ uri: item.image_url }}
-                title={item.judul}
-                subtitle="Mulai dari"
-                price={formatCurrency(item.harga)}
-                onPress={() =>
-                  router.push({
-                    pathname: "/article/[id]",
-                    params: {
-                      id: item.id,
-                    },
-                  })
-                }
-              />
-            )
-          }
-          style={{ width: "100%" }}
-          ListEmptyComponent={() => <ArticleEmpty />}
-          contentContainerStyle={styles.listArticleContainer}
+        >
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={
+              articleListQuery.isFetching
+                ? articleListPlaceholderData
+                : articleListQuery.data?.data || []
+            }
+            renderItem={({ item }) =>
+              articleListQuery.isFetching ? (
+                <ArticleItemPlaceholder />
+              ) : (
+                <ArticleItem
+                  imgSource={{ uri: item.image_url }}
+                  title={item.judul}
+                  subtitle="Mulai dari"
+                  price={formatCurrency(item.harga)}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/article/[id]",
+                      params: {
+                        id: item.id,
+                      },
+                    })
+                  }
+                />
+              )
+            }
+            style={{ width: "100%" }}
+            ListEmptyComponent={() => <ArticleEmpty />}
+            contentContainerStyle={styles.listArticleContainer}
+          />
+        </SectionWrapper>
+      </ScrollView>
+
+      <View style={styles.promoBannerContainer}>
+        <ImageBackground
+          source={require("@/assets/images/promo/promo-banner.jpg")}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+          }}
+          resizeMode="cover"
         />
-      </SectionWrapper>
-    </ScrollView>
+        <View style={styles.promoBannerContent}>
+          <Typography color="paper" fontSize={16} fontFamily="Poppins-Bold">
+            Promo
+          </Typography>
+          <Typography color="paper">
+            Nikmati perjalanan anda dengan berbagai promo menarik dari kami!
+          </Typography>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -204,5 +228,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 16,
     flexGrow: 1,
+  },
+  promoBannerContainer: {
+    height: 117,
+    width: "100%",
+    borderTopLeftRadius: 2,
+    justifyContent: "center",
+    borderTopRightRadius: 2,
+  },
+  promoBannerContent: {
+    justifyContent: "center",
+    padding: 16,
   },
 });
