@@ -1,4 +1,4 @@
-import { ScrollView, StatusBar, StyleSheet } from "react-native";
+import { Image, ScrollView, StatusBar, StyleSheet } from "react-native";
 import { useNavigation, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -77,6 +77,10 @@ export default function LoginScreen() {
           backgroundColor="paper"
           style={[style.content, { paddingBottom: insets.bottom + 37 }]}
         >
+          <Image
+            source={require("@/assets/images/logo-rama.png")}
+            style={style.logo}
+          />
           <Typography fontFamily="Poppins-Bold">Silahkan Masuk!</Typography>
 
           <View style={style.formContainer}>
@@ -147,5 +151,11 @@ const style = StyleSheet.create({
     marginBottom: 80,
     marginTop: 16,
     alignItems: "flex-end",
+  },
+  logo: {
+    marginHorizontal: "auto",
+    width: 151,
+    height: 151,
+    marginBottom: 54,
   },
 });
