@@ -62,7 +62,7 @@ export default function BookingTravelScreen() {
     }));
   }, [travelBranchQuery.data]);
 
-  const { control, formState, handleSubmit } = useForm<TravelScheduleQuery>({
+  const { control, formState, handleSubmit, setValue, getValues } = useForm<TravelScheduleQuery>({
     defaultValues: {
       date: new Date(),
     },
@@ -78,6 +78,13 @@ export default function BookingTravelScreen() {
   useEffect(() => {
     setBookingPayload(undefined);
   }, [setBookingPayload]);
+
+  const handleSwap = () => {
+    const fromValue = getValues("from");
+    const toValue = getValues("to");
+    setValue("from", toValue);
+    setValue("to", fromValue);
+  };
 
   return (
     <ScrollView
@@ -151,9 +158,11 @@ export default function BookingTravelScreen() {
             )}
           />
 
-          <View backgroundColor="main" style={style.destinationIconSwap}>
-            <IconSwap width={20} height={20} color="paper" />
-          </View>
+          <TouchableWithoutFeedback onPress={handleSwap}>
+            <View backgroundColor="main" style={style.destinationIconSwap}>
+              <IconSwap width={20} height={20} color="paper" />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
 
         <Controller

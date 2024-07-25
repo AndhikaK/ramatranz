@@ -86,16 +86,15 @@ export default function TravelOrderDetailScreen() {
   const bookingPayload = useTravelbookingPayload();
   const pointToPointQuery = useGetPointToPointApi(bookingPayload);
 
-
   const handlerPesanan = () => {
-    const titikJemputId = pointToPointQuery?.data?.data.find(item => item.nama === pointToPointPayload?.from)
+    const data: any = pointToPointQuery?.data?.data.find(item => item.nama === pointToPointPayload?.from)
 
     const payload: any = {
       jadwal_id: travelSchedule?.id,
       no_kursi: travelPassenger.map((p) => p.seat).join(", "),
       nama: travelPassenger.map((p) => p.name).join(", "),
       no_telp: travelPassenger.map((p) => p.phoneNumber).join(", "),
-      titik_jemput_id: titikJemputId,
+      titik_jemput_id: data?.master_cabang_id,
       biaya_tambahan: 0,
       status: "Menunggu",
     };
