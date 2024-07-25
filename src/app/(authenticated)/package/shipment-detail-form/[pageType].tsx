@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -75,85 +75,91 @@ export default function ShipmentDetailFormScreen() {
         backIconPress={() => router.back()}
       />
 
-      <View style={styles.contentContainer}>
-        <View
-          style={[
-            styles.locationContainer,
-            { borderColor: Colors.outlineborder },
-          ]}
-        >
-          <View style={styles.locationHeaderWrapper}>
-            <Typography fontFamily="OpenSans-Bold">
-              {packageOrderPayload?.[params.pageType].location?.nama}
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.contentContainer}>
+          <View
+            style={[
+              styles.locationContainer,
+              { borderColor: Colors.outlineborder },
+            ]}
+          >
+            <View style={styles.locationHeaderWrapper}>
+              <Typography fontFamily="OpenSans-Bold">
+                {packageOrderPayload?.[params.pageType].location?.nama}
+              </Typography>
+
+              <Button
+                variant="secondary"
+                style={{
+                  backgroundColor: Colors.outlineborder,
+                  borderColor: Colors.outlineborder,
+                  minHeight: 20,
+                }}
+                onPress={() => router.back()}
+              >
+                <Typography
+                  fontFamily="OpenSans-Bold"
+                  fontSize={10}
+                  color="main"
+                >
+                  Edit
+                </Typography>
+              </Button>
+            </View>
+            <Typography fontFamily="OpenSans-Light" fontSize={8}>
+              {packageOrderPayload?.[params.pageType].location?.location}
+            </Typography>
+          </View>
+
+          <View style={styles.formContainer}>
+            <Typography fontFamily="OpenSans-Semibold">
+              {pageContent[params.pageType].contentTitle}
+              <Typography color="dangerbase"> *</Typography>
             </Typography>
 
-            <Button
-              variant="secondary"
-              style={{
-                backgroundColor: Colors.outlineborder,
-                borderColor: Colors.outlineborder,
-                minHeight: 20,
-              }}
-              onPress={() => router.back()}
-            >
-              <Typography fontFamily="OpenSans-Bold" fontSize={10} color="main">
-                Edit
-              </Typography>
-            </Button>
-          </View>
-          <Typography fontFamily="OpenSans-Light" fontSize={8}>
-            {packageOrderPayload?.[params.pageType].location?.location}
-          </Typography>
-        </View>
-
-        <View style={styles.formContainer}>
-          <Typography fontFamily="OpenSans-Semibold">
-            {pageContent[params.pageType].contentTitle}
-            <Typography color="dangerbase"> *</Typography>
-          </Typography>
-
-          <View style={styles.formWrapper}>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field }) => (
-                <TextInputV2
-                  placeholder="Nama Pengirim"
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="mobileNumber"
-              render={({ field }) => (
-                <TextInputV2
-                  placeholder="Masukkan Nomor Telepon"
-                  leadingString="+62"
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="address"
-              render={({ field }) => (
-                <TextInputV2
-                  placeholder="Deskripsi"
-                  numberOfLines={4}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  onChangeText={field.onChange}
-                />
-              )}
-            />
+            <View style={styles.formWrapper}>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field }) => (
+                  <TextInputV2
+                    placeholder="Nama Pengirim"
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="mobileNumber"
+                render={({ field }) => (
+                  <TextInputV2
+                    placeholder="Masukkan Nomor Telepon"
+                    leadingString="+62"
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="address"
+                render={({ field }) => (
+                  <TextInputV2
+                    placeholder="Deskripsi"
+                    numberOfLines={4}
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    onChangeText={field.onChange}
+                  />
+                )}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <View
         style={[
