@@ -46,7 +46,7 @@ export function ArticleItem(props: ArticleItemProps) {
                 color="textsecondary"
                 numberOfLines={1}
               >
-                {subtitle}
+                {subtitle.replace(/<[^>]*>?/gm, "")}
               </Typography>
               {/* <Typography
                 fontFamily="OpenSans-Semibold"
