@@ -1,19 +1,20 @@
 import {
   Image,
+  ImageProps,
   StyleSheet,
   TouchableHighlight,
   TouchableHighlightProps,
 } from "react-native";
 
 export type PromoItemProps = {
-  imgUrl: string;
+  imgUrl: ImageProps["source"];
 } & TouchableHighlightProps;
 export function PromoItem(props: PromoItemProps) {
   const { imgUrl, ...rest } = props;
 
   return (
     <TouchableHighlight {...rest}>
-      <Image source={{ uri: imgUrl }} style={styles.container} />
+      <Image source={imgUrl} style={styles.container} />
     </TouchableHighlight>
   );
 }

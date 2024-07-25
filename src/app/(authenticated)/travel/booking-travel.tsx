@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import {
   FlatList,
+  ImageProps,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -37,11 +38,11 @@ import { useTravelActions } from "@/features/travel/store/travel-store";
 import { formatDate } from "@/utils/datetime";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const PromoItemList = [
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
+export const PromoItemList: { imgUrl: ImageProps["source"] }[] = [
+  { imgUrl: require("@/assets/images/promo/1.png") },
+  { imgUrl: require("@/assets/images/promo/2.png") },
+  { imgUrl: require("@/assets/images/promo/3.png") },
+  { imgUrl: require("@/assets/images/promo/4.png") },
 ];
 
 export default function BookingTravelScreen() {

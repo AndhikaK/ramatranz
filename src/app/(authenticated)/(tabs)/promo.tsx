@@ -1,13 +1,9 @@
-import {
-  Button,
-  PromoListItem,
-  TextInput,
-  TextInputV2,
-  Typography,
-  View,
-} from "@/components";
-import { FlatList, StyleSheet, TouchableHighlight } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Button, PromoListItem, TextInputV2, View } from "@/components";
+
+import { PromoItemList } from "../travel/booking-travel";
 
 export default function PromoScreen() {
   const insets = useSafeAreaInsets();
@@ -29,7 +25,7 @@ export default function PromoScreen() {
       </View>
 
       <FlatList
-        data={[1, 2, 3, 4, 1, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]}
+        data={PromoItemList}
         renderItem={() => <PromoListItem />}
         style={{ flex: 1 }}
         contentContainerStyle={styles.promoListContainer}
@@ -52,6 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 24,
     paddingVertical: 16,
+    paddingTop: 70,
     gap: 4,
   },
 });

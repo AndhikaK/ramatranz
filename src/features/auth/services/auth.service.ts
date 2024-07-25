@@ -1,7 +1,7 @@
+import { Snackbar } from "@/components";
 import { removeItem } from "@/libs/async-storage";
 
 import { getAuthActions } from "../store/auth-store";
-import { Snackbar } from "@/components";
 
 export const handleLogoutSession = async () => {
   const { clearAuthSession } = getAuthActions();

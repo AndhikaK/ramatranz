@@ -25,12 +25,7 @@ import {
   usePackageOrderPayload,
 } from "@/features/package/stores/package-store";
 
-const PromoItemList = [
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-  { imgUrl: "https://html.com/wp-content/uploads/flamingo.webp" },
-];
+import { PromoItemList } from "../travel/booking-travel";
 
 export default function PackageShipmentFormScreen() {
   const insets = useSafeAreaInsets();
