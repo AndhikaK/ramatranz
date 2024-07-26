@@ -128,6 +128,7 @@ export type GetPaymentMethodResponseSuccess = {
   data: {
     id: number;
     metode: string;
+    img: string;
   }[];
 };
 

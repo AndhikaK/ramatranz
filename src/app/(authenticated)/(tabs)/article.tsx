@@ -61,7 +61,7 @@ export default function ArticleTabScreen() {
                 <ArticleItem
                   imgSource={{ uri: item.image_url }}
                   title={item.judul}
-                  subtitle="Mulai dari"
+                  subtitle={item.konten}
                   price={formatCurrency(item.harga)}
                   onPress={() =>
                     router.push({
@@ -96,7 +96,7 @@ export default function ArticleTabScreen() {
                 <ArticleItem
                   imgSource={{ uri: item.image_url }}
                   title={item.judul}
-                  subtitle="Mulai dari"
+                  subtitle={item.konten}
                   price={formatCurrency(item.harga)}
                   onPress={() =>
                     router.push({

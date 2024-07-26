@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ImageBackground, ScrollView, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Controller, useForm } from "react-hook-form";
@@ -57,19 +57,23 @@ export default function RegisterScreen() {
     <PageWrapper style={{ flex: 1 }} isLoading={registerMutation.isPending}>
       <StatusBar style="light" />
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView
+        style={{ flex: 1, backgroundColor: "red" }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <View
           backgroundColor="main"
           style={[style.container, { paddingTop: insets.top }]}
         >
-          <View style={style.headerContainer}>
-            <Typography fontFamily="Poppins-Bold" fontSize={24} color="paper">
-              Daftar
-            </Typography>
-            <Typography fontFamily="Poppins-Medium" fontSize={14} color="paper">
-              buat akun baru anda!
-            </Typography>
-          </View>
+          <ImageBackground
+            source={require("@/assets/images/auth-bg-2.jpeg")}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+            }}
+            resizeMode="cover"
+          />
 
           <View
             backgroundColor="paper"
@@ -78,6 +82,19 @@ export default function RegisterScreen() {
               { paddingBottom: insets.bottom + 37 },
             ]}
           >
+            <View style={style.headerContainer}>
+              <Typography fontFamily="Poppins-Bold" fontSize={24} color="main">
+                Daftar
+              </Typography>
+              <Typography
+                fontFamily="Poppins-Medium"
+                fontSize={14}
+                color="main"
+              >
+                buat akun baru anda!
+              </Typography>
+            </View>
+
             <View style={style.formContainer}>
               <Controller
                 control={control}
@@ -181,7 +198,7 @@ const style = StyleSheet.create({
   },
   headerContainer: {
     marginTop: "auto",
-    paddingHorizontal: 35,
+    // paddingHorizontal: 35,
     minHeight: 100,
     flex: 1,
     justifyContent: "center",
@@ -190,7 +207,8 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingHorizontal: 35,
-    paddingTop: 54,
+    marginTop: "auto",
+    // paddingTop: 54,
   },
   formContainer: {
     gap: 16,

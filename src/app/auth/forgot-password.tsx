@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Image, ImageBackground, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -10,17 +10,30 @@ export default function ForgotPasswordScreen() {
   return (
     <View backgroundColor="main" style={style.container}>
       <StatusBar style="light" />
+      <ImageBackground
+        source={require("@/assets/images/auth-bg-2.jpeg")}
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+        }}
+        resizeMode="cover"
+      />
       <View
         backgroundColor="paper"
         style={[
           style.contentContainer,
           {
-            paddingBottom: insets.bottom,
-            minHeight: Dimensions.get("screen").height / 2,
+            paddingBottom: insets.bottom + 8,
+            minHeight: Dimensions.get("screen").height * (2 / 3),
           },
         ]}
       >
         <View style={style.formContainer}>
+          <Image
+            source={require("@/assets/images/logo-rama.png")}
+            style={style.logo}
+          />
           <TextInput
             label="Masukan email yang terdaftar"
             placeholder="Contoh@email.com"
@@ -46,6 +59,11 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   formContainer: {
-    gap: 36,
+    gap: 54,
+  },
+  logo: {
+    marginHorizontal: "auto",
+    width: 151,
+    height: 151,
   },
 });
