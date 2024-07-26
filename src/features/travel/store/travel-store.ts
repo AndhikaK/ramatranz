@@ -16,6 +16,7 @@ type TravelStore = {
   };
   travelSchedule?: TravelScheduleResponseSuccess["data"][number];
   passenger: PassengerSeat[];
+  pesananResponse?: any;
 
   actions: {
     setBookingPayload: (bookinPayload?: TravelScheduleQuery) => void;
@@ -27,6 +28,7 @@ type TravelStore = {
       bookinPayload?: TravelScheduleResponseSuccess["data"][number]
     ) => void;
     setPassenger: (bookinPayload: PassengerSeat[]) => void;
+    setPesananResponse: (response: any) => void;
     clearBookingSession: () => void;
   };
 };
@@ -36,6 +38,7 @@ const travelStore = createStore<TravelStore>()((set, get) => ({
   pointToPointPayload: undefined,
   travelSchedule: undefined,
   passenger: [],
+  pesananResponse: undefined,
 
   actions: {
     setBookingPayload: (bookingPayload) => set({ bookingPayload }),
@@ -43,6 +46,7 @@ const travelStore = createStore<TravelStore>()((set, get) => ({
       set({ pointToPointPayload: pointToPointPayload }),
     setTravelSchedule: (travelSchedule) => set({ travelSchedule }),
     setPassenger: (passenger) => set({ passenger }),
+    setPesananResponse: (response) => set({ pesananResponse: response }),
     clearBookingSession: async () => {
       set({
         bookingPayload: undefined,
@@ -64,6 +68,7 @@ const travelPassengerSelector = (state: ExtractState<typeof travelStore>) =>
   state.passenger;
 const actionsSelector = (state: ExtractState<typeof travelStore>) =>
   state.actions;
+const pesananResponseSelector = (state: ExtractState<typeof travelStore>) => state.pesananResponse;
 
 // getters
 export const getbookingPayload = () =>
@@ -75,6 +80,7 @@ export const getTravelSchedule = () =>
 export const getTravelPassenger = () =>
   travelPassengerSelector(travelStore.getState());
 export const getTravelActions = () => actionsSelector(travelStore.getState());
+export const getPesananResponse = () => pesananResponseSelector(travelStore.getState());
 
 function useTravelStore<U>(selector: Params<U>[1]) {
   return useStore(travelStore, selector);
@@ -88,3 +94,4 @@ export const useTravelPointToPointPayload = () =>
 export const useTravelSchedule = () => useTravelStore(travelScheduleSelector);
 export const useTravelPassenger = () => useTravelStore(travelPassengerSelector);
 export const useTravelActions = () => useTravelStore(actionsSelector);
+export const usePesananResponse = () => useTravelStore(pesananResponseSelector);

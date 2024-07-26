@@ -17,6 +17,7 @@ import { usePostProcessPaymentMutation } from "@/features/payment/api/usePostPro
 import { PaymentComponent } from "@/features/payment/components";
 import { TravelTicketItem } from "@/features/travel/components";
 import {
+  getPesananResponse,
   useTravelPassenger,
   useTravelSchedule,
 } from "@/features/travel/store/travel-store";
@@ -25,9 +26,10 @@ import { formatCurrency } from "@/utils/common";
 export default function TravelPaymentScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-
   const { Colors } = useAppTheme();
 
+  const pesananResponse = getPesananResponse()
+  console.log(pesananResponse);
   // state
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     number | null

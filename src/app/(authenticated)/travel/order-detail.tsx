@@ -9,6 +9,7 @@ import { IconCarSide } from "@/components/icons";
 import { useAppTheme } from "@/context/theme-context";
 import { TravelTicketItem } from "@/features/travel/components";
 import {
+  useTravelActions,
   useTravelPassenger,
   useTravelPointToPointPayload,
   useTravelSchedule,
@@ -23,6 +24,7 @@ import { AxiosError } from "axios";
 import { useGetPointToPointApi } from "@/features/travel/api/useGetPointToPointApi";
 
 const usePostPesananMutation = () => {
+  const { setPesananResponse } = useTravelActions();
   return useMutation({
     mutationFn: async (data) => {
       const response = await apiClientMock({
@@ -30,6 +32,7 @@ const usePostPesananMutation = () => {
         url: "/api/pesanan/pesanan",
         data,
       });
+      setPesananResponse(response.data);
       return response.data;
     },
     onError: (error: AxiosError) => {
