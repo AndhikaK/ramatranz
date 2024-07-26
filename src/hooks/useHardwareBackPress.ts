@@ -10,6 +10,8 @@ export const useHardwareBackpress = (onBackFunction?: () => void) => {
       router.back();
     } else {
       const routes = navigation.getState().routes;
+      console.log(routes);
+
 
       const routeList = ["article", "home", "order", "profile"];
       if (routeList.includes(routes?.[routes.length - 1].name)) {

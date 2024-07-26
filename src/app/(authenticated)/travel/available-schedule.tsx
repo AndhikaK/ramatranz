@@ -2,11 +2,14 @@ import { ReactNode, useEffect } from "react";
 import {
   FlatList,
   StyleSheet,
+  Text,
   TouchableNativeFeedbackProps,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import WebView from "react-native-webview";
 
 import { TravelScheduleResponseSuccess } from "@/apis/internal.api.type";
 import { Appbar, Loader, Snackbar, Typography, View } from "@/components";

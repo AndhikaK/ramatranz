@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
@@ -28,8 +28,6 @@ export default function TravelPaymentScreen() {
   const router = useRouter();
   const { Colors } = useAppTheme();
 
-  const pesananResponse = getPesananResponse()
-  console.log(pesananResponse);
   // state
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     number | null
@@ -41,10 +39,16 @@ export default function TravelPaymentScreen() {
 
   // query & mutation
   const processPaymentMutation = usePostProcessPaymentMutation();
+  const pesananResponse = getPesananResponse()
+  console.log(pesananResponse, 'tessss');
 
   // method
   const handleProcessPayment = () => {
-    const processPaymentData = {};
+    const processPaymentData =
+    {
+      orderCode: pesananResponse?.data?.kode_pesanan
+    }
+
     processPaymentMutation.mutate(processPaymentData, {
       onSuccess: () => {
         Snackbar.show({ message: "Order pesanan berhasil" });

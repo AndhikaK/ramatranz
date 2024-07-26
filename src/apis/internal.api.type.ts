@@ -131,10 +131,13 @@ export type GetPaymentMethodResponseSuccess = {
   }[];
 };
 
-export const postProcessPaymentSchema = z.object({});
-export type PostProcessPaymentPayload = z.infer<
-  typeof postProcessPaymentSchema
->;
+// export const postProcessPaymentSchema = z.object({});
+// export type PostProcessPaymentPayload = z.infer<
+//   typeof postProcessPaymentSchema
+// >;
+export type PostProcessPaymentPayload = {
+  orderCode: string
+};
 
 export type OrderListResponseSuccess = {
   data: {
