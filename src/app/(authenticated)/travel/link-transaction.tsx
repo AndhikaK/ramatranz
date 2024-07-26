@@ -1,15 +1,37 @@
 /* eslint-disable simple-import-sort/imports */
-// WebViewScreen.js
+import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
+import * as Linking from 'expo-linking';
+import { getPesananResponse } from '@/features/travel/store/travel-store';
 
 const WebViewScreen = () => {
-  // const { url } = route.params;
+  const params = useLocalSearchParams<{ link: string | any }>();
+  console.log('url', params?.link);
+
+  const extractTransactionId = (url) => {
+    const urlObj = new URL(url);
+    const urlParams = new URLSearchParams(urlObj.search);
+    return urlParams.get('transaction_id'); // Ganti 'transaction_id' dengan nama parameter yang sesuai dari URL redirect Midtrans
+  };
+
+  const pesananResponse = getPesananResponse()
+
+  const onNavigationStateChange = (navState) => {
+    if (navState.url.includes('example.com')) {
+      // const deepLinkUrl = Linking.createURL(`/payment/${pesananResponse?.data?.kode_pesanan}`)  
+      const deepLinkUrl = Linking.createURL(`/`)
+      Linking.openURL(deepLinkUrl);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <WebView source={{ uri: 'https://app.midtrans.com/payment-links/38151721964844' }} />
+      <WebView
+        source={{ uri: params?.link }}
+        onNavigationStateChange={onNavigationStateChange}
+      />
     </View>
   );
 };

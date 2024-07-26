@@ -50,12 +50,13 @@ export default function TravelPaymentScreen() {
     }
 
     processPaymentMutation.mutate(processPaymentData, {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        console.log(res, 'res');
         Snackbar.show({ message: "Order pesanan berhasil" });
         router.push({
-          pathname: "/payment/status/[id]",
+          pathname: "/travel/link-transaction",
           params: {
-            id: 13,
+            link: res.data.payment_url,
           },
         });
       },
