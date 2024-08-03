@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import {
   FlatList,
+  ImageBackground,
   ImageProps,
   ScrollView,
   StyleSheet,
@@ -87,7 +88,12 @@ export default function BookingTravelScreen() {
       <View
         backgroundColor="main"
         style={[style.headerBack, { height: insets.top + 106 }]}
-      />
+      >
+        <ImageBackground
+          source={require("@/assets/images/banner-travel.jpg")}
+          style={style.bannerTravel}
+        />
+      </View>
 
       <Appbar
         title="Travel"
@@ -212,6 +218,7 @@ const style = StyleSheet.create({
     position: "absolute",
     top: 0,
     width: "100%",
+    overflow: "hidden",
   },
   orderBox: {
     margin: 24,
@@ -248,5 +255,10 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     gap: 16,
     flexGrow: 1,
+  },
+  bannerTravel: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });

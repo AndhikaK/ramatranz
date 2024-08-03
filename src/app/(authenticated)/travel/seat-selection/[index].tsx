@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -51,8 +51,14 @@ export default function SeatSelectionScreen() {
     return `1. ${userProfile?.nama}`;
   }, [passengerIndex, passengerList, userProfile?.nama]);
 
+  useEffect(() => {
+    const passengerData = passengerList?.[passengerIndex] || [];
+    setSelectedSeat(passengerData.seat);
+  }, [passengerIndex, passengerList]);
+
   const handleSelectSeat = (seatNumber: string) => {
-    const limit = 1;
+    // increase the limit to any number
+    const limit = 100;
 
     if (selectedSeats.find((seats) => seats === seatNumber)) {
       setSelectedSeat(selectedSeats.filter((seats) => seats !== seatNumber));
