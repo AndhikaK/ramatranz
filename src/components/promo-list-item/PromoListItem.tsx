@@ -1,16 +1,22 @@
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
+import * as Clipboard from "expo-clipboard";
+import { useRouter } from "expo-router";
 
 import { useAppTheme } from "@/context/theme-context";
 
 import { Button } from "../button/Button";
+import { Snackbar } from "../snackbar/Snackbar";
 import { Typography } from "../typography/Typography";
 import { View } from "../view/View";
 
 export function PromoListItem() {
   const { Colors } = useAppTheme();
+  const router = useRouter();
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback
+      onPress={() => router.push("/promo/promo-detail")}
+    >
       <View
         backgroundColor="paper"
         style={[styles.container, { borderColor: Colors.outlineborder }]}
@@ -40,7 +46,13 @@ export function PromoListItem() {
               Berlaku hingga Jul 14,2024
             </Typography>
 
-            <Button style={{ height: 30, minHeight: 30, maxHeight: 30 }}>
+            <Button
+              style={{ height: 30, minHeight: 30, maxHeight: 30 }}
+              onPress={async () => {
+                Snackbar.show({ message: "Kode disalin" });
+                await Clipboard.setStringAsync("kode promo");
+              }}
+            >
               Salin
             </Button>
           </View>
