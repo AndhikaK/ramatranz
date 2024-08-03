@@ -42,6 +42,24 @@ export default function OrderTabScreen() {
     );
   }, [orderListQuery.data?.data]);
 
+  const navigateToOrderDetail = (id: number) => {
+    if (activeTab === "history") {
+      router.push({
+        pathname: "/payment/order-history/[id]",
+        params: {
+          id: activeFilter,
+        },
+      });
+    } else {
+      router.push({
+        pathname: "/payment/status/[id]",
+        params: {
+          id: id,
+        },
+      });
+    }
+  };
+
   return (
     <View backgroundColor="paper" style={style.container}>
       <Appbar title="Pesanan" />
@@ -118,15 +136,8 @@ export default function OrderTabScreen() {
                   </View>
                 ) : null
               }
-              disabled={!item.isOrderActive}
-              onPress={() =>
-                router.push({
-                  pathname: "/payment/status/[id]",
-                  params: {
-                    id: item.id,
-                  },
-                })
-              }
+              // disabled={!item.isOrderActive}
+              onPress={() => navigateToOrderDetail(item.id)}
             />
           )}
           ListEmptyComponent={() => (
